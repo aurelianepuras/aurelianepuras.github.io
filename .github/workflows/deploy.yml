@@ -21,6 +21,11 @@ jobs:
         run: npm install
       - name: Build Astro
         run: npm run build
+        # AICI AM ADĂUGAT CONEXIUNEA CU SEIFUL GITHUB
+        env:
+          PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.PUBLIC_EMAILJS_SERVICE_ID }}
+          PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.PUBLIC_EMAILJS_TEMPLATE_ID }}
+          PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.PUBLIC_EMAILJS_PUBLIC_KEY }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
