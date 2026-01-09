@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GalleryCard from '../components/GalleryCard.astro';
+import { getCollection } from 'astro:content';
+
+const gallery = await getCollection('gallery');
+---
+
+<Layout
+  title="Galerie Foto"
+  description="Explorează galeria noastră foto"
+>
+  <section class="py-20 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Galerie foto</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        <p class="text-lg text-navy/70 dark:text-ivory-light/70">
+          Momente din cariera mea artistică
+        </p>
+      </div>
+
+      <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {gallery.map((item) => (
+          <GalleryCard
+            title={item.data.title}
+            image={item.data.image}
+            description={item.data.description}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div id="lightbox" class="hidden fixed inset-0 z-[9999] bg-[#F7F5F0] dark:bg-[#0B1215] flex items-center justify-center p-4">
+    <button id="lightbox-close" class="absolute top-6 right-6 text-navy dark:text-ivory-light hover:text-gold-warm dark:hover:text-gold-bright p-2 rounded-full bg-white/90 dark:bg-black/50 hover:bg-white dark:hover:bg-black/70 transition-all duration-300 shadow-lg z-[10000]">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <div class="max-w-5xl w-full pointer-events-none">
+      <img id="lightbox-image" src="" alt="" class="w-full h-auto rounded-2xl shadow-2xl pointer-events-auto" />
+      <div class="mt-6 text-navy dark:text-ivory-light text-center pointer-events-auto">
+        <p id="lightbox-description" class="text-base text-navy/60 dark:text-ivory-light/60"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { initLightbox } from '../scripts/lightbox';
+
+    initLightbox();
+  </script>
+</Layout>

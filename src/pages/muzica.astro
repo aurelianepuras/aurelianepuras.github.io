@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MusicPlayer from '../components/MusicPlayer';
+import { getCollection } from 'astro:content';
+
+const audioFiles = await getCollection('audio');
+
+const tracks = audioFiles.map((audio, index) => ({
+  id: index + 1,
+  title: audio.data.title,
+  audio_file: audio.data.audio_file,
+  duration: audio.data.duration || '4:32',
+}));
+
+const albumCover = audioFiles[0]?.data.cover || '/uploads/images/audio-cover-1.jpg';
+---
+
+<Layout
+  title="Muzică - Ecouri din Transilvania"
+  description="Ascultă albumul complet Ecouri din Transilvania"
+>
+  <section class="py-20 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Muzica mea</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        <p class="text-lg text-navy/70 dark:text-ivory-light/70">
+          Compoziții originale și interpretări
+        </p>
+      </div>
+
+      <MusicPlayer
+        client:load
+        albumTitle="Ecouri din Transilvania"
+        artist="Aurelian Epuraș"
+        albumCover={albumCover}
+        currentTrackTitle={tracks[0]?.title || 'Dimineață în Carpați'}
+        tracks={tracks}
+        albumDescription='Ecouri din Transilvania este o colecție de 5 compoziții originale care explorează peisajele și tradițiile muzicale ale regiunii mele natale. Fiecare piesă surprinde o stare de spirit diferită, de la serenitatea dimineților în munți până la energia dansurilor tradiționale.'
+        productionNotes='Înregistrările au fost realizate în studioul personal, folosind un pian de concert Steinway Model D. Producția a fost realizată de echipa AudioMaster București, iar masteringul final a fost efectuat la Abbey Road Studios, Londra.'
+      />
+    </div>
+  </section>
+</Layout>

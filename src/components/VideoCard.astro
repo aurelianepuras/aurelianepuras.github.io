@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+  external_url: string;
+  thumbnail?: string;
+  description?: string;
+}
+
+const { title, external_url, thumbnail, description } = Astro.props;
+---
+
+<article class="group bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-navy/10 dark:border-ivory-light/10">
+  <a href={external_url} target="_blank" rel="noopener noreferrer" class="block">
+    <div class="relative aspect-video overflow-hidden bg-ivory dark:bg-navy-deep">
+      {thumbnail ? (
+        <img
+          src={thumbnail}
+          alt={title}
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+      ) : (
+        <div class="w-full h-full flex items-center justify-center">
+          <svg class="w-16 h-16 text-navy/40 dark:text-ivory-light/40" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </div>
+      )}
+      <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+        <div class="w-16 h-16 bg-gold-warm/90 dark:bg-gold-bright/90 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+          <svg class="w-8 h-8 text-navy" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="absolute top-3 right-3 bg-gold-warm dark:bg-gold-bright text-navy px-3 py-1 rounded-2xl text-xs font-semibold">
+        Video Extern
+      </div>
+    </div>
+    <div class="p-6">
+      <h3 class="text-xl font-serif font-bold text-navy dark:text-ivory-light group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 line-clamp-2">
+        {title}
+      </h3>
+      {description && (
+        <p class="mt-3 text-navy/70 dark:text-ivory-light/70 line-clamp-2">
+          {description}
+        </p>
+      )}
+      <div class="mt-4 flex items-center text-gold-warm dark:text-gold-bright font-medium">
+        Vizionează pe YouTube
+        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+        </svg>
+      </div>
+    </div>
+  </a>
+</article>

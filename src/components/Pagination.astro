@@ -1,0 +1,72 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+const prevUrl = currentPage > 1 ? (currentPage === 2 ? baseUrl : `${baseUrl}/${currentPage - 1}`) : null;
+const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : null;
+
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+---
+
+{totalPages > 1 && (
+  <nav class="flex justify-center items-center gap-2 mt-12" aria-label="Pagination">
+    {prevUrl ? (
+      <a
+        href={prevUrl}
+        class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
+      >
+        <span class="sr-only">Pagina anterioară</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </a>
+    ) : (
+      <span class="px-4 py-2 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/10 dark:border-ivory-light/10 text-navy/40 dark:text-ivory-light/40 cursor-not-allowed">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </span>
+    )}
+
+    {pages.map((page) => {
+      const isActive = page === currentPage;
+      const pageUrl = page === 1 ? baseUrl : `${baseUrl}/${page}`;
+
+      return isActive ? (
+        <span class="px-4 py-2 rounded-2xl bg-gold-warm dark:bg-gold-bright text-navy font-semibold">
+          {page}
+        </span>
+      ) : (
+        <a
+          href={pageUrl}
+          class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
+        >
+          {page}
+        </a>
+      );
+    })}
+
+    {nextUrl ? (
+      <a
+        href={nextUrl}
+        class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
+      >
+        <span class="sr-only">Pagina următoare</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </a>
+    ) : (
+      <span class="px-4 py-2 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/10 dark:border-ivory-light/10 text-navy/40 dark:text-ivory-light/40 cursor-not-allowed">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </span>
+    )}
+  </nav>
+)}

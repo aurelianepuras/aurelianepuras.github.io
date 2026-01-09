@@ -1,0 +1,29 @@
+---
+title: Test pe site
+meta_title: Mesaj de test
+meta_description: >
+  Este corectă observația ta. În arhitectura pe care a ales-o Bolt, există o
+  diferență importantă între cum sunt tratate paginile fixe și listele de
+  conținut:
+date: 2026-01-09
+cover_image: /uploads/images/test-pe-site/cover_image.jpg
+---
+Este corectă observația ta. În arhitectura pe care a ales-o Bolt, există o diferență importantă între cum sunt tratate paginile fixe și listele de conținut:
+
+1. **Colecții (Collections)**:&nbsp;**Blog**,&nbsp;**Galerie Foto**,&nbsp;**Video**&nbsp;și&nbsp;**Muzică**&nbsp;sunt configurate ca „Colecții”. Acest lucru îți permite să adaugi un număr nelimitat de intrări (de exemplu, poți avea 100 de articole de blog sau 50 de clipuri video). Dacă ar fi fost Singletons, ai fi putut pune doar o singură poză sau un singur video pe tot site-ul.
+1. **Singletons**: Acestea sunt folosite doar pentru pagini unice, unde conținutul este fix (de exemplu, textul din&nbsp;**Biografie**&nbsp;sau link-urile din&nbsp;**Social Media**).
+
+### 🛠️ Cum adaugi conținut acum (din moment ce nu sunt Singletons):
+
+Pentru a vedea conținutul demo sau pentru a adăuga ceva nou, trebuie să intri în fiecare colecție:
+
+- **Blog**: Dacă dai click pe „Blog”, vei vedea cele 10 articole demo pe care le-a creat Bolt pentru a testa paginația.
+- **Galerie Foto / Video / Muzică**: Momentan apar cu „0 entries” în screenshot-ul tău. Pentru a le popula, apasă pe butonul&nbsp;**„+”**&nbsp;din dreptul fiecăreia.
+
+### 💡 Vrei să transformăm vreuna dintre ele în Singleton?
+
+Dacă, de exemplu, vrei ca pagina de&nbsp;**Video**&nbsp;să nu fie o listă de mai multe clipuri, ci să conțină doar un singur video principal (un „showreel”), îi putem cere lui Bolt:
+
+> *"Bolt, transformă colecția Video în Singleton, pentru că vreau să am un singur video principal pe pagină, nu o listă întreagă."*
+
+**Sau preferi să păstrezi structura actuală de „Colecții” pentru a putea urca oricâte materiale vrei pe viitor?**

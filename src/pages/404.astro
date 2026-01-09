@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="404 - Pagina nu a fost găsită"
+  description="Pagina pe care o cauți nu a fost găsită"
+>
+  <section class="py-20 bg-ivory dark:bg-navy-deep min-h-[80vh] flex items-center justify-center">
+    <div class="container mx-auto px-4 text-center">
+      <div class="max-w-2xl mx-auto">
+        <div class="mb-8">
+          <svg class="w-32 h-32 mx-auto text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+
+        <h1 class="font-serif text-6xl text-gold-warm dark:text-gold-bright mb-4">404</h1>
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-navy dark:text-ivory-light mb-6">
+          Pagina nu a fost găsită
+        </h2>
+        <p class="text-xl text-navy/70 dark:text-ivory-light/70 mb-8">
+          Ne pare rău, dar pagina pe care o cauți nu există sau a fost mutată.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/" class="px-8 py-4 bg-gold-warm dark:bg-gold-bright text-navy hover:bg-gold-bright dark:hover:bg-gold-warm transition-all duration-300 rounded-2xl font-semibold">
+            Înapoi la prima pagină
+          </a>
+          <a href="/blog" class="px-8 py-4 bg-ivory-card dark:bg-navy-card text-navy dark:text-ivory-light hover:bg-gold-warm dark:hover:bg-gold-bright hover:text-navy border border-navy/10 dark:border-ivory-light/10 transition-all duration-300 rounded-2xl font-semibold">
+            Vizitează Blog-ul
+          </a>
+        </div>
+
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a href="/biografie" class="p-4 bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 rounded-2xl hover:bg-gold-warm dark:hover:bg-gold-bright transition-all duration-300">
+            <div class="text-navy dark:text-ivory-light font-semibold">Biografie</div>
+          </a>
+          <a href="/foto" class="p-4 bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 rounded-2xl hover:bg-gold-warm dark:hover:bg-gold-bright transition-all duration-300">
+            <div class="text-navy dark:text-ivory-light font-semibold">Galerie</div>
+          </a>
+          <a href="/video" class="p-4 bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 rounded-2xl hover:bg-gold-warm dark:hover:bg-gold-bright transition-all duration-300">
+            <div class="text-navy dark:text-ivory-light font-semibold">Video</div>
+          </a>
+          <a href="/contact" class="p-4 bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 rounded-2xl hover:bg-gold-warm dark:hover:bg-gold-bright transition-all duration-300">
+            <div class="text-navy dark:text-ivory-light font-semibold">Contact</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import VideoPlayer from '../../components/VideoPlayer';
+import Pagination from '../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const videos = await getCollection('videos');
+
+  return paginate(videos, { pageSize: 9 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<Layout
+  title={`Video - Pagina ${page.currentPage}`}
+  description="Explorează toate video-urile din colecția noastră"
+>
+  <section class="py-20 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Videoclipuri</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        <p class="text-lg text-navy/70 dark:text-ivory-light/70">
+          Concerte, recitaluri și interviuri
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {page.data.map((video) => (
+          <VideoPlayer
+            client:load
+            title={video.data.title}
+            videoUrl={video.data.external_url}
+            thumbnail={video.data.thumbnail}
+            description={video.data.description}
+          />
+        ))}
+      </div>
+
+      <Pagination
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/video"
+      />
+    </div>
+  </section>
+</Layout>

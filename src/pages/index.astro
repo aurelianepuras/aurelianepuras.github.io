@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+---
+
+<Layout
+  title="Aurelian Epuraș - Pianist și Compozitor"
+  description="Pianist și compozitor - Muzică clasică și compoziții originale din inima României"
+>
+  <section class="relative min-h-screen flex items-center justify-center bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4 py-20">
+      <div class="text-center max-w-4xl mx-auto">
+        <p class="text-sm tracking-[0.3em] uppercase text-gold-warm dark:text-gold-bright mb-8 font-sans">Bine ai venit</p>
+
+        <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl text-navy dark:text-ivory-light mb-4">
+          Aurelian Epuraș
+        </h1>
+
+        <p class="text-xl md:text-2xl text-navy/60 dark:text-ivory-light/60 italic mb-8 font-serif">
+          pianist / compozitor / profesor
+        </p>
+
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-8"></div>
+
+        <p class="text-lg md:text-xl text-navy/70 dark:text-ivory-light/70 max-w-2xl mx-auto mb-12 leading-relaxed">
+          Muzica este limbajul sufletului. De peste două decenii, dedic fiecare notă explorării frumuseții infinite a artei pianistice și creării de compoziții care să atingă inimile ascultătorilor.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/muzica" class="px-8 py-4 bg-gold-warm dark:bg-gold-bright text-navy hover:bg-gold-bright dark:hover:bg-gold-warm transition-all duration-300 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            Ascultă muzica mea
+          </a>
+          <a href="/biografie" class="px-8 py-4 bg-ivory-card dark:bg-navy-card text-navy dark:text-ivory-light hover:bg-navy/5 dark:hover:bg-ivory-light/5 border border-navy/20 dark:border-ivory-light/20 transition-all duration-300 rounded-full font-semibold">
+            Despre mine
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </section>
+
+  <section class="py-20 md:py-32 bg-ivory-card dark:bg-navy-card">
+    <div class="container mx-auto px-4">
+      <blockquote class="text-center max-w-4xl mx-auto">
+        <p class="font-serif text-2xl md:text-3xl lg:text-4xl text-navy dark:text-ivory-light italic leading-relaxed mb-8">
+         Descoperă muzica, povestea și universul meu artistic
+        </p>
+        <cite class="text-gold-warm dark:text-gold-bright font-sans not-italic">— Aurelian Epuraș</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="py-20 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="group">
+          <a href="/video" class="block">
+            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
+              <img
+                src="/uploads/images/muzica.jpg"
+                alt="Muzica mea"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+            </div>
+            <h3 class="font-serif text-2xl md:text-3xl text-navy dark:text-ivory-light mb-3 group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-colors">
+              Muzica mea
+            </h3>
+            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+              Ascultă albumele și piesele originale.            </p>
+          </a>
+        </div>
+
+        <div class="group">
+          <a href="/foto" class="block">
+            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
+              <img
+                src="/uploads/images/galerie.jpg"
+                alt="Galerie foto"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+            </div>
+            <h3 class="font-serif text-2xl md:text-3xl text-navy dark:text-ivory-light mb-3 group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-colors">
+              Galerie foto
+            </h3>
+            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+              Momente din concerte și viața de artist.
+            </p>
+          </a>
+        </div>
+
+        <div class="group">
+          <a href="/blog" class="block">
+            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
+              <img
+                src="/uploads/images/blog.jpg"
+                alt="Blog"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
+            </div>
+            <h3 class="font-serif text-2xl md:text-3xl text-navy dark:text-ivory-light mb-3 group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-colors">
+              Blog
+            </h3>
+            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+              Gânduri despre muzicã creație și viață.
+            </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

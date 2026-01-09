@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  description?: string;
+  cover_image?: string;
+  author?: string;
+  date: Date;
+}
+
+const { title, slug, description, cover_image, author, date } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+});
+---
+
+<article class="group bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-navy/10 dark:border-ivory-light/10">
+  <a href={`/blog/${slug}`} class="block">
+    {cover_image && (
+      <div class="aspect-video overflow-hidden">
+        <img
+          src={cover_image}
+          alt={title}
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+      </div>
+    )}
+    <div class="p-6">
+      <h3 class="text-2xl font-serif font-bold text-navy dark:text-ivory-light group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 mb-3">
+        {title}
+      </h3>
+      {description && (
+        <p class="text-navy/70 dark:text-ivory-light/70 line-clamp-2 mb-4">
+          {description}
+        </p>
+      )}
+      <div class="flex items-center justify-between text-sm border-t border-navy/10 dark:border-ivory-light/10 pt-4">
+        <div class="flex flex-col gap-1">
+          {author && (
+            <span class="text-navy/60 dark:text-ivory-light/60">{author}</span>
+          )}
+          <time class="text-navy/60 dark:text-ivory-light/60">{formattedDate}</time>
+        </div>
+        <div class="flex items-center gap-2 text-gold-warm dark:text-gold-bright group-hover:gap-3 transition-all duration-300">
+          <span class="text-sm font-semibold">Citește mai departe</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>
