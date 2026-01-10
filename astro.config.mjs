@@ -9,7 +9,7 @@ import sitemap from '@astrojs/sitemap';
 const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig({
-  site: 'https://your-site.com',
+  site: 'https://aurelianepuras.github.io/',
   integrations: [
     tailwind(),
     react(),
