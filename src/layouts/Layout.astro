@@ -198,7 +198,12 @@ const isActive = (path: string) => {
   </div>
 </footer>
 
-    <style>
+    <style is:global>
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
       #mobile-menu-toggle.active .hamburger-line:nth-child(1) {
         transform: rotate(45deg) translate(6px, 6px);
         width: 1.5rem;
