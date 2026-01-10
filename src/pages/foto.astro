@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getCollection } from 'astro:content';
 
+// Revenim la colecția manuală din Keystatic
 const gallery = await getCollection('gallery');
 ---
 
@@ -22,33 +23,92 @@ const gallery = await getCollection('gallery');
 
       <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {gallery.map((item) => (
-          <GalleryCard
-            title={item.data.title}
-            image={item.data.image}
-            description={item.data.description}
-          />
+          <div class="cursor-pointer">
+            <GalleryCard
+              title={item.data.title}
+              image={item.data.image}
+              description={item.data.description}
+            />
+          </div>
         ))}
       </div>
     </div>
   </section>
 
-  <div id="lightbox" class="hidden fixed inset-0 z-[9999] bg-[#F7F5F0] dark:bg-[#0B1215] flex items-center justify-center p-4">
-    <button id="lightbox-close" class="absolute top-6 right-6 text-navy dark:text-ivory-light hover:text-gold-warm dark:hover:text-gold-bright p-2 rounded-full bg-white/90 dark:bg-black/50 hover:bg-white dark:hover:bg-black/70 transition-all duration-300 shadow-lg z-[10000]">
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
+  <div id="lightbox" class="hidden fixed inset-0 z-[9999] bg-[#F7F5F0]/95 dark:bg-[#0B1215]/95 flex items-center justify-center p-4 select-none">
+    <button id="lightbox-close" class="absolute top-6 right-6 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-2">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
-    <div class="max-w-5xl w-full pointer-events-none">
-      <img id="lightbox-image" src="" alt="" class="w-full h-auto rounded-2xl shadow-2xl pointer-events-auto" />
-      <div class="mt-6 text-navy dark:text-ivory-light text-center pointer-events-auto">
-        <p id="lightbox-description" class="text-base text-navy/60 dark:text-ivory-light/60"></p>
-      </div>
+
+    <button id="lightbox-prev" class="absolute left-4 md:left-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
+      <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+    </button>
+
+    <div class="max-w-5xl w-full flex flex-col items-center">
+      <img id="lightbox-image" src="" alt="" class="max-h-[80vh] w-auto rounded-lg shadow-2xl" />
+      <p id="lightbox-description" class="mt-4 text-navy dark:text-ivory-light font-medium"></p>
     </div>
+
+    <button id="lightbox-next" class="absolute right-4 md:right-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
+      <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    </button>
   </div>
 
   <script>
-    import { initLightbox } from '../scripts/lightbox';
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-image') as HTMLImageElement;
+    const lightboxDesc = document.getElementById('lightbox-description');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    
+    const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
+    let currentIndex = 0;
 
-    initLightbox();
+    function openLightbox(index: number) {
+      currentIndex = index;
+      updateLightbox();
+      lightbox?.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightbox() {
+      const img = imagesInGrid[currentIndex];
+      if (lightboxImg && img) {
+        lightboxImg.src = img.src;
+        if (lightboxDesc) lightboxDesc.textContent = img.alt || "";
+      }
+    }
+
+    function closeLightbox() {
+      lightbox?.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % imagesInGrid.length;
+      updateLightbox();
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + imagesInGrid.length) % imagesInGrid.length;
+      updateLightbox();
+    }
+
+    imagesInGrid.forEach((img, index) => {
+      img.addEventListener('click', () => openLightbox(index));
+    });
+
+    closeBtn?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+    nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+    prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+    lightbox?.addEventListener('click', closeLightbox);
+    
+    document.addEventListener('keydown', (e) => {
+      if (lightbox?.classList.contains('hidden')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
+    });
   </script>
 </Layout>
