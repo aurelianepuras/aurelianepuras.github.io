@@ -3,13 +3,18 @@ import Layout from '../layouts/Layout.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getCollection } from 'astro:content';
 
-// Revenim la colecția manuală din Keystatic
 const gallery = await getCollection('gallery');
+const title = "Foto | Aurelian Epuras";
+const description = "Deschide ochii și lasă sunetul să prindă formă, fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit.";
+const image = "/uploads/images/Aurelian-Epuras.jpg"; 
+const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 ---
 
 <Layout
-  title="Galerie Foto"
-  description="Explorează galeria noastră foto"
+  title={title}
+  description={description}
+  image={image}
+  imageAlt={imageAlt}
 >
   <section class="py-20 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4">
@@ -17,7 +22,7 @@ const gallery = await getCollection('gallery');
         <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Galerie foto</h1>
         <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
         <p class="text-lg text-navy/70 dark:text-ivory-light/70">
-          Momente din cariera mea artistică
+          Fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit
         </p>
       </div>
 
@@ -40,7 +45,7 @@ const gallery = await getCollection('gallery');
       <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
 
-    <button id="lightbox-prev" class="absolute left-4 md:left-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
+    <button id="lightbox-prev" class="hidden md:flex absolute left-4 md:left-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
       <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
     </button>
 
@@ -49,7 +54,7 @@ const gallery = await getCollection('gallery');
       <p id="lightbox-description" class="mt-4 text-navy dark:text-ivory-light font-medium"></p>
     </div>
 
-    <button id="lightbox-next" class="absolute right-4 md:right-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
+    <button id="lightbox-next" class="hidden md:flex absolute right-4 md:right-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
       <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
     </button>
   </div>
@@ -64,6 +69,10 @@ const gallery = await getCollection('gallery');
     
     const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
     let currentIndex = 0;
+
+    // Logica Swipe
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     function openLightbox(index: number) {
       currentIndex = index;
@@ -95,6 +104,17 @@ const gallery = await getCollection('gallery');
       updateLightbox();
     }
 
+    // Event-uri pentru Swipe
+    lightbox?.addEventListener('touchstart', (e: any) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox?.addEventListener('touchend', (e: any) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) showNext();
+      if (touchEndX - touchStartX > 50) showPrev();
+    }, { passive: true });
+
     imagesInGrid.forEach((img, index) => {
       img.addEventListener('click', () => openLightbox(index));
     });
@@ -102,7 +122,11 @@ const gallery = await getCollection('gallery');
     closeBtn?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
     nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
     prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
-    lightbox?.addEventListener('click', closeLightbox);
+    
+    // Închide la click pe fundal, dar nu pe imagine
+    lightbox?.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
     
     document.addEventListener('keydown', (e) => {
       if (lightbox?.classList.contains('hidden')) return;
