@@ -6,12 +6,14 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  imageAlt?: string;
 }
 
 const {
-  title = 'Aurelian Epuraș',
-  description = 'Pianist și compozitor - Muzică clasică și compoziții originale din inima României',
-  image = '/uploads/images/default-og.jpg'
+  title = 'Aurelian Epuraș | Pianist Compozitor',
+  description = 'Sper ca experiența de aici să-ți ofere exact ce cauți. Acest site este o carte de vizită digitală',
+  image = '/uploads/images/Aurelian-Epuras.jpg',
+  imageAlt = 'Portret Aurelian Pianist'
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -46,12 +48,14 @@ const isActive = (path: string) => {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image:alt" content={imageAlt} />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     <script is:inline>
       const savedTheme = localStorage.getItem('theme');
@@ -87,7 +91,6 @@ const isActive = (path: string) => {
             <span class="hamburger-line w-6 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
           </button>
         </div>
-
       </nav>
     </header>
 
