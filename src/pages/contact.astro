@@ -1,11 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContactForm from '../components/ContactForm';
+
+// Aici setezi datele pentru Google și WhatsApp
+const title = "Contact | Aurelian Epuraș";
+const description = "Dacă vrei să colaborăm, să organizezi un concert sau să mă inviți să cânt la evenimentul tău privat, chiar și la nunta ta, mă poți contacta aici.";
+const image = "/uploads/images/Aurelian-Epuras.jpg"; 
+const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 ---
 
 <Layout
-  title="Contact"
-  description="Contactează-ne pentru orice întrebare sau colaborare"
+  title={title}
+  description={description}
+  image={image}
+  imageAlt={imageAlt}
 >
   <section class="pt-12 pb-20 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4">
