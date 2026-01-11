@@ -1,11 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+
+// Aici setezi datele pentru Google și WhatsApp
+const title = "Aurelian Epuraș - Pianist și Compozitor";
+const description = "Sper ca experiența de aici să-ți ofere exact ce cauți. Acest site este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să-mi cunoască drumul prin lumea muzicală.";
+const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 ---
 
 <Layout
-  title="Aurelian Epuraș - Pianist și Compozitor"
-  description="Pianist și compozitor - Muzică clasică și compoziții originale din inima României"
+  title={title}
+  description={description}
+  image={image}
 >
   <section class="relative min-h-screen flex items-center justify-center bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 py-20">
