@@ -5,7 +5,7 @@ export default config({
     kind: 'local',
   },
   collections: {
-    blog: collection({
+   blog: collection({
       label: 'Blog',
       slugField: 'title',
       path: 'src/content/blog/*',
@@ -15,7 +15,11 @@ export default config({
         meta_title: fields.text({ label: 'Meta Title (SEO)' }),
         meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
         description: fields.text({ label: 'Descriere', multiline: true }),
-        date: fields.date({ label: 'Data publicării', defaultValue: { kind: 'today' } }),
+        // Folosim numele "date" pentru a fi compatibil cu fișierele tale vechi
+        date: fields.datetime({ 
+          label: 'Data și Ora Publicării', 
+          defaultValue: { kind: 'now' } 
+        }),
         cover_image: fields.image({
           label: 'Imagine Cover',
           directory: 'public/uploads/images',
@@ -30,6 +34,10 @@ export default config({
       path: 'src/content/gallery/*',
       schema: {
         title: fields.slug({ name: { label: 'Titlu' } }),
+        pubDate: fields.datetime({ 
+          label: 'Data și Ora Publicării', 
+          defaultValue: { kind: 'now' } 
+        }),
         image: fields.image({
           label: 'Imagine',
           directory: 'public/uploads/images',
@@ -44,6 +52,10 @@ export default config({
       path: 'src/content/videos/*',
       schema: {
         title: fields.slug({ name: { label: 'Titlu' } }),
+        pubDate: fields.datetime({ 
+          label: 'Data și Ora Publicării', 
+          defaultValue: { kind: 'now' } 
+        }),
         meta_title: fields.text({ label: 'Meta Title (SEO)' }),
         meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
         external_url: fields.url({ label: 'Link YouTube/Vimeo' }),
@@ -61,6 +73,10 @@ export default config({
       path: 'src/content/audio/*',
       schema: {
         title: fields.slug({ name: { label: 'Titlu' } }),
+        pubDate: fields.datetime({ 
+          label: 'Data și Ora Publicării', 
+          defaultValue: { kind: 'now' } 
+        }),
         audio_file: fields.file({
           label: 'Fișier Audio (MP3)',
           directory: 'public/uploads/audio',

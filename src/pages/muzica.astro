@@ -3,7 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import MusicPlayer from '../components/MusicPlayer';
 import { getCollection } from 'astro:content';
 
-const audioFiles = await getCollection('audio');
+// 1. Preluăm colecția audio
+const allAudioFiles = await getCollection('audio');
+
+// 2. Sortăm fișierele: cele mai noi (pubDate) primele
+const sortedAudio = allAudioFiles.sort((a, b) => {
+  const dateA = new Date(a.data.pubDate || 0).getTime();
+  const dateB = new Date(b.data.pubDate || 0).getTime();
+  return dateB - dateA;
+});
 
 // AICI definești variabilele pentru seo //
 const title = "Compoziții | Aurelian Epuraș";
@@ -11,14 +19,15 @@ const description = "Fiecare piesă este o parte din povestea mea. Aici găseșt
 const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 
-const tracks = audioFiles.map((audio, index) => ({
+// 3. Mapăm datele sortate pentru player
+const tracks = sortedAudio.map((audio, index) => ({
   id: index + 1,
   title: audio.data.title,
   audio_file: audio.data.audio_file,
   duration: audio.data.duration || '4:32',
 }));
 
-const albumCover = audioFiles[0]?.data.cover || '/uploads/images/audio-cover-1.jpg';
+const albumCover = sortedAudio[0]?.data.cover || '/uploads/images/audio-cover-1.jpg';
 ---
 
 <Layout
@@ -44,8 +53,8 @@ const albumCover = audioFiles[0]?.data.cover || '/uploads/images/audio-cover-1.j
         albumCover={albumCover}
         currentTrackTitle={tracks[0]?.title || 'Dimineață în Carpați'}
         tracks={tracks}
-        albumDescription='Ecouri din Transilvania este o colecție de 5 compoziții originale care explorează peisajele și tradițiile muzicale ale regiunii mele natale. Fiecare piesă surprinde o stare de spirit diferită, de la serenitatea dimineților în munți până la energia dansurilor tradiționale.'
-        productionNotes='Înregistrările au fost realizate în studioul personal, folosind un pian de concert Steinway Model D. Producția a fost realizată de echipa AudioMaster București, iar masteringul final a fost efectuat la Abbey Road Studios, Londra.'
+        albumDescription='Ecouri din Transilvania este o colecție de compoziții originale care explorează peisajele și tradițiile muzicale ale regiunii mele natale. Fiecare piesă surprinde o stare de spirit diferită, de la serenitatea dimineților în munți până la energia dansurilor tradiționale.'
+        productionNotes='Înregistrările au fost realizate în studioul personal, folosind un pian de concert. Producția a fost realizată de echipa AudioMaster București, iar masteringul final a fost efectuat la Abbey Road Studios, Londra.'
       />
     </div>
   </section>

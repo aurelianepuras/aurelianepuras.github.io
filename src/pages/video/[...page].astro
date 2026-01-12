@@ -6,9 +6,18 @@ import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const videos = await getCollection('videos');
+  // 1. Preluăm toate videoclipurile
+  const allVideos = await getCollection('videos');
 
-  return paginate(videos, { pageSize: 9 });
+  // 2. Le sortăm înainte de a le trimite către paginare
+  const sortedVideos = allVideos.sort((a, b) => {
+    const dateA = new Date(a.data.pubDate || 0).getTime();
+    const dateB = new Date(b.data.pubDate || 0).getTime();
+    return dateB - dateA; // Cele mai noi primele
+  });
+
+  // 3. Trimitem lista sortată către funcția de paginare
+  return paginate(sortedVideos, { pageSize: 9 });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;

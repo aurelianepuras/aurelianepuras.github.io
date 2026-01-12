@@ -44,13 +44,13 @@ const imageAlt = "Blog | Aurelian Epuraș";
       <div class="grid md:grid-cols-3 gap-8">
         {page.data.map((post) => (
           <BlogCard
-            title={post.data.title}
-            slug={post.slug}
-            description={post.data.description || post.data.meta_description}
-            cover_image={post.data.cover_image}
-            author={post.data.author}
-            date={post.data.date}
-          />
+  title={post.data.title}
+  slug={post.slug}
+  description={post.data.description || post.data.meta_description}
+  cover_image={post.data.cover_image}
+  author={post.data.author}
+  date={new Date(post.data.date)} 
+/>
         ))}
       </div>
 

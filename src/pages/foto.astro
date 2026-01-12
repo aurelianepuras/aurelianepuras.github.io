@@ -3,8 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getCollection } from 'astro:content';
 
-// 1. Preluăm colecția în ordinea ei nativă
-const gallery = await getCollection('gallery');
+// 1. Preluăm toate pozele
+const allPhotos = await getCollection('gallery');
+
+// 2. Sortăm pozele cronologic (Cea mai recentă secundă apare prima)
+const gallery = allPhotos.sort((a, b) => {
+  const dateA = new Date(a.data.pubDate || 0).getTime();
+  const dateB = new Date(b.data.pubDate || 0).getTime();
+  return dateB - dateA;
+});
 
 const title = "Foto | Aurelian Epuraș";
 const description = "Deschide ochii și lasă sunetul să prindă formă, fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit.";
