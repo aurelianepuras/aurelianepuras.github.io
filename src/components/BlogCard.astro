@@ -29,9 +29,10 @@ const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
       </div>
     )}
     <div class="p-6">
-      <h3 class="font-serif text-3xl md:text-3xl text-navy dark:text-ivory-light mb-3 leading-tight group-hover:text-gold-warm transition-colors">
-  {title}
-</h3>
+      {/* Titlu Gold - vedeta cardului */}
+      <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight transition-colors">
+        {title}
+      </h3>
       
       {description && (
         <p class="text-navy/70 dark:text-ivory-light/70 line-clamp-2 mb-4">
@@ -40,17 +41,19 @@ const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
       )}
 
       <div class="flex flex-wrap items-center justify-between gap-2 text-sm border-t border-navy/10 dark:border-ivory-light/10 pt-4">
-  <time class="text-navy/60 dark:text-ivory-light/60 font-medium whitespace-nowrap">
-    {formattedDate}
-  </time>
+        {/* Data calendaristică */}
+        <time class="text-navy/60 dark:text-ivory-light/60 font-medium whitespace-nowrap">
+          {formattedDate}
+        </time>
 
-  <div class="flex items-center gap-2 text-gold-warm dark:text-gold-bright group-hover:gap-3 transition-all duration-300 whitespace-nowrap">
-    <span class="text-sm font-semibold">Citește articol</span>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-    </svg>
-  </div>
-</div>
+        {/* "Citește articol" - acum are ACEEAȘI culoare ca data (text-navy/60 / text-ivory-light/60) */}
+        <div class="flex items-center gap-2 text-navy/60 dark:text-ivory-light/60 group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 whitespace-nowrap">
+          <span class="text-sm font-semibold">Citește articol</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
     </div>
   </a>
 </article>

@@ -80,8 +80,8 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
         )}
       </div>
       <div className="p-6">
-        {/* Titlu modificat: text-3xl, leading-tight și font-serif pentru consistență */}
-        <h3 className="text-3xl font-serif text-navy dark:text-ivory-light group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 line-clamp-2 leading-tight">
+        {/* Titlu setat direct pe Auriu (text-gold-warm / text-gold-bright) */}
+        <h3 className="text-3xl font-serif text-gold-warm dark:text-gold-bright transition-all duration-300 line-clamp-2 leading-tight">
           {title}
         </h3>
         
@@ -89,15 +89,6 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
           <p className="mt-3 text-navy/70 dark:text-ivory-light/70 line-clamp-2">
             {description}
           </p>
-        )}
-        
-        {!isPlaying && (
-          <div className="mt-4 flex items-center text-gold-warm dark:text-gold-bright font-medium">
-            Redă videoclipul
-            <svg className="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-          </div>
         )}
       </div>
     </article>
