@@ -14,11 +14,21 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
+
+// Variabile SEO
+const title = page.currentPage > 1 
+  ? `Blog | Aurelian Epuraș - Pagina ${page.currentPage}` 
+  : "Blog | Aurelian Epuraș";
+const description = "Un spațiu dedicat trăirilor și parcursului meu artistic. Descoperă articole despre procesul creativ, amintiri din carieră și reflecții personale despre muzică, artă și momentele care mi-au definit drumul.";
+const image = "/uploads/images/Aurelian-Epuras.jpg"; 
+const imageAlt = "Blog | Aurelian Epuraș";
 ---
 
 <Layout
-  title={`Blog - Pagina ${page.currentPage}`}
-  description="Explorează toate articolele din blog-ul nostru"
+  title={title}
+  description={description}
+  image={image}
+  imageAlt={imageAlt}
 >
   <section class="py-20 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4">
