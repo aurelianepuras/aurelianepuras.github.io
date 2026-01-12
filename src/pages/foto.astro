@@ -62,13 +62,13 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 
   <script>
     const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-image') as HTMLImageElement;
-    const lightboxDesc = document.getElementById('lightbox-description');
-    const closeBtn = document.getElementById('lightbox-close');
-    const prevBtn = document.getElementById('lightbox-prev');
-    const nextBtn = document.getElementById('lightbox-next');
+  const lightboxImg = document.getElementById('lightbox-image');
+  const lightboxDesc = document.getElementById('lightbox-description');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
     
-    const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
+  const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img'));
     let currentIndex = 0;
 
     // Logica Swipe
@@ -106,11 +106,11 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     }
 
     // Event-uri pentru Swipe
-    lightbox?.addEventListener('touchstart', (e: any) => {
+    lightbox?.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
 
-    lightbox?.addEventListener('touchend', (e: any) => {
+    lightbox?.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       if (touchStartX - touchEndX > 50) showNext();
       if (touchEndX - touchStartX > 50) showPrev();

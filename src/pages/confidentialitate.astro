@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Politica de confidențialitate | Aurelian Epuraș";
+const description = "Află cum colectez și folosesc informațiile atunci când îmi vizitezi site-ul.";
+const image = "/uploads/images/Aurelian-Epuras.jpg";
+const imageAlt = "Politica de confidențialitate Aurelian Epuraș";
+---
+
+<Layout title={title} description={description} image={image} imageAlt={imageAlt}>
+  <section class="py-16 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4 max-w-4xl space-y-6">
+      <h1 class="font-serif text-4xl md:text-5xl text-navy dark:text-ivory-light">Politica de confidențialitate</h1>
+      <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+        Îți respect intimitatea și colectez doar informațiile strict necesare pentru a răspunde mesajelor trimise prin formularul de contact.
+      </p>
+      <ul class="space-y-4 text-navy/70 dark:text-ivory-light/70 leading-relaxed list-disc list-inside">
+        <li>Nu stochez datele introduse; ele sunt folosite exclusiv pentru răspunsul la mesaj.</li>
+        <li>Nu vând și nu partajez datele tale cu terți, în afara furnizorului de email (EmailJS) folosit pentru trimiterea mesajelor.</li>
+        <li>Poți cere oricând ștergerea conversațiilor printr-un email la <a class="text-gold-warm dark:text-gold-bright underline" href="mailto:aurelian.epuras@gmail.com">aurelian.epuras@gmail.com</a>.</li>
+      </ul>
+      <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+        Dacă ai întrebări despre datele tale, scrie-mi și voi răspunde cât mai rapid.
+      </p>
+    </div>
+  </section>
+</Layout>

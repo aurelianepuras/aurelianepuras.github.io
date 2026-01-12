@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Politica de cookies | Aurelian Epuraș";
+const description = "Detalii despre cookie-urile folosite pe site și cum le poți controla.";
+const image = "/uploads/images/Aurelian-Epuras.jpg";
+const imageAlt = "Politica de cookies Aurelian Epuraș";
+---
+
+<Layout title={title} description={description} image={image} imageAlt={imageAlt}>
+  <section class="py-16 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4 max-w-4xl space-y-6">
+      <h1 class="font-serif text-4xl md:text-5xl text-navy dark:text-ivory-light">Politica de cookies</h1>
+      <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+        Site-ul folosește doar cookie-uri esențiale pentru funcționarea corectă și analize simple de trafic anonim.
+      </p>
+      <ul class="space-y-4 text-navy/70 dark:text-ivory-light/70 leading-relaxed list-disc list-inside">
+        <li>Cookie-uri esențiale: păstrează preferința de temă (luminos/întunecat).</li>
+        <li>Nu folosesc cookie-uri de marketing sau profilare.</li>
+        <li>Poți șterge sau bloca cookie-urile din setările browser-ului tău.</li>
+      </ul>
+      <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+        Continuarea navigării implică acordul tău pentru folosirea acestor cookie-uri minime.
+      </p>
+    </div>
+  </section>
+</Layout>
