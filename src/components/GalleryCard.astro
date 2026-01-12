@@ -11,16 +11,13 @@ const { title, image, description } = Astro.props;
 <div class="group cursor-pointer gallery-item" data-image={image} data-title={title} data-description={description || ''}>
   <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
     <div class="aspect-square overflow-hidden">
-      <picture>
-        <source srcset={image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
-        <img
-          src={image}
-          alt={title}
-          loading="lazy"
-          decoding="async"
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-      </picture>
+      <img
+        src={image}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover group-hover:scale-110 transition-transform durata-300"
+      />
     </div>
   </div>
 </div>
