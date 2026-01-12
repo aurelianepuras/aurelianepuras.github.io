@@ -8,37 +8,12 @@ description: >-
 date: 2026-01-12
 cover_image: /uploads/images/verificare-seo-si-imagini-facebook/cover_image.jpg
 ---
-Da, fișierul&nbsp;**`[slug].astro`**&nbsp;este configurat corect din punct de vedere al codului, dar are o mică "sensibilitate": el se bazează pe faptul că tu completezi mereu câmpul&nbsp;`meta_description`&nbsp;în articolele&nbsp;`.md`.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate turpis maximus turpis aliquam pulvinar. Integer nec nisl erat. Nulla in rhoncus leo. Vestibulum venenatis rutrum tellus nec viverra. Mauris pellentesque interdum dolor, eget volutpat lacus. Sed ullamcorper, nisl vel convallis suscipit, nibh ipsum lobortis diam, sed consectetur arcu lectus id ex. Suspendisse ultrices lacinia nisi eu consectetur. In hac habitasse platea dictumst. Etiam condimentum, augue ut laoreet lobortis, diam mi venenatis nulla, sit amet varius diam augue eu justo. Vestibulum fringilla tellus at nisl tincidunt efficitur. Suspendisse dapibus elementum tincidunt. Vivamus aliquam erat nisi, vel lobortis purus commodo vitae. Curabitur molestie neque lorem, vitae rhoncus odio posuere a.
 
-Dacă într-un articol uiți să pui&nbsp;`meta_description`, Facebook nu va afișa niciun text sub titlu.
+Ut tortor arcu, ornare vel elit in, venenatis aliquam diam. Mauris sit amet lectus et enim eleifend suscipit id vel tortor. Sed condimentum hendrerit porta. Morbi consequat interdum ante, in venenatis sapien semper cursus. Pellentesque pellentesque gravida hendrerit. Vivamus ipsum turpis, euismod et commodo quis, fringilla gravida est. In eget metus urna. Donec mattis, dui quis dignissim hendrerit, libero sem faucibus ipsum, vestibulum dictum nulla risus in nunc. Mauris malesuada sem ut sollicitudin porttitor. Pellentesque fringilla ante a tortor iaculis egestas.
 
-### Recomandare: O mică îmbunătățire de siguranță
+Integer varius laoreet dui, sit amet mattis nunc sagittis eget. Nunc euismod leo quis nibh posuere, mollis pellentesque justo dignissim. Nam eu mi nec massa auctor eleifend. Maecenas feugiat mauris metus, eu accumsan massa consequat eu. Integer tempor urna non libero faucibus, id imperdiet orci ullamcorper. Mauris arcu urna, vestibulum sed tincidunt id, scelerisque vitae mauris. Cras non vehicula elit.
 
-Îți sugerez să modifici linia de&nbsp;`description`&nbsp;din fișierul&nbsp;`[slug].astro`&nbsp;pentru a avea o variantă de rezervă (fallback).
+Quisque molestie in magna et luctus. Phasellus non nulla non ligula mollis faucibus mollis ut nisi. Etiam vestibulum condimentum sem sed tincidunt. Donec placerat erat et mattis venenatis. Quisque ex leo, consequat vitae volutpat sed, tempor et est. Sed molestie eleifend eleifend. Mauris tincidunt risus aliquam, laoreet nunc nec, sollicitudin neque. Donec ligula ligula, tincidunt eu massa eu, semper rhoncus neque. Donec luctus ullamcorper ipsum, eu efficitur arcu luctus a. Cras ut diam a purus lacinia aliquam blandit at orci. Nam malesuada sit amet ante non luctus. Proin id vehicula nisl, eu mollis urna. Suspendisse at leo vitae leo posuere iaculis sit amet id dolor. Cras tellus massa, laoreet nec vehicula sit amet, finibus at lectus.
 
-**Schimbă în&nbsp;`[slug].astro`&nbsp;zona de&nbsp;`<Layout>`&nbsp;cu aceasta:**
-
-Fragment de cod
-
-### De ce este mai bine așa?
-
-- **Titlu:**&nbsp;Dacă uiți să pui&nbsp;`meta_title`, va pune automat&nbsp;*"Titlu Articol | Blog Aurelian Epuraș"*&nbsp;în loc să lase titlul simplu.
-- **Descriere:**&nbsp;Dacă uiți să pui&nbsp;`meta_description`, va folosi descrierea normală a articolului. Astfel, Facebook va avea mereu conținut de afișat.
-
----
-
-### De ce tot nu se vede imaginea pe Facebook? (Verificarea finală)
-
-Dacă codul e bun, dar imaginea tot nu apare, problema este una din acestea două:
-
-1. **Imaginea nu există fizic:**&nbsp;Verifică în VS Code dacă în folderul&nbsp;`public/uploads/images/test-pe-site/`&nbsp;există fișierul&nbsp;`cover_image.jpg`. Dacă fișierul nu e acolo, Facebook nu are ce descărca.
-1. **Lipsește domeniul în link:**&nbsp;Unele platforme vor link-ul complet (cu&nbsp;`https://...`). Layout-ul tău ar trebui să se ocupe de asta, dar cel mai sigur test este cel de mai jos.
-
-### Ce trebuie să faci acum:
-
-1. Dă&nbsp;**Push**&nbsp;la codul modificat.
-1. Folosește&nbsp;[Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/).
-1. Introdu link-ul:&nbsp;`https://aurelianepuras.github.io/blog/test-pe-site/`.
-1. Dacă nu apare poza, apasă&nbsp;**"Scrape Again"**&nbsp;de 3 ori la rând.
-
-**Vrei să verificăm dacă imaginea&nbsp;`cover_image.jpg`&nbsp;este în folderul corect?**
+Quisque lacinia enim a turpis aliquet bibendum. In eget venenatis turpis. Curabitur dapibus tortor nibh. Integer vulputate vitae orci ac accumsan. Integer finibus, sem vel molestie commodo, augue sapien aliquet dolor, a venenatis mi neque et eros. Cras sollicitudin iaculis pretium. Mauris pellentesque lacinia risus, quis porta elit maximus non. Praesent et aliquet ipsum. Duis mollis sapien nec nisi ultrices sodales. Mauris ex nunc, imperdiet vel finibus in, fermentum vel mauris. Aenean id mattis risus.
