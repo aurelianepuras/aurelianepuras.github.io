@@ -12,7 +12,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
-// AICI definești variabilele pentru seo //
+
 const title = "Video | Aurelian Epuraș";
 const description = "Selecții de momente și fragmente video filmate în timpul concertelor.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
@@ -25,9 +25,10 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   image={image}
   imageAlt={imageAlt}
 >
-  <section class="py-20 bg-ivory dark:bg-navy-deep">
+  <section class="pt-8 pb-20 md:py-20 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-12 max-w-3xl mx-auto">
+      
+      <div class="hidden md:block text-center mb-12 max-w-3xl mx-auto">
         <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Videoclipuri</h1>
         <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
         <p class="text-lg text-navy/70 dark:text-ivory-light/70">

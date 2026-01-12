@@ -80,14 +80,17 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
         )}
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-serif font-bold text-navy dark:text-ivory-light group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 line-clamp-2">
+        {/* Titlu modificat: text-3xl, leading-tight și font-serif pentru consistență */}
+        <h3 className="text-3xl font-serif text-navy dark:text-ivory-light group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 line-clamp-2 leading-tight">
           {title}
         </h3>
+        
         {description && (
           <p className="mt-3 text-navy/70 dark:text-ivory-light/70 line-clamp-2">
             {description}
           </p>
         )}
+        
         {!isPlaying && (
           <div className="mt-4 flex items-center text-gold-warm dark:text-gold-bright font-medium">
             Redă videoclipul
