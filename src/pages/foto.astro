@@ -3,12 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getCollection } from 'astro:content';
 
-// 1. Preluăm colecția
-const allPhotos = await getCollection('gallery');
-
-// 2. Sortăm invers alfabetic (Z -> A). 
-// Astfel, cea mai recentă încărcare (care de obicei are un nume de folder mai "nou") va fi prima.
-const gallery = allPhotos.sort((a, b) => b.data.title.localeCompare(a.data.title));
+// 1. Preluăm colecția în ordinea ei nativă
+const gallery = await getCollection('gallery');
 
 const title = "Foto | Aurelian Epuraș";
 const description = "Deschide ochii și lasă sunetul să prindă formă, fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit.";
