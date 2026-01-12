@@ -3,11 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getCollection } from 'astro:content';
 
-// Preluăm colecția și o sortăm invers alfabetic (Z-A) după titlu
+// 1. Preluăm colecția
 const allPhotos = await getCollection('gallery');
+
+// 2. Sortăm invers alfabetic (Z -> A). 
+// Astfel, cea mai recentă încărcare (care de obicei are un nume de folder mai "nou") va fi prima.
 const gallery = allPhotos.sort((a, b) => b.data.title.localeCompare(a.data.title));
 
-// AICI definești variabilele pentru seo //
 const title = "Foto | Aurelian Epuraș";
 const description = "Deschide ochii și lasă sunetul să prindă formă, fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
@@ -74,9 +76,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
     let currentIndex = 0;
 
-    let touchStartX = 0;
-    let touchEndX = 0;
-
     function openLightbox(index: number) {
       currentIndex = index;
       updateLightbox();
@@ -108,16 +107,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       currentIndex = (currentIndex - 1 + imagesInGrid.length) % imagesInGrid.length;
       updateLightbox();
     }
-
-    lightbox?.addEventListener('touchstart', (e: any) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    lightbox?.addEventListener('touchend', (e: any) => {
-      touchEndX = e.changedTouches[0].screenX;
-      if (touchStartX - touchEndX > 50) showNext();
-      if (touchEndX - touchStartX > 50) showPrev();
-    }, { passive: true });
 
     imagesInGrid.forEach((img, index) => {
       img.addEventListener('click', () => openLightbox(index));
