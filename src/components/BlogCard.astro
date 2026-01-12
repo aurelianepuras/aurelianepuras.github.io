@@ -21,12 +21,16 @@ const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
   <a href={`/blog/${slug}`} class="block">
     {cover_image && (
       <div class="aspect-video overflow-hidden">
-        <img
-          src={cover_image}
-          alt={title}
-          loading="lazy"
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
+        <picture>
+          <source srcset={cover_image.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+          <img
+            src={cover_image}
+            alt={title}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+        </picture>
       </div>
     )}
     <div class="p-6">

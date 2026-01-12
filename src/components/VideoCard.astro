@@ -13,12 +13,16 @@ const { title, external_url, thumbnail, description } = Astro.props;
   <a href={external_url} target="_blank" rel="noopener noreferrer" class="block">
     <div class="relative aspect-video overflow-hidden bg-ivory dark:bg-navy-deep">
       {thumbnail ? (
-        <img
-          src={thumbnail}
-          alt={title}
-          loading="lazy"
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
+        <picture>
+          <source srcset={thumbnail.replace(/\.(jpg|jpeg|png)$/i, '.webp')} type="image/webp" />
+          <img
+            src={thumbnail}
+            alt={title}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+        </picture>
       ) : (
         <div class="w-full h-full flex items-center justify-center">
           <svg class="w-16 h-16 text-navy/40 dark:text-ivory-light/40" fill="currentColor" viewBox="0 0 24 24">

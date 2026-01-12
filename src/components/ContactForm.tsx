@@ -5,7 +5,8 @@ export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    website: '', // honeypot anti‑bot (nu trebuie completat de oameni)
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -14,6 +15,12 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus('loading');
     setErrorMessage('');
+
+    // Honeypot: dacă acest câmp invizibil este completat, considerăm că este bot și nu trimitem nimic
+    if (formData.website.trim() !== '') {
+      setStatus('success'); // răspundem ca și cum ar fi reușit, dar nu trimitem mai departe
+      return;
+    }
 
     const serviceId = import.meta.env.PUBLIC_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
@@ -59,6 +66,20 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 p-8 rounded-2xl space-y-6">
       <div>
+        {/* Câmp honeypot invizibil pentru utilizatori, vizibil pentru boți simpli */}
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="website">Nu completa acest câmp</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData.website}
+            onChange={handleChange}
+          />
+        </div>
+
         <label htmlFor="name" className="block text-sm font-semibold text-navy dark:text-ivory-light mb-2">
           Nume *
         </label>
