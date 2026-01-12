@@ -64,16 +64,16 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 
   <script>
     const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-image');
-  const lightboxDesc = document.getElementById('lightbox-description');
-  const closeBtn = document.getElementById('lightbox-close');
-  const prevBtn = document.getElementById('lightbox-prev');
-  const nextBtn = document.getElementById('lightbox-next');
+    const lightboxImg = document.getElementById('lightbox-image') as HTMLImageElement | null;
+    const lightboxDesc = document.getElementById('lightbox-description');
+    const closeBtn = document.getElementById('lightbox-close');
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
     
-  const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img'));
+    // Corecție pentru VS Code: Spunem că sunt HTMLImageElement pentru a avea .src și .alt
+    const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
     let currentIndex = 0;
 
-    // Logica Swipe
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -98,21 +98,22 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     }
 
     function showNext() {
+      if (imagesInGrid.length === 0) return;
       currentIndex = (currentIndex + 1) % imagesInGrid.length;
       updateLightbox();
     }
 
     function showPrev() {
+      if (imagesInGrid.length === 0) return;
       currentIndex = (currentIndex - 1 + imagesInGrid.length) % imagesInGrid.length;
       updateLightbox();
     }
 
-    // Event-uri pentru Swipe
-    lightbox?.addEventListener('touchstart', (e) => {
+    lightbox?.addEventListener('touchstart', (e: any) => {
       touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
 
-    lightbox?.addEventListener('touchend', (e) => {
+    lightbox?.addEventListener('touchend', (e: any) => {
       touchEndX = e.changedTouches[0].screenX;
       if (touchStartX - touchEndX > 50) showNext();
       if (touchEndX - touchStartX > 50) showPrev();
@@ -126,7 +127,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
     prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
     
-    // Închide la click pe fundal, dar nu pe imagine
     lightbox?.addEventListener('click', (e) => {
         if (e.target === lightbox) closeLightbox();
     });
