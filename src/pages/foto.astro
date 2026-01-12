@@ -3,8 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import { getCollection } from 'astro:content';
 
-// Am adăugat .reverse() aici ca să inverseze ordinea
-const gallery = (await getCollection('gallery')).reverse();
+// Preluăm colecția și o sortăm invers alfabetic (Z-A) după titlu
+const allPhotos = await getCollection('gallery');
+const gallery = allPhotos.sort((a, b) => b.data.title.localeCompare(a.data.title));
 
 // AICI definești variabilele pentru seo //
 const title = "Foto | Aurelian Epuraș";
@@ -70,7 +71,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     const prevBtn = document.getElementById('lightbox-prev');
     const nextBtn = document.getElementById('lightbox-next');
     
-    // Corecție pentru VS Code: Spunem că sunt HTMLImageElement pentru a avea .src și .alt
     const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
     let currentIndex = 0;
 
