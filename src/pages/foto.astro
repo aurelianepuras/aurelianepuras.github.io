@@ -79,6 +79,10 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
     let currentIndex = 0;
 
+    // Variabile pentru Swipe
+    let touchStartX = 0;
+    let touchEndX = 0;
+
     function openLightbox(index: number) {
       currentIndex = index;
       updateLightbox();
@@ -129,5 +133,24 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       if (e.key === 'ArrowRight') showNext();
       if (e.key === 'ArrowLeft') showPrev();
     });
+
+    // Detectare Swipe
+    lightbox?.addEventListener('touchstart', (e: any) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox?.addEventListener('touchend', (e: any) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeDistance = touchEndX - touchStartX;
+      
+      // Dacă glisarea este mai mare de 50px, schimbăm poza
+      if (Math.abs(swipeDistance) > 50) {
+        if (swipeDistance > 0) {
+          showPrev(); // Glisare la dreapta
+        } else {
+          showNext(); // Glisare la stânga
+        }
+      }
+    }, { passive: true });
   </script>
 </Layout>
