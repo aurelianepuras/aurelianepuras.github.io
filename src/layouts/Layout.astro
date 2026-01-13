@@ -252,6 +252,29 @@ const isActive = (path: string) => {
           opacity: 1;
         }
       }
+      
+      /* Targetăm specific elementele din interiorul clasei .prose pentru a "bate" Tailwind */
+  .prose blockquote {
+    border-left: 3px solid #d4af37 !important;
+    padding-left: 1.5rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    font-style: italic !important;
+    background: transparent !important; /* Elimină fundalul gri dacă există */
+  }
+
+  /* Reducem spațiul dintre paragrafele din interiorul citatului */
+  .prose blockquote p {
+    line-height: 1.7 !important;
+    margin-top: 0.2rem !important;
+    margin-bottom: 0.1rem !important;
+    font-size: 0.95em !important; /* Opțional: face textul puțin mai discret */
+  }
+
+  /* Păstrează corecția pentru meniu */
+  header nav a::after {
+    bottom: -9px !important;
+  }
 
       #mobile-menu.show .menu-link {
         animation: slideInUp 0.4s ease-out forwards;
