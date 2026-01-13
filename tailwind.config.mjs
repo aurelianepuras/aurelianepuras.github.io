@@ -21,7 +21,7 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'serif'],
+        serif: ['EB Garamond', 'serif'], // Schimbă aici
         sans: ['DM Sans', 'sans-serif'],
       },
       transitionDuration: {
