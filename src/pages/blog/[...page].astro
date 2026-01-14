@@ -30,16 +30,18 @@ const imageAlt = "Blog | Aurelian Epuraș";
   image={image}
   imageAlt={imageAlt}
 >
-  <section class="py-20 pb-4 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
+ <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12 max-w-3xl mx-auto">
+      <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Blog</h1>
+      <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
       
-      <div class="text-center mb-12 max-w-3xl mx-auto">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Blog</h1>
-        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-        <p class="text-lg text-navy/70 dark:text-ivory-light/70">
-          Gânduri și reflecții despre muzică
-        </p>
-      </div>
+      <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+        Dincolo de sunetul aplauzelor se află orele de căutări, dubiile și sclipirile de inspirație din miez de noapte. 
+        Aici împărtășesc cu tine procesul meu creativ, gândurile despre arta autentică și poveștile 
+        nespuse care dau viață fiecărei compoziții de pe albumul meu.
+      </p>
+    </div>
 
       <div class="grid md:grid-cols-3 gap-8">
         {page.data.map((post) => (
