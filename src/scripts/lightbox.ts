@@ -1,15 +1,11 @@
 let cleanupFunctions: (() => void)[] = [];
 
 export function initLightbox() {
-  console.log('--- Lightbox Init ---');
-
   cleanup();
 
   const galleryGrid = document.getElementById('gallery-grid');
-  console.log('Gallery Grid Found:', !!galleryGrid);
 
   if (!galleryGrid) {
-    console.log('No gallery grid on this page, exiting.');
     return;
   }
 
@@ -18,21 +14,11 @@ export function initLightbox() {
   const lightboxDescription = document.getElementById('lightbox-description');
   const lightboxClose = document.getElementById('lightbox-close');
 
-  console.log('Lightbox elements:', {
-    lightbox: !!lightbox,
-    lightboxImage: !!lightboxImage,
-    lightboxDescription: !!lightboxDescription,
-    lightboxClose: !!lightboxClose
-  });
-
   if (!lightbox || !lightboxImage || !lightboxDescription || !lightboxClose) {
-    console.error('Missing lightbox elements!');
     return;
   }
 
   function openLightbox(image: string, title: string, description: string) {
-    console.log('Opening lightbox with:', { image, title, description });
-
     lightboxImage.src = image;
     lightboxImage.alt = title;
     lightboxDescription.textContent = description || '';
@@ -42,7 +28,6 @@ export function initLightbox() {
   }
 
   function closeLightbox() {
-    console.log('Closing lightbox');
     lightbox.classList.add('hidden');
     document.body.style.overflow = '';
     lightboxImage.src = '';
@@ -53,7 +38,6 @@ export function initLightbox() {
     const galleryItem = target.closest('.gallery-item') as HTMLElement;
 
     if (galleryItem) {
-      console.log('Gallery item clicked:', galleryItem);
       e.preventDefault();
       e.stopPropagation();
 
@@ -66,21 +50,18 @@ export function initLightbox() {
   }
 
   function handleCloseClick(e: Event) {
-    console.log('Close button clicked');
     e.stopPropagation();
     closeLightbox();
   }
 
   function handleBackgroundClick(e: Event) {
     if (e.target === lightbox) {
-      console.log('Background clicked');
       closeLightbox();
     }
   }
 
   function handleEscapeKey(e: KeyboardEvent) {
     if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
-      console.log('Escape pressed');
       closeLightbox();
     }
   }
@@ -92,7 +73,6 @@ export function initLightbox() {
 
   cleanupFunctions = [
     () => {
-      console.log('Cleaning up lightbox listeners');
       galleryGrid.removeEventListener('click', handleGalleryClick);
       lightboxClose.removeEventListener('click', handleCloseClick);
       lightbox.removeEventListener('click', handleBackgroundClick);
@@ -100,8 +80,6 @@ export function initLightbox() {
       closeLightbox();
     }
   ];
-
-  console.log('Lightbox initialization complete!');
 }
 
 export function cleanup() {

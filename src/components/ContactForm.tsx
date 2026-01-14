@@ -52,7 +52,6 @@ export default function ContactForm() {
     } catch (error) {
       setStatus('error');
       setErrorMessage('A apărut o eroare la trimiterea mesajului. Te rugăm să încerci din nou.');
-      console.error('EmailJS Error:', error);
     }
   };
 

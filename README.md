@@ -1,48 +1,51 @@
-# Astro Starter Kit: Basics
+# Site Aurelian Epuraș
 
-```sh
-npm create astro@latest -- --template basics
+Site-ul personal al lui Aurelian Epuraș - Pianist, Compozitor, Profesor.
+
+## 🚀 Tehnologii
+
+- [Astro](https://astro.build) - Framework pentru site-uri statice
+- [React](https://react.dev) - Biblioteca UI pentru componente interactive
+- [Tailwind CSS](https://tailwindcss.com) - Framework CSS utilitar
+- [Keystatic](https://keystatic.com) - CMS headless pentru gestionarea conținutului
+- [TypeScript](https://www.typescriptlang.org) - Superset JavaScript cu tipuri
+
+## 📦 Instalare
+
+```bash
+npm install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## 🧞 Comenzi
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Toate comenzile sunt rulate din rădăcina proiectului:
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+| Comandă                   | Acțiune                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Instalează dependențele                          |
+| `npm run dev`             | Pornește serverul de dezvoltare la `localhost:4321` |
+| `npm run build`           | Construiește site-ul pentru producție în `./dist/` |
+| `npm run preview`         | Preview al build-ului local, înainte de deploy   |
+| `npm run astro ...`       | Rulează comenzi CLI precum `astro add`, `astro check` |
 
-## 🚀 Project Structure
+## 📁 Structura Proiectului
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
+```
 /
 ├── public/
+│   ├── uploads/          # Imagini, audio, video
 │   └── favicon.svg
 ├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
+│   ├── components/       # Componente reutilizabile
+│   ├── content/          # Conținut (blog, galerie, video, audio)
+│   ├── layouts/          # Layout-uri pentru pagini
+│   ├── pages/            # Pagini ale site-ului
+│   └── scripts/          # Script-uri JavaScript
+├── astro.config.mjs      # Configurația Astro
+├── tailwind.config.mjs   # Configurația Tailwind CSS
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🌐 Deploy
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Site-ul este configurat pentru deploy static și poate fi hostat pe orice platformă de hosting static (GitHub Pages, Netlify, Vercel, etc.).
