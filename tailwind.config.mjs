@@ -21,7 +21,7 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['EB Garamond', 'serif'], // Schimbă aici
+        serif: ['EB Garmond', 'serif'],
         sans: ['DM Sans', 'sans-serif'],
       },
       transitionDuration: {
