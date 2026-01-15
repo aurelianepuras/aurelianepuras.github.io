@@ -68,7 +68,8 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
     </svg>
   </div>
 </button>
-        <div className="absolute top-3 right-3 bg-[#FF0000] text-white px-3 py-1 rounded-2xl text-xs font-bold shadow-md">YouTube
+            <div className="absolute top-3 right-3 bg-gold-warm dark:bg-gold-bright text-navy px-3 py-1 rounded-2xl text-xs font-semibold">
+              YouTube
             </div>
           </>
         ) : (
