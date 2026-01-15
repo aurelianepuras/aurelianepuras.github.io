@@ -21,4 +21,5 @@ Puteți urmări activitatea mea artistică și pedagogică pe platformele de mai
 
 ---
 "Lăsat aici cu speranță și rigoare, pentru cei ce vor veni."
+
 *Copyright © 2026 Aurelian Epuraș. Toate drepturile rezervate.*
