@@ -1,4 +1,5 @@
 # Site Aurelian Epuraș
+<!-- readme creat de cursor -->
 
 Site-ul personal al lui Aurelian Epuraș - Pianist, Compozitor, Profesor.
 

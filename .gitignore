@@ -20,5 +20,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Fișiere ignorate (README și Master Prompt)
+README.md
+DESIGN_SPECIFICATION.md
+
 # jetbrains setting folder
 .idea/
