@@ -53,17 +53,21 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
                 </svg>
               </div>
             )}
-            <button
-              onClick={handlePlay}
-              className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors cursor-pointer"
-              aria-label={`Redă ${title}`}
-            >
-              <div className="w-16 h-16 bg-gold-warm/90 dark:bg-gold-bright/90 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                <svg className="w-8 h-8 text-navy" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-            </button>
+           <button
+  onClick={handlePlay}
+  className="absolute inset-0 flex items-center justify-center cursor-pointer group/play"
+  aria-label={`Redă ${title}`}
+>
+  {/* Overlay negru care apare la hover */}
+  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  
+  {/* Butonul rotund care apare la hover */}
+  <div className="relative w-14 h-14 bg-gold-warm/80 dark:bg-gold-bright/80 rounded-full flex items-center justify-center backdrop-blur-sm shadow-2xl opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
+    <svg className="w-6 h-6 text-navy ml-1" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+  </div>
+</button>
             <div className="absolute top-3 right-3 bg-gold-warm dark:bg-gold-bright text-navy px-3 py-1 rounded-2xl text-xs font-semibold">
               YouTube
             </div>
