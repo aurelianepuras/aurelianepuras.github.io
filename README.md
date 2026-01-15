@@ -1,4 +1,4 @@
-# 🎹 Aurelian Epuraș — Arhiva Eternă
+# 🎹 Aurelian Epuraș „Arhiva Eternă”
 
 > *"Arta este singura formă de a învinge timpul."*
 
