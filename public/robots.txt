@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://your-site.com/sitemap-index.xml
+Sitemap: https://aurelianepuras.github.io/sitemap-index.xml
