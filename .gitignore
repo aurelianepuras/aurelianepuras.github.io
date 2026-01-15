@@ -24,5 +24,8 @@ pnpm-debug.log*
 README.md
 DESIGN_SPECIFICATION.md
 
+# Setări Cursor și Reguli AI
+.cursor/
+
 # jetbrains setting folder
 .idea/
