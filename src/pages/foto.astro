@@ -62,7 +62,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     </button>
 
     <div class="max-w-5xl w-full flex flex-col items-center">
-      <img id="lightbox-image" src="" alt="" class="max-h-[80vh] w-auto rounded-lg shadow-2xl" />
+      <img id="lightbox-image" src="" alt="Imagine galerie" class="max-h-[80vh] w-auto rounded-lg shadow-2xl" />
       <p id="lightbox-description" class="mt-4 text-navy dark:text-ivory-light font-medium"></p>
     </div>
 
@@ -97,6 +97,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       const img = imagesInGrid[currentIndex];
       if (lightboxImg && img) {
         lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || "Imagine galerie";
         if (lightboxDesc) lightboxDesc.textContent = img.alt || "";
       }
     }

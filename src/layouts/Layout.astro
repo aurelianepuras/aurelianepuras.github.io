@@ -7,17 +7,24 @@ interface Props {
   description?: string;
   image?: string;
   imageAlt?: string;
+  robots?: string;
 }
 
 const {
   title = 'Aurelian Epuraș | Pianist Compozitor',
   description = 'Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.',
   image = '/uploads/images/Aurelian-Epuras.jpg',
-  imageAlt = 'Portret Aurelian Pianist'
+  imageAlt = 'Portret Aurelian Pianist',
+  robots
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const currentPath = Astro.url.pathname;
+
+// Convertim image la URL absolut pentru Open Graph
+const absoluteImage = image.startsWith('http') 
+  ? image 
+  : new URL(image, Astro.site).toString();
 
 const isActive = (path: string) => {
   if (path === '/') {
@@ -42,20 +49,21 @@ const isActive = (path: string) => {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ro_RO" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={absoluteImage} />
     <meta property="og:image:alt" content={imageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image" content={absoluteImage} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
     <script type="application/ld+json">
