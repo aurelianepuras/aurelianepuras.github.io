@@ -66,23 +66,32 @@ const isActive = (path: string) => {
     <meta name="twitter:image" content={absoluteImage} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Aurelian Epuraș",
-        "url": "https://aurelianepuras.github.io",
-        "knowsLanguage": "ro",
-        "jobTitle": "Pianist, Compozitor",
-        "description": "Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.",
-        "sameAs": [
-          "https://www.facebook.com/epurasaurelian",
-          "https://www.instagram.com/aurelian.epuras/",
-          "https://www.youtube.com/@aurelianepuras"
-        ]
-      }
-    </script>
+ {/*
+JSON-LD Person a fost DEZACTIVAT din Layout.
+Motiv:
+– Injectarea globală făcea ca Google să trateze toate paginile site-ului ca fiind despre aceeași persoană.
+– Acest lucru ducea la rescrierea meta description și la snippet-uri compuse din footer, blog sau alte secțiuni.
+Decizie arhitecturală:
+– Schema Person este mutată DOAR pe homepage (index.astro),
+– unde definește identitatea site-ului fără a domina semantic subpaginile.
 
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aurelian Epuraș",
+    "url": "https://aurelianepuras.github.io",
+    "knowsLanguage": "ro",
+    "jobTitle": "Pianist, Compozitor",
+    "description": "...",
+    "sameAs": [
+      "https://www.facebook.com/epurasaurelian",
+      "https://www.instagram.com/aurelian.epuras/",
+      "https://www.youtube.com/@aurelianepuras"
+    ]
+  }
+</script>
+*/}
     <script is:inline>
       const savedTheme = localStorage.getItem('theme');
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
