@@ -1,10 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-// AICI definești variabilele pentru seo //
 const title = "Aurelian Epuraș | Pianist Compozitor";
 const description = "Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.";
-const image = "/uploads/images/Aurelian-Epuras.jpg"; 
+const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 ---
 
@@ -14,7 +13,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   image={image}
   imageAlt={imageAlt}
 >
-
   <script type="application/ld+json" slot="head" is:inline>
   {
     "@context": "https://schema.org",
@@ -37,27 +35,22 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       "https://www.youtube.com/@aurelianepuras"
     ]
   }
-</script>
+  </script>
 
   <section class="relative min-h-screen flex items-center justify-center bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 py-20">
       <div class="text-center max-w-4xl mx-auto">
         <p class="text-[15px] tracking-[0.3em] uppercase text-gold-warm dark:text-gold-bright mb-8 font-sans">Bine ai venit în</p>
-
         <h1 class="font-serif font-light text-5xl md:text-6xl lg:text-7xl text-navy dark:text-ivory-light mb-4">
           UNIVERSUL MEU
         </h1>
-
         <p class="text-xl md:text-2xl text-navy/60 dark:text-ivory-light/60 italic mb-8 font-serif">
           pianist / compozitor / profesor
         </p>
-
         <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-8"></div>
-
         <p class="text-lg md:text-xl text-navy/70 dark:text-ivory-light/70 max-w-2xl mx-auto mb-12 leading-relaxed">
           Tot ce vezi aici vine din viață, din bucurii, doruri și momente care m-au schimbat.
         </p>
-
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="/muzica" class="px-8 py-4 bg-gold-warm dark:bg-gold-bright text-navy hover:bg-gold-bright dark:hover:bg-gold-warm transition-all duration-300 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             Muzica mea
@@ -68,7 +61,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         </div>
       </div>
     </div>
-
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
       <svg class="w-6 h-6 text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -90,73 +82,36 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   <section class="py-20 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4">
       <div class="grid md:grid-cols-3 gap-8">
-        
-        {/* Muzica Mea */}
         <div class="group">
           <a href="/muzica" class="block">
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <img
-                src="/uploads/images/muzica.jpg"
-                alt="Muzica mea"
-                loading="lazy"
-                decoding="async"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              <img src="/uploads/images/muzica.jpg" alt="Muzica mea" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
             </div>
-            <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight transition-all duration-300">
-              Muzica mea
-            </h3>
-            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-              Ascultă albumele și piesele originale.
-            </p>
+            <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight">Muzica mea</h3>
+            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">Ascultă albumele și piesele originale.</p>
           </a>
         </div>
-
-        {/* Galerie Foto */}
         <div class="group">
           <a href="/foto" class="block">
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <img
-                src="/uploads/images/galerie.jpg"
-                alt="Galerie foto"
-                loading="lazy"
-                decoding="async"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              <img src="/uploads/images/galerie.jpg" alt="Galerie foto" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
             </div>
-            <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight transition-all duration-300">
-              Galerie foto
-            </h3>
-            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-              Momente din concerte și viața de artist.
-            </p>
+            <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight">Galerie foto</h3>
+            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">Momente din concerte și viața de artist.</p>
           </a>
         </div>
-
-        {/* Blog */}
         <div class="group">
           <a href="/blog" class="block">
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <img
-                src="/uploads/images/blog.jpg"
-                alt="Blog"
-                loading="lazy"
-                decoding="async"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              <img src="/uploads/images/blog.jpg" alt="Blog" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
             </div>
-            <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight transition-all duration-300">
-              Articole din blog
-            </h3>
-            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-              Gânduri despre muzică, creație și viață.
-            </p>
+            <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight">Articole din blog</h3>
+            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">Gânduri despre muzică, creație și viață.</p>
           </a>
         </div>
-
       </div>
     </div>
   </section>
