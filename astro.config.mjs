@@ -17,7 +17,7 @@ export default defineConfig({
   integrations: [
     tailwind(),
     react(),
-    markdoc(),
+   markdoc({ allowHTML: true }),
 
     // Keystatic este activ DOAR în development
     // În producție este exclus complet
