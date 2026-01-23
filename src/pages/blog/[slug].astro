@@ -31,6 +31,46 @@ const articleImage = post.data.cover_image
   ? `https://aurelianepuras.github.io${post.data.cover_image}`
   : undefined;
 
+/* Date normalizate pentru JSON-LD Article */
+const articleHeadline = post.data.title;
+const articleDescription = post.data.description || post.data.meta_description;
+const articleAuthor = post.data.author || 'Aurelian Epuraș';
+
+const articleJsonBase = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://aurelianepuras.github.io/blog/${post.slug}/`
+  },
+  headline: articleHeadline,
+  author: {
+    '@type': 'Person',
+    name: articleAuthor,
+    url: 'https://aurelianepuras.github.io/'
+  },
+  publisher: {
+    '@type': 'Person',
+    name: 'Aurelian Epuraș'
+  },
+  datePublished: publishedDate,
+  dateModified: modifiedDate,
+  inLanguage: 'ro-RO'
+};
+
+const articleJson: Record<string, unknown> = { ...articleJsonBase };
+
+if (articleDescription) {
+  articleJson.description = articleDescription;
+}
+
+if (articleImage) {
+  articleJson.image = articleImage;
+}
+
+const hasRequiredArticleData =
+  Boolean(articleHeadline && publishedDate && articleAuthor);
+
 /* Articole similare */
 const allPosts = await getCollection('blog');
 const relatedPosts = allPosts
@@ -46,31 +86,11 @@ const relatedPosts = allPosts
   imageAlt={post.data.title}
 >
   <!-- JSON-LD Article: DOAR pe pagina de articol -->
-  <script type="application/ld+json" slot="head" is:inline>
-    {JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": `https://aurelianepuras.github.io/blog/${post.slug}/`
-      },
-      "headline": post.data.title,
-      "description": post.data.description || post.data.meta_description,
-      "image": articleImage,
-      "author": {
-        "@type": "Person",
-        "name": post.data.author || "Aurelian Epuraș",
-        "url": "https://aurelianepuras.github.io/"
-      },
-      "publisher": {
-        "@type": "Person",
-        "name": "Aurelian Epuraș"
-      },
-      "datePublished": publishedDate,
-      "dateModified": modifiedDate,
-      "inLanguage": "ro-RO"
-    })}
-  </script>
+  {hasRequiredArticleData && (
+    <script type="application/ld+json" slot="head" is:inline>
+      {JSON.stringify(articleJson)}
+    </script>
+  )}
 
   <article class="pt-12 pb-10 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 max-w-5xl">
