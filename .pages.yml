@@ -3,7 +3,7 @@ content:
     label: Blog
     type: collection
     path: src/content/blog
-    format: md
+    format: mdoc
     fields:
       - name: title
         label: Titlu
