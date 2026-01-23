@@ -46,7 +46,7 @@ const relatedPosts = allPosts
   imageAlt={post.data.title}
 >
   <!-- JSON-LD Article: DOAR pe pagina de articol -->
-  <script type="application/ld+json" slot="head">
+  <script type="application/ld+json" slot="head" is:inline>
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
