@@ -14,6 +14,16 @@ const blog = defineCollection({
   }),
 });
 
+// Adăugăm colecția pages pentru a elimina warning-ul din consolă
+const pages = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    meta_title: z.string().optional(),
+    meta_description: z.string().optional(),
+  }),
+});
+
 const gallery = defineCollection({
   type: 'data',
   schema: z.object({
@@ -57,4 +67,5 @@ export const collections = {
   gallery,
   videos,
   audio,
+  pages,
 };
