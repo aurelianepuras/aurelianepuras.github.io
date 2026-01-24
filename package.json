@@ -12,7 +12,7 @@
   "dependencies": {
     "@astrojs/markdoc": "^0.15.10",
     "@astrojs/react": "^4.4.2",
-    "@astrojs/sitemap": "^3.6.1",
+    "@astrojs/sitemap": "^3.7.0",
     "@astrojs/tailwind": "^6.0.2",
     "@emailjs/browser": "^4.4.1",
     "@keystatic/astro": "^5.0.6",
