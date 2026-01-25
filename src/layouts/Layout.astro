@@ -163,6 +163,10 @@ const isActive = (path: string) => {
               <a href="https://www.facebook.com/epurasaurelian" target="_blank" rel="noopener noreferrer" class="hover:text-gold-warm transition-colors" aria-label="Facebook">Facebook</a>
               <a href="https://www.instagram.com/aurelian.epuras/" target="_blank" rel="noopener noreferrer" class="hover:text-gold-warm transition-colors" aria-label="Instagram">Instagram</a>
             </div>
+            <div class="flex justify-center md:justify-start gap-4 mt-6 text-sm text-navy/60 dark:text-ivory-light/60">
+              <a href="/confidentialitate" class="hover:text-gold-warm transition-colors">Confidențialitate</a>
+              <a href="/cookies" class="hover:text-gold-warm transition-colors">Cookie-uri</a>
+            </div>
           </div>
         </div>
         <div class="mt-8 pt-8 border-t border-navy/10 dark:border-ivory-light/10 text-center">
@@ -176,45 +180,68 @@ const isActive = (path: string) => {
       html { -webkit-text-size-adjust: 100%; font-display: swap; }
       body.menu-open { overflow: hidden; }
       header nav a::after { bottom: -9px !important; }
+
+      /* Stiluri animație Hamburger recuperate  */
+      #mobile-menu-toggle.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+      #mobile-menu-toggle.active .hamburger-line:nth-child(2) { opacity: 0; }
+      #mobile-menu-toggle.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+      /* Stiluri Mobile Menu Show/Hide recuperate  */
+      #mobile-menu.show { opacity: 1; pointer-events: auto; display: block; }
+      #mobile-menu.show #mobile-menu-content { transform: translateY(0); }
     </style>
 
     <script is:inline>
-      function setupMobileMenu() {
-        const toggleBtn = document.getElementById('mobile-menu-toggle');
-        const closeBtn = document.getElementById('mobile-menu-close');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuLinks = document.querySelectorAll('.menu-link');
+      /* Script-ul complet recuperat din backup  */
+      function initMobileMenu() {
+        const toggle = document.getElementById('mobile-menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        const content = document.getElementById('mobile-menu-content');
+        const close = document.getElementById('mobile-menu-close');
 
-        if (toggleBtn && mobileMenu) {
-          toggleBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
-            document.body.classList.add('menu-open');
-            setTimeout(() => {
-              mobileMenu.classList.add('opacity-100');
-            }, 10);
-          });
+        if (!toggle || !menu || !content || !close) return;
 
-          closeBtn?.addEventListener('click', () => {
-            mobileMenu.classList.remove('opacity-100');
-            document.body.classList.remove('menu-open');
-            setTimeout(() => {
-              mobileMenu.classList.add('hidden');
-            }, 300);
+        const openMenu = () => {
+          menu.classList.remove('hidden');
+          document.body.classList.add('menu-open');
+          toggle.classList.add('active');
+          requestAnimationFrame(() => {
+            menu.classList.add('show');
           });
+        };
 
-          menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              mobileMenu.classList.add('hidden');
-              document.body.classList.remove('menu-open');
-              mobileMenu.classList.remove('opacity-100');
-            });
-          });
-        }
+        const closeMenu = () => {
+          menu.classList.remove('show');
+          toggle.classList.remove('active');
+          document.body.classList.remove('menu-open');
+          content.style.transform = 'none';
+
+          setTimeout(() => {
+            if (!menu.classList.contains('show')) {
+               menu.classList.add('hidden');
+               content.style.transform = ''; 
+            }
+          }, 300);
+        };
+
+        toggle.onclick = (e) => {
+          e.preventDefault();
+          menu.classList.contains('hidden') ? openMenu() : closeMenu();
+        };
+
+        close.onclick = (e) => {
+          e.preventDefault();
+          closeMenu();
+        };
+
+        menu.querySelectorAll('a').forEach(link => {
+          link.onclick = closeMenu;
+        });
       }
 
-      setupMobileMenu();
-      document.addEventListener('astro:after-swap', setupMobileMenu);
+      // Compatibilitate ViewTransitions și încărcare inițială 
+      document.addEventListener('astro:page-load', initMobileMenu);
+      initMobileMenu();
     </script>
   </body>
 </html>
-
