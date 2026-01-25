@@ -47,7 +47,7 @@ const videoSchema = {
       "@type": "VideoObject",
       "name": video.data.title,
       "description": video.data.description || description,
-      "thumbnailUrl": `https://aurelianepuras.github.io${video.data.thumbnail || '/favicon.svg'}`, // Am adăugat o variantă de rezervă ca să nu mai apară 'undefined'
+     "thumbnailUrl": `https://aurelianepuras.github.io${video.data.thumbnail || '/uploads/images/aurelian-epuras-square.webp'}`, // Am adăugat o variantă de rezervă ca să nu mai apară 'undefined'
       "uploadDate": video.data.pubDate,
       "contentUrl": video.data.external_url,
       "author": { 
