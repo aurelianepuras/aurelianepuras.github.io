@@ -2,11 +2,26 @@
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm';
 
-// AICI definești variabilele pentru seo //
-const title = "Contact | Aurelian Epuraș";
-const description = "Dacă îți dorești un moment muzical plin de emoție la evenimentul tău, fie că este un concert, o ceremonie specială sau un eveniment privat, lasă-mi un mesaj. Abia aștept să transformăm povestea ta în muzică.";
+const title = "Contact | Aurelian Epuraș (Epuras)";
+const description = "Contactează-l pe Aurelian Epuraș (Epuras) pentru concerte, evenimente private sau ceremonii speciale. Transformă-ți povestea în muzică prin interpretări de pian pline de emoție.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
-const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
+const imageAlt = "Contact Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
+
+// Date structurate pentru Contact
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Aurelian Epuraș",
+  "alternateName": "Aurelian Epuras",
+  "url": "https://aurelianepuras.github.io/",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+40-736-674-176",
+    "contactType": "customer service",
+    "email": "aurelian.epuras@gmail.com",
+    "availableLanguage": ["Romanian", "English"]
+  }
+};
 ---
 
 <Layout
@@ -15,18 +30,18 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   image={image}
   imageAlt={imageAlt}
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(contactSchema)} />
 
-
- <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-12 max-w-6xl mx-auto">
-      <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Contact</h1>
-      <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-      
-      <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-        Fiecare moment special merită o coloană sonoră care să-l facă nemuritor. Spune-mi povestea ta, viziunea ta sau pur și simplu trimite-mi un gând. Sunt aici să transformăm emoțiile tale într-o experiență muzicală care să vibreze mult timp după ultima notă.
-      </p>
-    </div>
+  <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-6xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Contact</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        
+        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+          Fiecare moment special merită o coloană sonoră care să-l facă nemuritor. Spune-mi povestea ta, viziunea ta sau pur și simplu trimite-mi un gând. Sunt aici să transformăm emoțiile tale într-o experiență muzicală care să vibreze mult timp după ultima notă.
+        </p>
+      </div>
 
       <div class="grid md:grid-cols-2 gap-6">
         <div class="flex flex-col gap-6">
@@ -55,7 +70,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
                 </div>
                 <div>
                   <div class="font-semibold text-navy dark:text-ivory-light">Telefon</div>
-                  <a href="tel:+40123456789" class="text-gold-warm dark:text-gold-bright hover:underline">
+                  <a href="tel:+40736674176" class="text-gold-warm dark:text-gold-bright hover:underline">
                     +40 736 674 176
                   </a>
                 </div>

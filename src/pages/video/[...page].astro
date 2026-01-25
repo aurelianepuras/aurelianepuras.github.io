@@ -6,26 +6,35 @@ import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  // 1. Preluăm toate videoclipurile
   const allVideos = await getCollection('videos');
-
-  // 2. Le sortăm înainte de a le trimite către paginare
   const sortedVideos = allVideos.sort((a, b) => {
     const dateA = new Date(a.data.pubDate || 0).getTime();
     const dateB = new Date(b.data.pubDate || 0).getTime();
-    return dateB - dateA; // Cele mai noi primele
+    return dateB - dateA;
   });
 
-  // 3. Trimitem lista sortată către funcția de paginare
   return paginate(sortedVideos, { pageSize: 9 });
 }) satisfies GetStaticPaths;
 
 const { page } = Astro.props;
 
-const title = "Video | Aurelian Epuraș";
-const description = "Selecții de momente și fragmente video filmate în timpul concertelor.";
+// SEO: Adăugăm varianta fără diacritice pentru căutări
+const title = "Video | Aurelian Epuraș (Epuras)";
+const description = "Urmărește interpretările lui Aurelian Epuraș (Epuras). Videoclipuri din concerte live, sesiuni de studio și compoziții la pian care surprind emoția momentului.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
-const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
+const imageAlt = "Video Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
+
+// Date structurate pentru Video (ajută Google să listeze clipurile în tab-ul de Video)
+const videoListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": page.data.map((video, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": video.data.title,
+    "url": video.data.external_url
+  }))
+};
 ---
 
 <Layout
@@ -34,37 +43,43 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   image={image}
   imageAlt={imageAlt}
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(videoListSchema)} />
+
   <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-12 max-w-6xl mx-auto">
-      <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Videoclipuri</h1>
-      <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-      
-      <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-        Explorează momentele surprinse live, de la concerte pe scene mari până la sesiuni intime în studio. 
-        Fiecare cadru și fiecare notă înregistrată sunt martorele unei căutări continue a frumosului, 
-        oferindu-ți o fereastră deschisă către universul meu muzical în mișcare.
-      </p>
-    </div>
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-6xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Videoclipuri</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        
+        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+          Explorează momentele surprinse live, de la concerte pe scene mari până la sesiuni intime în studio. 
+          Fiecare cadru și fiecare notă înregistrată sunt martorele unei căutări continue a frumosului, 
+          oferindu-ți o fereastră deschisă către universul meu muzical în mișcare.
+        </p>
+      </div>
 
       <h2 class="sr-only">Lista de videoclipuri</h2>
       <div class="grid md:grid-cols-3 gap-8">
-        {page.data.map((video) => (
-          <VideoPlayer
-            client:load
-            title={video.data.title}
-            videoUrl={video.data.external_url}
-            thumbnail={video.data.thumbnail}
-            description={video.data.description}
-          />
+        {page.data.map((video, index) => (
+          <div class="video-item">
+            <VideoPlayer
+              client:visible 
+              title={video.data.title}
+              videoUrl={video.data.external_url}
+              thumbnail={video.data.thumbnail}
+              description={video.data.description}
+            />
+          </div>
         ))}
       </div>
 
-      <Pagination
-        currentPage={page.currentPage}
-        totalPages={page.lastPage}
-        baseUrl="/video"
-      />
+      <div class="mt-16">
+        <Pagination
+          currentPage={page.currentPage}
+          totalPages={page.lastPage}
+          baseUrl="/video"
+        />
+      </div>
     </div>
   </section>
 </Layout>

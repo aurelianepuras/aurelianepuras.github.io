@@ -6,20 +6,20 @@ import { getCollection } from 'astro:content';
 // 1. Preluăm colecția audio
 const allAudioFiles = await getCollection('audio');
 
-// 2. Sortăm fișierele: cele mai noi (pubDate) primele
+// 2. Sortăm fișierele
 const sortedAudio = allAudioFiles.sort((a, b) => {
   const dateA = new Date(a.data.pubDate || 0).getTime();
   const dateB = new Date(b.data.pubDate || 0).getTime();
   return dateB - dateA;
 });
 
-// AICI definești variabilele pentru seo //
+// SEO
 const title = "Compoziții | Aurelian Epuraș";
-const description = "Fiecare piesă este o parte din povestea mea. Aici găsești muzica pe care am compus-o cu sufletul.";
+const description = "Ascultă compozițiile lui Aurelian Epuraș (Epuras). Fragmente de suflet transpuse în sunet pur, de la pian solo la compoziții simfonice.";
 const image = "/uploads/images/Aurelian-Epuras.jpg";
-const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
+const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 
-// 3. Mapăm datele sortate pentru player
+// 3. Mapăm datele pentru player
 const tracks = sortedAudio.map((audio, index) => ({
   id: index + 1,
   title: audio.data.title,
@@ -28,6 +28,25 @@ const tracks = sortedAudio.map((audio, index) => ({
 }));
 
 const albumCover = sortedAudio[0]?.data.cover || '/uploads/images/audio-cover-1.jpg';
+
+// Generăm automat schema pentru Google
+const musicSchema = {
+  "@context": "https://schema.org",
+  "@type": "MusicAlbum",
+  "name": "Album 13",
+  "byArtist": {
+    "@type": "Person",
+    "name": "Aurelian Epuraș",
+    "alternateName": "Aurelian Epuras"
+  },
+  "image": `https://aurelianepuras.github.io${albumCover}`,
+  "numTracks": tracks.length,
+  "track": tracks.map(track => ({
+    "@type": "MusicRecording",
+    "name": track.title,
+    "duration": track.duration
+  }))
+};
 ---
 
 <Layout
@@ -36,18 +55,20 @@ const albumCover = sortedAudio[0]?.data.cover || '/uploads/images/audio-cover-1.
   image={image}
   imageAlt={imageAlt}
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(musicSchema)} />
+
   <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-12 max-w-6xl mx-auto">
-      <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Muzica mea</h1>
-      <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-      
-      <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-        Ascultă ceea ce cuvintele nu pot rosti: fragmente de suflet transpuse în sunet pur. 
-        De la piese pentru pian solo la compoziții simfonice, fiecare notă este o invitație 
-        la introspecție și la descoperirea unei lumi unde timpul pare să stea pe loc.
-      </p>
-    </div>
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-6xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Muzica mea</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        
+        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+          Ascultă ceea ce cuvintele nu pot rosti: fragmente de suflet transpuse în sunet pur. 
+          De la piese pentru pian solo la compoziții simfonice, fiecare notă este o invitație 
+          la introspecție și la descoperirea unei lumi unde timpul pare să stea pe loc.
+        </p>
+      </div>
 
       <MusicPlayer
         client:load

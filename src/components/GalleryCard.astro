@@ -3,9 +3,17 @@ interface Props {
   title: string;
   image: string;
   description?: string;
+  loading?: "lazy" | "eager"; // Permitem controlul încărcării
+  fetchpriority?: "high" | "low" | "auto"; // Permitem prioritate înaltă
 }
 
-const { title, image, description } = Astro.props;
+const { 
+  title, 
+  image, 
+  description, 
+  loading = "lazy", 
+  fetchpriority = "auto" 
+} = Astro.props;
 ---
 
 <div class="group cursor-pointer gallery-item" data-image={image} data-title={title} data-description={description || ''}>
@@ -14,7 +22,8 @@ const { title, image, description } = Astro.props;
       <img
         src={image}
         alt={title}
-        loading="lazy"
+        loading={loading}
+        fetchpriority={fetchpriority}
         decoding="async"
         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
       />

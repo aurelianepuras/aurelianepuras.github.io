@@ -15,66 +15,49 @@ export const getStaticPaths = (async () => {
 const { post } = Astro.props;
 const { Content } = await post.render();
 
-/* Data afișată pentru cititori */
 const formattedDate = new Date(post.data.date).toLocaleDateString('ro-RO', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 
-/* Date ISO pentru Google */
 const publishedDate = new Date(post.data.date).toISOString();
 const modifiedDate = new Date(post.data.date).toISOString();
 
-/* Imagine articol (pentru SEO + JSON-LD) */
 const articleImage = post.data.cover_image
   ? `https://aurelianepuras.github.io${post.data.cover_image}`
   : undefined;
 
-/* Date normalizate pentru JSON-LD Article */
-const articleHeadline = post.data.title;
-const articleDescription = post.data.description || post.data.meta_description;
-const articleAuthor = post.data.author || 'Aurelian Epuraș';
+// SEO: Întărim prezența numelui în metadata
+const seoTitle = post.data.meta_title || `${post.data.title} | Blog Aurelian Epuraș (Epuras)`;
+const seoDescription = post.data.meta_description || post.data.description;
 
-const articleJsonBase = {
+const articleJson = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   mainEntityOfPage: {
     '@type': 'WebPage',
     '@id': `https://aurelianepuras.github.io/blog/${post.slug}/`
   },
-  headline: articleHeadline,
+  headline: post.data.title,
+  description: seoDescription,
+  image: articleImage,
   author: {
     '@type': 'Person',
-    '@id': 'https://aurelianepuras.github.io/#person',
-    name: 'Aurelian Epuraș',
-    url: 'https://aurelianepuras.github.io/'
+    'name': 'Aurelian Epuraș',
+    'alternateName': 'Aurelian Epuras',
+    'url': 'https://aurelianepuras.github.io/'
   },
   publisher: {
     '@type': 'Person',
-    '@id': 'https://aurelianepuras.github.io/#person',
-    name: 'Aurelian Epuraș',
-    url: 'https://aurelianepuras.github.io/'
+    'name': 'Aurelian Epuraș',
+    'url': 'https://aurelianepuras.github.io/'
   },
   datePublished: publishedDate,
   dateModified: modifiedDate,
   inLanguage: 'ro-RO'
 };
 
-const articleJson: Record<string, unknown> = { ...articleJsonBase };
-
-if (articleDescription) {
-  articleJson.description = articleDescription;
-}
-
-if (articleImage) {
-  articleJson.image = articleImage;
-}
-
-const hasRequiredArticleData =
-  Boolean(articleHeadline && publishedDate && articleAuthor);
-
-/* Articole similare */
 const allPosts = await getCollection('blog');
 const relatedPosts = allPosts
   .filter((p) => p.slug !== post.slug)
@@ -83,19 +66,12 @@ const relatedPosts = allPosts
 ---
 
 <Layout
-  title={post.data.meta_title || `${post.data.title} | Blog Aurelian Epuraș`}
-  description={post.data.meta_description || post.data.description}
+  title={seoTitle}
+  description={seoDescription}
   image={articleImage}
   imageAlt={post.data.title}
 >
-  <!-- JSON-LD Article: DOAR pe pagina de articol -->
-  {hasRequiredArticleData && (
-  <script
-    type="application/ld+json"
-    slot="head"
-    set:html={JSON.stringify(articleJson)}
-  />
-)}
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(articleJson)} />
 
   <article class="pt-12 pb-10 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 max-w-5xl">
@@ -105,14 +81,11 @@ const relatedPosts = allPosts
         </h1>
 
         <div class="flex flex-wrap items-center justify-center gap-4 text-navy/60 dark:text-ivory-light/60 mb-12 text-sm md:text-base">
-          <span>{post.data.author}</span>
+          <span>{post.data.author || 'Aurelian Epuraș'}</span>
           <span class="hidden md:inline">•</span>
           <time>{formattedDate}</time>
           <span class="hidden md:inline">•</span>
-          <a
-            href="/blog"
-            class="hover:text-navy dark:hover:text-ivory-light transition-colors font-medium"
-          >
+          <a href="/blog" class="hover:text-navy dark:hover:text-ivory-light transition-colors font-medium">
             ← înapoi la blog
           </a>
         </div>
@@ -121,6 +94,8 @@ const relatedPosts = allPosts
           <img
             src={post.data.cover_image}
             alt={post.data.title}
+            loading="eager" 
+            fetchpriority="high"
             class="w-full rounded-2xl shadow-lg mb-10"
           />
         )}
@@ -132,7 +107,7 @@ const relatedPosts = allPosts
         )}
       </header>
 
-      <div class="prose prose-lg dark:prose-invert max-w-full overflow-x-hidden prose-img:rounded-2xl">
+      <div class="prose prose-lg dark:prose-invert max-w-full overflow-x-hidden prose-img:rounded-2xl mt-12">
         <Content />
       </div>
     </div>
@@ -141,11 +116,7 @@ const relatedPosts = allPosts
   <section class="pt-4 pb-20">
     <div class="container mx-auto px-4 max-w-7xl">
       <div class="border-t border-navy/10 dark:border-ivory-light/10 mb-8"></div>
-
-      <h2 class="font-serif text-4xl md:text-5xl text-center text-navy dark:text-ivory-light mb-12">
-        Articole similare
-      </h2>
-
+      <h2 class="font-serif text-4xl md:text-5xl text-center text-navy dark:text-ivory-light mb-12">Articole similare</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {relatedPosts.map((relatedPost) => (
           <BlogCard
@@ -153,7 +124,7 @@ const relatedPosts = allPosts
             slug={relatedPost.slug}
             description={relatedPost.data.description}
             cover_image={relatedPost.data.cover_image}
-            author={relatedPost.data.author}
+            author={relatedPost.data.author || 'Aurelian Epuraș'}
             date={new Date(relatedPost.data.date)}
           />
         ))}

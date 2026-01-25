@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content';
 // 1. Preluăm toate pozele
 const allPhotos = await getCollection('gallery');
 
-// 2. Sortăm pozele cronologic (Cea mai recentă secundă apare prima)
+// 2. Sortăm pozele cronologic
 const gallery = allPhotos.sort((a, b) => {
   const dateA = new Date(a.data.pubDate || 0).getTime();
   const dateB = new Date(b.data.pubDate || 0).getTime();
@@ -14,9 +14,9 @@ const gallery = allPhotos.sort((a, b) => {
 });
 
 const title = "Foto | Aurelian Epuraș";
-const description = "Deschide ochii și lasă sunetul să prindă formă, fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit.";
+const description = "Descoperă universul vizual al lui Aurelian Epuraș (Epuras). Imagini din culise, concerte și momentele în care muzica prinde formă.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
-const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
+const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 ---
 
 <Layout
@@ -26,25 +26,27 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   imageAlt={imageAlt}
 >
   <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-12 max-w-5xl mx-auto">
-      <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Galerie foto</h1>
-      <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-      
-      <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed italic md:not-italic">
-        Fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit. 
-        Sunt fragmente vizuale care surprind emoția momentului, pasiunea din studio și 
-        legătura pe care o am cu fiecare spațiu în care pianul meu prinde viață.
-      </p>
-    </div>
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-5xl mx-auto">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Galerie foto</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        
+        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed italic md:not-italic">
+          Fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit. 
+          Sunt fragmente vizuale care surprind emoția momentului, pasiunea din studio și 
+          legătura pe care o am cu fiecare spațiu în care pianul meu prinde viață.
+        </p>
+      </div>
 
       <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {gallery.map((item) => (
+        {gallery.map((item, index) => (
           <div class="cursor-pointer">
             <GalleryCard
               title={item.data.title}
               image={item.data.image}
               description={item.data.description}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
             />
           </div>
         ))}
@@ -52,12 +54,12 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     </div>
   </section>
 
-  <div id="lightbox" class="hidden fixed inset-0 z-[9999] bg-[#F7F5F0]/95 dark:bg-[#0B1215]/95 flex items-center justify-center p-4 select-none">
-    <button id="lightbox-close" class="absolute top-6 right-6 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-2">
+  <div id="lightbox" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-[9999] bg-[#F7F5F0]/95 dark:bg-[#0B1215]/95 flex items-center justify-center p-4 select-none">
+    <button id="lightbox-close" aria-label="Închide galeria" class="absolute top-6 right-6 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-2">
       <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
     </button>
 
-    <button id="lightbox-prev" class="hidden md:flex absolute left-4 md:left-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
+    <button id="lightbox-prev" aria-label="Imaginea anterioară" class="hidden md:flex absolute left-4 md:left-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
       <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
     </button>
 
@@ -66,7 +68,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       <p id="lightbox-description" class="mt-4 text-navy dark:text-ivory-light font-medium"></p>
     </div>
 
-    <button id="lightbox-next" class="hidden md:flex absolute right-4 md:right-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
+    <button id="lightbox-next" aria-label="Imaginea următoare" class="hidden md:flex absolute right-4 md:right-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">
       <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
     </button>
   </div>
@@ -82,7 +84,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     const imagesInGrid = Array.from(document.querySelectorAll('#gallery-grid img')) as HTMLImageElement[];
     let currentIndex = 0;
 
-    // Variabile pentru Swipe
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -97,7 +98,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       const img = imagesInGrid[currentIndex];
       if (lightboxImg && img) {
         lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || "Imagine galerie";
+        lightboxImg.alt = img.alt || "Imagine galerie Aurelian Epuraș";
         if (lightboxDesc) lightboxDesc.textContent = img.alt || "";
       }
     }
@@ -138,7 +139,6 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
       if (e.key === 'ArrowLeft') showPrev();
     });
 
-    // Detectare Swipe
     lightbox?.addEventListener('touchstart', (e: any) => {
       touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
@@ -146,14 +146,8 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     lightbox?.addEventListener('touchend', (e: any) => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeDistance = touchEndX - touchStartX;
-      
-      // Dacă glisarea este mai mare de 50px, schimbăm poza
       if (Math.abs(swipeDistance) > 50) {
-        if (swipeDistance > 0) {
-          showPrev(); // Glisare la dreapta
-        } else {
-          showNext(); // Glisare la stânga
-        }
+        if (swipeDistance > 0) showPrev(); else showNext();
       }
     }, { passive: true });
   </script>

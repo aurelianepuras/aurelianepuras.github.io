@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 const title = "Biografie | Aurelian Epuraș";
 const description = "Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
-const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
+const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 ---
 
 <Layout
@@ -17,20 +17,22 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
  <section class="py-20 pb-4 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4">
       <div class="text-center mb-16 max-w-5xl mx-auto">
-  <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Biografie</h1>
-  <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-  
-  <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-    37 de ani petrecuți între clape, partituri și momente de liniște deplină. De la sălile de curs din Corsica până la proiectul Fabrica de Pian din Petroșani, muzica a fost singurul limbaj prin care am învățat să descopăr lumea și pe mine însumi.
-  </p>
-</div>
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Biografie</h1>
+        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
+        
+        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+          37 de ani petrecuți între clape, partituri și momente de liniște deplină. De la sălile de curs din Corsica până la proiectul Fabrica de Pian din Petroșani, muzica a fost singurul limbaj prin care am învățat să descopăr lumea și pe mine însumi.
+        </p>
+      </div>
 
       <div class="grid md:grid-cols-2 gap-16 items-center max-w-4xl mx-auto mb-20">
         <div class="relative">
           <div class="rounded-2xl overflow-hidden shadow-2xl">
             <img
               src="/uploads/images/Aurelian-Epuras.jpg"
-              alt="Aurelian Epuraș"
+              alt={imageAlt}
+              loading="eager"
+              fetchpriority="high"
               class="w-full h-full object-cover"
             />
           </div>
@@ -38,7 +40,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
 
         <div class="space-y-6 text-navy/70 dark:text-ivory-light/70 leading-relaxed">
           <p class="text-[17px]">
-            <span class="text-gold-warm dark:text-gold-bright font-semibold "></span>Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte. Dacă ai ajuns aici, înseamnă că ai fost curios sau poate ai dat click din greșeală. Ce găsești totuși aici este rezultatul a 37 de ani petrecuți între clape, partituri și momente în care am uitat unde am pus cablul de alimentare. Pianul face parte din viața mea de când mă știu, iar drumul a trecut prin școala și liceul de muzică, apoi prin conservator, și încă nu s-a oprit. Corsica mi-a fost acasă vreme de 13 ani, timp în care pianul a fost mai mult decât un instrument, a devenit limbajul zilnic dintre mine și elevi. 
+            Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte. Dacă ai ajuns aici, înseamnă că ai fost curios sau poate ai dat click din greșeală. Ce găsești totuși aici este rezultatul a 37 de ani petrecuți între clape, partituri și momente în care am uitat unde am pus cablul de alimentare. Pianul face parte din viața mea de când mă știu, iar drumul a trecut prin școala și liceul de muzică, apoi prin conservator, și încă nu s-a oprit. Corsica mi-a fost acasă vreme de 13 ani, timp în care pianul a fost mai mult decât un instrument, a devenit limbajul zilnic dintre mine și elevi. 
           </p>
         </div>
       </div>
@@ -49,9 +51,9 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto">
         <div class="space-y-6 text-navy/70 dark:text-ivory-light/70 leading-relaxed text-[17px]">
-          <p>Din 2016 predau în România, iar activitatea educațională a continuat și în zona de proiecte culturale care chiar au lăsat urme. Fabrica de Pian e un exemplu clar, cu două săli complet modernizate în Petroșani, unde elevii secției de muzică au acum spații care inspiră și funcționează cu adevărat.           </p>
+          <p>Din 2016 predau în România, iar activitatea educațională a continuat și în zona de proiecte culturale care chiar au lăsat urme. Fabrica de Pian e un exemplu clar, cu două săli complet modernizate în Petroșani, unde elevii secției de muzică au acum spații care inspiră și funcționează cu adevărat.</p>
           <p>Compozitor atunci când nu caut telecomanda și interpret atunci când nu mă încurc în cabluri, mi-am lansat albumul intitulat simplu 13, pentru că unele lucruri importante nu au nevoie de titluri pretențioase. Piesele de pe album fac parte din repertoriul concertelor pe care le susțin și reflectă o direcție clară, implicarea în educație, cultură și tot ce ține de comunitate, vie, autentică și prezentă.</p>
-          <p>Pe site găsești muzica mea, fie sub formă de album, fie ca piese individuale disponibile pentru achiziție, alături de ultimele compoziții, programul evenimentelor, înregistrări video, fotografii și detalii despre colaborările recente. Iar dacă îți dorești muzică live într-un spațiu care contează, poți chiar să comanzi un concert. Sper ca experiența de aici să-ți ofere exact ce cauți. Este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să cunoască mai bine drumul și lumea mea muzicală.
+          <p>Pe site găsești muzica mea, fie sub formă de album, fie ca piese individuale disponibile pentru achiziție, alături de ultimele compoziții, programul evenimentelor, înregistrări video, fotografii și detalii despre colaborările recente. Iar dacă îți dorești muzică live într-un spațiu care contează, poți chiar să comanzi un concert. Sper ca experiența de aici să-ți ofere exact ce cauți. Este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să cunoască mai bine drumul și lumea mea muzicală.</p>
         </div>
       </div>
     </div>
@@ -79,7 +81,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
             </div>
             <div class="flex items-center gap-4 flex-1">
               <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Școala de Muzicã, Petroșani</p>
+              <p class="text-navy/70 dark:text-ivory-light/70">Școala de Muzică, Petroșani</p>
             </div>
           </div>
 
@@ -89,7 +91,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
             </div>
             <div class="flex items-center gap-4 flex-1">
               <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Liceul de Muzicã Sigismund Toduțã, Deva</p>
+              <p class="text-navy/70 dark:text-ivory-light/70">Liceul de Muzică Sigismund Toduță, Deva</p>
             </div>
           </div>
 
@@ -109,7 +111,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
             </div>
             <div class="flex items-center gap-4 flex-1">
               <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Am inceput sã compun</p>
+              <p class="text-navy/70 dark:text-ivory-light/70">Am început să compun</p>
             </div>
           </div>
 
@@ -129,7 +131,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
             </div>
             <div class="flex items-center gap-4 flex-1">
               <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Academia de Muzicã, Cluj-Napoca</p>
+              <p class="text-navy/70 dark:text-ivory-light/70">Academia de Muzică, Cluj-Napoca</p>
             </div>
           </div>
 
@@ -139,7 +141,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
             </div>
             <div class="flex items-center gap-4 flex-1">
               <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Lansarea proiect, Fabrica de pian</p>
+              <p class="text-navy/70 dark:text-ivory-light/70">Lansarea proiectului Fabrica de Pian</p>
             </div>
           </div>
 
@@ -149,7 +151,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
             </div>
             <div class="flex items-center gap-4 flex-1">
               <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Lansarea album, 13</p>
+              <p class="text-navy/70 dark:text-ivory-light/70">Lansarea albumului 13</p>
             </div>
           </div>
         </div>
