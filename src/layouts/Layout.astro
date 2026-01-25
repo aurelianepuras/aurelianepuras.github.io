@@ -76,9 +76,18 @@ const isActive = (path: string) => {
       <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <a href="/" class="block text-4xl font-serif font-bold text-navy dark:text-ivory-light hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">
-              Aurelian Epuraș
-            </a>
+            <a href="/" class="block">
+  <img 
+    src="/logo-negru.svg" 
+    alt="Aurelian Epuraș" 
+    class="h-12 md:h-12 w-auto dark:hidden" 
+  />
+  <img 
+    src="/logo-alb.svg" 
+    alt="Aurelian Epuraș" 
+    class="h-12 md:h-12 w-auto hidden dark:block" 
+  />
+</a>
           </div>
 
           <div class="hidden md:flex items-center gap-10">
