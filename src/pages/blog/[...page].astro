@@ -22,6 +22,34 @@ const title = page.currentPage > 1
 const description = "Un spațiu dedicat trăirilor și parcursului meu artistic. Descoperă articole despre procesul creativ, amintiri din carieră și reflecții personale despre muzică, artă și momentele care mi-au definit drumul.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 const imageAlt = "Blog | Aurelian Epuraș";
+
+// Schema SEO pentru lista de articole
+const blogListSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": "https://aurelianepuras.github.io/blog/#blog",
+      "name": "Blog Aurelian Epuraș",
+      "description": description,
+      "publisher": { "@id": "https://aurelianepuras.github.io/#person" },
+      "blogPost": page.data.map((post) => ({
+        "@type": "BlogPosting",
+        "headline": post.data.title,
+        "url": `https://aurelianepuras.github.io/blog/${post.slug}/`,
+        "datePublished": new Date(post.data.date).toISOString()
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://aurelianepuras.github.io/blog/#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "item": { "@id": "https://aurelianepuras.github.io/", "name": "Acasă" } },
+        { "@type": "ListItem", "position": 2, "item": { "name": "Blog" } }
+      ]
+    }
+  ]
+};
 ---
 
 <Layout
@@ -30,6 +58,8 @@ const imageAlt = "Blog | Aurelian Epuraș";
   image={image}
   imageAlt={imageAlt}
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(blogListSchema)} />
+  
  <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
   <div class="container mx-auto px-4">
     <div class="text-center mb-12 max-w-5xl mx-auto">
