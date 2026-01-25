@@ -7,20 +7,45 @@ const description = "Contactează-l pe Aurelian Epuraș (Epuras) pentru concerte
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 const imageAlt = "Contact Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 
-// Date structurate pentru Contact
+// Date structurate pentru Contact (Versiunea optimizată @graph)
 const contactSchema = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Aurelian Epuraș",
-  "alternateName": "Aurelian Epuras",
-  "url": "https://aurelianepuras.github.io/",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+40-736-674-176",
-    "contactType": "customer service",
-    "email": "aurelian.epuras@gmail.com",
-    "availableLanguage": ["Romanian", "English"]
-  }
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "@id": "https://aurelianepuras.github.io/contact/#webpage",
+      "url": "https://aurelianepuras.github.io/contact/",
+      "name": title,
+      "isPartOf": { "@id": "https://aurelianepuras.github.io/#website" },
+      "mainEntity": { "@id": "https://aurelianepuras.github.io/#person" },
+      "breadcrumb": { "@id": "https://aurelianepuras.github.io/contact/#breadcrumb" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://aurelianepuras.github.io/#person",
+      "name": "Aurelian Epuraș",
+      "alternateName": "Aurelian Epuras",
+      "email": "aurelian.epuras@gmail.com",
+      "telephone": "+40-736-674-176",
+      "url": "https://aurelianepuras.github.io/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://aurelianepuras.github.io/contact/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": { "@id": "https://aurelianepuras.github.io/", "name": "Acasă" }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": { "@id": "https://aurelianepuras.github.io/contact/", "name": "Contact" }
+        }
+      ]
+    }
+  ]
 };
 ---
 
