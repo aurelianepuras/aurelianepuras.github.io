@@ -177,5 +177,44 @@ const isActive = (path: string) => {
       body.menu-open { overflow: hidden; }
       header nav a::after { bottom: -9px !important; }
     </style>
+
+    <script is:inline>
+      function setupMobileMenu() {
+        const toggleBtn = document.getElementById('mobile-menu-toggle');
+        const closeBtn = document.getElementById('mobile-menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        if (toggleBtn && mobileMenu) {
+          toggleBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+            document.body.classList.add('menu-open');
+            setTimeout(() => {
+              mobileMenu.classList.add('opacity-100');
+            }, 10);
+          });
+
+          closeBtn?.addEventListener('click', () => {
+            mobileMenu.classList.remove('opacity-100');
+            document.body.classList.remove('menu-open');
+            setTimeout(() => {
+              mobileMenu.classList.add('hidden');
+            }, 300);
+          });
+
+          menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              mobileMenu.classList.add('hidden');
+              document.body.classList.remove('menu-open');
+              mobileMenu.classList.remove('opacity-100');
+            });
+          });
+        }
+      }
+
+      setupMobileMenu();
+      document.addEventListener('astro:after-swap', setupMobileMenu);
+    </script>
   </body>
 </html>
+
