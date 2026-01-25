@@ -29,23 +29,50 @@ const tracks = sortedAudio.map((audio, index) => ({
 
 const albumCover = sortedAudio[0]?.data.cover || '/uploads/images/audio-cover-1.jpg';
 
-// Generăm automat schema pentru Google
+// Generăm automat schema pentru Google (Versiunea extinsă @graph)
 const musicSchema = {
   "@context": "https://schema.org",
-  "@type": "MusicAlbum",
-  "name": "Album 13",
-  "byArtist": {
-    "@type": "Person",
-    "name": "Aurelian Epuraș",
-    "alternateName": "Aurelian Epuras"
-  },
-  "image": `https://aurelianepuras.github.io${albumCover}`,
-  "numTracks": tracks.length,
-  "track": tracks.map(track => ({
-    "@type": "MusicRecording",
-    "name": track.title,
-    "duration": track.duration
-  }))
+  "@graph": [
+    {
+      "@type": "MusicAlbum",
+      "@id": "https://aurelianepuras.github.io/muzica/#album",
+      "name": "Album 13",
+      "byArtist": { "@id": "https://aurelianepuras.github.io/#person" },
+      "image": `https://aurelianepuras.github.io${albumCover}`,
+      "datePublished": "2023",
+      "numTracks": tracks.length,
+      "track": tracks.map(track => ({
+        "@type": "MusicRecording",
+        "name": track.title,
+        "duration": `PT${track.duration.replace(':', 'M')}S`
+      }))
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://aurelianepuras.github.io/muzica/#webpage",
+      "url": "https://aurelianepuras.github.io/muzica/",
+      "name": title,
+      "isPartOf": { "@id": "https://aurelianepuras.github.io/#website" },
+      "about": { "@id": "https://aurelianepuras.github.io/#person" },
+      "breadcrumb": { "@id": "https://aurelianepuras.github.io/muzica/#breadcrumb" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://aurelianepuras.github.io/muzica/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": { "@id": "https://aurelianepuras.github.io/", "name": "Acasă" }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": { "@id": "https://aurelianepuras.github.io/muzica/", "name": "Muzică" }
+        }
+      ]
+    }
+  ]
 };
 ---
 
