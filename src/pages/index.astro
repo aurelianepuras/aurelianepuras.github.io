@@ -16,26 +16,48 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   <script type="application/ld+json" slot="head" is:inline>
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "@id": "https://aurelianepuras.github.io/#person",
-    "name": "Aurelian Epuraș",
-    "alternateName": "Aurelian Epuras",
-    "url": "https://aurelianepuras.github.io/",
-    "image": "https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras.jpg",
-    "description": "Pianist și compozitor român, profesor de pian, activ în concerte, proiecte culturale și educaționale.",
-    "jobTitle": ["Pianist", "Compozitor", "Profesor de pian"],
-    "knowsLanguage": "ro",
-    "nationality": {
-      "@type": "Country",
-      "name": "România"
-    },
-    "sameAs": [
-      "https://www.facebook.com/epurasaurelian",
-      "https://www.instagram.com/aurelian.epuras/",
-      "https://www.youtube.com/@aurelianepuras"
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://aurelianepuras.github.io/#person",
+        "name": "Aurelian Epuraș",
+        "alternateName": "Aurelian Epuras",
+        "url": "https://aurelianepuras.github.io/",
+        "image": "https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras.jpg",
+        "description": "Pianist și compozitor român, profesor de pian, activ în concerte, proiecte culturale și educaționale.",
+        "jobTitle": ["Pianist", "Compozitor", "Profesor de pian"],
+        "knowsLanguage": "ro",
+        "nationality": {
+          "@type": "Country",
+          "name": "România"
+        },
+        "sameAs": [
+          "https://www.facebook.com/epurasaurelian",
+          "https://www.instagram.com/aurelian.epuras/",
+          "https://www.youtube.com/@aurelianepuras"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://aurelianepuras.github.io/#website",
+        "url": "https://aurelianepuras.github.io/",
+        "name": "Aurelian Epuraș",
+        "publisher": {
+          "@id": "https://aurelianepuras.github.io/#person"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://aurelianepuras.github.io/#webpage",
+        "url": "https://aurelianepuras.github.io/",
+        "name": "Aurelian Epuraș | Pianist Compozitor",
+        "isPartOf": { "@id": "https://aurelianepuras.github.io/#website" },
+        "about": { "@id": "https://aurelianepuras.github.io/#person" },
+        "description": "Aurelian Epuraș - Pianist, Compozitor și Profesor de pian. Descoperă universul muzical, compozițiile originale și povestea unui artist cu peste 37 de ani de experiență."
+      }
     ]
   }
-  </script>
+</script>
 
   <section class="relative min-h-screen flex items-center justify-center bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 py-20">
