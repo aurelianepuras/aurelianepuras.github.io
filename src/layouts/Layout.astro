@@ -42,6 +42,8 @@ const isActive = (path: string) => {
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.youtube.com" />
+    <link rel="dns-prefetch" href="https://api.emailjs.com" />
     <link href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
@@ -72,20 +74,29 @@ const isActive = (path: string) => {
     </script>
   </head>
   <body class="font-sans bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light transition-colors min-h-screen flex flex-col">
+    <a 
+      href="#main-content" 
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-gold-warm focus:text-navy focus:rounded-lg focus:shadow-lg"
+    >
+      Skip to main content
+    </a>
     <header class="sticky top-0 z-50 bg-ivory/80 dark:bg-navy-deep/80 backdrop-blur-md border-b border-navy/10 dark:border-ivory-light/10">
       <nav class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between">
           <div>
+            {/* Logo principal; dacă fișierele lipsesc, browser-ul va afișa doar textul alternativ */}
             <a href="/" class="block">
   <img 
     src="/logo-negru.svg" 
     alt="Aurelian Epuraș" 
     class="h-14 md:h-14 w-auto dark:hidden" 
+    onerror="this.style.display='none';"
   />
   <img 
     src="/logo-alb.svg" 
     alt="Aurelian Epuraș" 
     class="h-14 md:h-14 w-auto hidden dark:block" 
+    onerror="this.style.display='none';"
   />
 </a>
           </div>
@@ -101,7 +112,7 @@ const isActive = (path: string) => {
             <ThemeToggle client:load />
           </div>
 
-          <button id="mobile-menu-toggle" class="md:hidden p-3 flex flex-col items-end justify-center gap-1.5 w-12 h-12 rounded-full bg-ivory-card dark:bg-navy-card">
+          <button id="mobile-menu-toggle" class="md:hidden p-3 flex flex-col items-end justify-center gap-1.5 w-12 h-12 rounded-full bg-ivory-card dark:bg-navy-card" aria-label="Toggle navigation menu">
             <span class="hamburger-line w-6 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
             <span class="hamburger-line w-4 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
             <span class="hamburger-line w-6 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
@@ -150,7 +161,7 @@ const isActive = (path: string) => {
       </div>
     </div>
 
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
 

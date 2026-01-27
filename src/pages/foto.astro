@@ -83,8 +83,8 @@ const photoSchema = {
               title={item.data.title}
               image={item.data.image}
               description={item.data.description}
-              loading={index === 0 ? "eager" : "lazy"}
-              fetchpriority={index === 0 ? "high" : "auto"}
+              loading={index < 6 ? "eager" : "lazy"}
+              fetchpriority={index < 6 ? "high" : "auto"}
             />
           </div>
         ))}
@@ -126,9 +126,10 @@ const photoSchema = {
     let touchEndX = 0;
 
     function openLightbox(index: number) {
+      if (!lightbox) return;
       currentIndex = index;
       updateLightbox();
-      lightbox?.classList.remove('hidden');
+      lightbox.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
     }
 
@@ -142,7 +143,8 @@ const photoSchema = {
     }
 
     function closeLightbox() {
-      lightbox?.classList.add('hidden');
+      if (!lightbox) return;
+      lightbox.classList.add('hidden');
       document.body.style.overflow = '';
     }
 
@@ -158,9 +160,11 @@ const photoSchema = {
       updateLightbox();
     }
 
-    imagesInGrid.forEach((img, index) => {
-      img.addEventListener('click', () => openLightbox(index));
-    });
+    if (imagesInGrid.length > 0) {
+      imagesInGrid.forEach((img, index) => {
+        img.addEventListener('click', () => openLightbox(index));
+      });
+    }
 
     closeBtn?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
     nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });

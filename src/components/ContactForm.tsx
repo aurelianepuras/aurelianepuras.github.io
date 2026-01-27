@@ -26,7 +26,10 @@ export default function ContactForm() {
     const templateId = import.meta.env.PUBLIC_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.PUBLIC_EMAILJS_PUBLIC_KEY;
 
-    if (!serviceId || !templateId || !publicKey) {
+    const isValidEnvValue = (value: string | undefined) =>
+      typeof value === 'string' && value.trim().length > 0;
+
+    if (!isValidEnvValue(serviceId) || !isValidEnvValue(templateId) || !isValidEnvValue(publicKey)) {
       setStatus('error');
       setErrorMessage('EmailJS nu este configurat corect. Verifică variabilele de mediu.');
       return;
@@ -48,7 +51,7 @@ export default function ContactForm() {
       );
 
       setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', message: '', website: '' });
     } catch (error) {
       setStatus('error');
       setErrorMessage('A apărut o eroare la trimiterea mesajului. Te rugăm să încerci din nou.');
@@ -65,8 +68,11 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 p-8 rounded-2xl space-y-6">
       <div>
-        {/* Câmp honeypot invizibil pentru utilizatori, vizibil pentru boți simpli */}
-        <div className="hidden" aria-hidden="true">
+        {/* Câmp honeypot invizibil pentru utilizatori, poziționat off-screen pentru boți */}
+        <div
+          aria-hidden="true"
+          style={{ position: 'absolute', left: '-9999px', opacity: 0 }}
+        >
           <label htmlFor="website">Nu completa acest câmp</label>
           <input
             type="text"
@@ -147,14 +153,15 @@ export default function ContactForm() {
         type="submit"
         disabled={status === 'loading'}
         className="w-full px-6 py-3 bg-gold-warm dark:bg-gold-bright text-navy hover:bg-gold-bright dark:hover:bg-gold-warm transition-all duration-300 rounded-2xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
+        aria-busy={status === 'loading'}
       >
         {status === 'loading' ? (
           <span className="flex items-center justify-center gap-2">
-            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            Se trimite...
+            Trimitere...
           </span>
         ) : (
           'Trimite Mesaj'

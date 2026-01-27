@@ -30,6 +30,9 @@ const articleImage = post.data.cover_image
 const seoTitle = post.data.meta_title || `${post.data.title} | Blog Aurelian Epuraș`;
 const seoDescription = post.data.meta_description || post.data.description;
 
+const coverImage = post.data.cover_image || '/uploads/images/Aurelian-Epuras.jpg';
+const hasCustomCoverImage = Boolean(post.data.cover_image);
+
 const blogSchema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -67,10 +70,21 @@ const blogSchema = {
   ]
 };
 
+const isValidBlogSchema = (schema: unknown): schema is Record<string, unknown> => {
+  if (!schema || typeof schema !== 'object') return false;
+  const ctx = (schema as any)['@context'];
+  const graph = (schema as any)['@graph'];
+  return ctx === 'https://schema.org' && Array.isArray(graph) && graph.length > 0;
+};
+
 const allPosts = await getCollection('blog');
 const relatedPosts = allPosts
   .filter((p) => p.slug !== post.slug)
-  .sort(() => Math.random() - 0.5)
+  .sort((a, b) => {
+    const dateA = new Date(a.data.date).getTime();
+    const dateB = new Date(b.data.date).getTime();
+    return dateB - dateA;
+  })
   .slice(0, 3);
 ---
 
@@ -80,7 +94,21 @@ const relatedPosts = allPosts
   image={articleImage}
   imageAlt={post.data.title}
 >
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(blogSchema)} />
+  <script
+    type="application/ld+json"
+    slot="head"
+    is:inline
+    set:html={JSON.stringify(
+      isValidBlogSchema(blogSchema)
+        ? blogSchema
+        : {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            url: `https://aurelianepuras.github.io/blog/${post.slug}/`,
+            name: seoTitle,
+          }
+    )}
+  />
 
   <article class="pt-12 pb-10 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 max-w-5xl">
@@ -99,12 +127,12 @@ const relatedPosts = allPosts
           </a>
         </div>
 
-        {post.data.cover_image && (
+        {coverImage && (
           <img
-            src={post.data.cover_image}
+            src={coverImage}
             alt={post.data.title}
-            loading="eager" 
-            fetchpriority="high"
+            loading={hasCustomCoverImage ? "eager" : "lazy"}
+            fetchpriority={hasCustomCoverImage ? "high" : "auto"}
             class="w-full rounded-2xl shadow-lg mb-10"
           />
         )}
@@ -144,9 +172,9 @@ const relatedPosts = allPosts
 
 <!-- LIGHTBOX MODAL -->
 <div id="lightbox" class="lightbox">
-  <button class="lightbox-close" aria-label="Închide">&times;</button>
-  <button class="lightbox-prev" aria-label="Anterior">‹</button>
-  <button class="lightbox-next" aria-label="Următor">›</button>
+  <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+  <button class="lightbox-prev" aria-label="Previous image">‹</button>
+  <button class="lightbox-next" aria-label="Next image">›</button>
   <div class="lightbox-content">
     <img src="" alt="" id="lightbox-img" />
     <div class="lightbox-counter"></div>
@@ -195,14 +223,17 @@ const relatedPosts = allPosts
   function replaceWithEmbed(element: HTMLElement, videoId: string) {
     const wrapper = document.createElement('div');
     wrapper.className = 'video-container';
-    wrapper.innerHTML = `
-      <iframe
-        src="https://www.youtube.com/embed/${videoId}"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-    `;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute(
+      'allow',
+      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+    );
+    iframe.setAttribute('allowfullscreen', '');
+
+    wrapper.appendChild(iframe);
     element.replaceWith(wrapper);
   }
 
@@ -216,7 +247,7 @@ const relatedPosts = allPosts
     const content = document.querySelector('.prose');
     if (!content) return;
 
-    const paragraphs = Array.from(content.querySelectorAll('p'));
+    const paragraphs = Array.from(content.querySelectorAll('p')) as HTMLParagraphElement[];
     const processed = new Set<HTMLElement>();
 
     paragraphs.forEach((p) => {
@@ -273,7 +304,7 @@ const relatedPosts = allPosts
       gallery.style.setProperty('--img-count', count.toString());
     }
 
-    const galleryImages: HTMLImageElement[] = [];
+    const localGalleryImages: HTMLImageElement[] = [];
 
     images.forEach((img) => {
       const wrapper = document.createElement('div');
@@ -284,10 +315,10 @@ const relatedPosts = allPosts
       clonedImg.classList.add('gallery-image');
       
       clonedImg.addEventListener('click', () => {
-        openLightbox(galleryImages, galleryImages.indexOf(clonedImg));
+        openLightbox(localGalleryImages, localGalleryImages.indexOf(clonedImg));
       });
       
-      galleryImages.push(clonedImg);
+      localGalleryImages.push(clonedImg);
       wrapper.appendChild(clonedImg);
       gallery.appendChild(wrapper);
     });
@@ -314,7 +345,7 @@ const relatedPosts = allPosts
     const images: HTMLImageElement[] = [];
 
     paragraphs.forEach((p) => {
-      const img = p.querySelector('img') as HTMLImageElement;
+      const img = p.querySelector('img') as HTMLImageElement | null;
       if (img) {
         const wrapper = document.createElement('div');
         wrapper.className = 'gallery-item';
@@ -342,7 +373,7 @@ const relatedPosts = allPosts
     }
 
     paragraphs[0].replaceWith(gallery);
-    paragraphs.slice(1).forEach(p => p.remove());
+    paragraphs.slice(1).forEach((p) => p.remove());
   }
 
   // =============================================================================
@@ -352,10 +383,12 @@ const relatedPosts = allPosts
     galleryImages = images;
     currentImageIndex = index;
     
-    const lightbox = document.getElementById('lightbox') as HTMLElement;
-    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-    const counter = lightbox.querySelector('.lightbox-counter') as HTMLElement;
+    const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const counter = lightbox?.querySelector('.lightbox-counter') as HTMLElement | null;
     
+    if (!lightbox || !lightboxImg || !counter) return;
+
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
     
@@ -363,27 +396,33 @@ const relatedPosts = allPosts
   }
 
   function showImage() {
-    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-    const counter = document.querySelector('.lightbox-counter') as HTMLElement;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const counter = document.querySelector('.lightbox-counter') as HTMLElement | null;
     const currentImg = galleryImages[currentImageIndex];
     
+    if (!lightboxImg || !counter || !currentImg) return;
+
     lightboxImg.src = currentImg.src;
     lightboxImg.alt = currentImg.alt;
     counter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
   }
 
   function closeLightbox() {
-    const lightbox = document.getElementById('lightbox') as HTMLElement;
+    const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+    if (!lightbox) return;
+
     lightbox.classList.remove('active');
     document.body.style.overflow = '';
   }
 
   function nextImage() {
+    if (galleryImages.length === 0) return;
     currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
     showImage();
   }
 
   function prevImage() {
+    if (galleryImages.length === 0) return;
     currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
     showImage();
   }
@@ -486,7 +525,7 @@ const relatedPosts = allPosts
   @media (max-width: 768px) {
     .image-gallery {
       grid-template-columns: 1fr !important;
-      gap: 0rem !important; /* 8px în loc de 16px */
+      gap: 1.25rem !important; /* ACEEAȘI DISTANȚĂ ca pe desktop */
     }
   }
 
@@ -516,6 +555,13 @@ const relatedPosts = allPosts
 
   .gallery-item:hover img {
     transform: scale(1.02);
+  }
+
+  /* Override pentru margin-urile din Tailwind Typography */
+  .prose .image-gallery .gallery-item img {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 
   /* =============================================================================

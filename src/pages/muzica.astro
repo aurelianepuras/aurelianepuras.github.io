@@ -27,7 +27,23 @@ const tracks = sortedAudio.map((audio, index) => ({
   duration: audio.data.duration || '4:32',
 }));
 
-const albumCover = sortedAudio[0]?.data.cover || '/uploads/images/audio-cover-1.jpg';
+const albumCover =
+  sortedAudio.length > 0 && sortedAudio[0].data.cover
+    ? sortedAudio[0].data.cover
+    : '/uploads/images/audio-cover-1.jpg';
+
+const albumTitleFromContent = sortedAudio[0]?.data.albumTitle || 'Album 13';
+const albumArtistFromContent =
+  sortedAudio[0]?.data.artist ||
+  'Lansat în 2023 la Teatrul Dramatic „Ion D. Sîrbu” Petroșani';
+
+const toIsoDuration = (value: string) => {
+  const trimmed = value.trim();
+  const match = /^(\d+):(\d{1,2})$/.exec(trimmed);
+  if (!match) return null;
+  const [, minutes, seconds] = match;
+  return `PT${minutes}M${seconds}S`;
+};
 
 // Generăm automat schema pentru Google (Versiunea extinsă @graph)
 const musicSchema = {
@@ -36,16 +52,19 @@ const musicSchema = {
     {
       "@type": "MusicAlbum",
       "@id": "https://aurelianepuras.github.io/muzica/#album",
-      "name": "Album 13",
+      "name": albumTitleFromContent,
       "byArtist": { "@id": "https://aurelianepuras.github.io/#person" },
       "image": `https://aurelianepuras.github.io${albumCover}`,
       "datePublished": "2023",
       "numTracks": tracks.length,
-      "track": tracks.map(track => ({
-        "@type": "MusicRecording",
-        "name": track.title,
-        "duration": `PT${track.duration.replace(':', 'M')}S`
-      }))
+      "track": tracks.map(track => {
+        const isoDuration = toIsoDuration(track.duration) || toIsoDuration('4:32');
+        return {
+          "@type": "MusicRecording",
+          "name": track.title,
+          "duration": isoDuration
+        };
+      })
     },
     {
       "@type": "WebPage",
@@ -98,9 +117,9 @@ const musicSchema = {
       </div>
 
       <MusicPlayer
-        client:load
-        albumTitle="Album 13"
-        artist="Lansat în 2023 la Teatrul Dramatic „Ion D. Sîrbu” Petroșani" 
+        client:idle
+        albumTitle={albumTitleFromContent}
+        artist={albumArtistFromContent}
         albumCover={albumCover}
         currentTrackTitle={tracks[0]?.title || 'Dimineață în Carpați'}
         tracks={tracks}

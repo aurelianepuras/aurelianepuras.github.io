@@ -11,6 +11,18 @@ const prevUrl = currentPage > 1 ? (currentPage === 2 ? baseUrl : `${baseUrl}/${c
 const nextUrl = currentPage < totalPages ? `${baseUrl}/${currentPage + 1}` : null;
 
 const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+const maxVisiblePages = 7;
+const halfWindow = Math.floor(maxVisiblePages / 2);
+
+let startPage = Math.max(1, currentPage - halfWindow);
+let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+if (endPage - startPage + 1 < maxVisiblePages) {
+  startPage = Math.max(1, endPage - maxVisiblePages + 1);
+}
+
+const visiblePages = pages.slice(startPage - 1, endPage);
 ---
 
 {totalPages > 1 && (
@@ -19,6 +31,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
       <a
         href={prevUrl}
         class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
+        aria-label="Previous page"
       >
         <span class="sr-only">Pagina anterioară</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +46,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
       </span>
     )}
 
-    {pages.map((page) => {
+    {visiblePages.map((page) => {
       const isActive = page === currentPage;
       const pageUrl = page === 1 ? baseUrl : `${baseUrl}/${page}`;
 
@@ -55,6 +68,7 @@ const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
       <a
         href={nextUrl}
         class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
+        aria-label="Next page"
       >
         <span class="sr-only">Pagina următoare</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

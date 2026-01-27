@@ -75,7 +75,7 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
         ) : (
           videoId && (
             <iframe
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=0`}
               title={title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

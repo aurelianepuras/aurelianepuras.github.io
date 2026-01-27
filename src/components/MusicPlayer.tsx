@@ -31,16 +31,21 @@ export default function MusicPlayer({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [audioError, setAudioError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const currentTrack = tracks[currentTrackIndex];
+  const hasTracks = tracks.length > 0;
+  const currentTrack = hasTracks ? tracks[currentTrackIndex] : null;
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
+    const updateDuration = () => {
+      setDuration(audio.duration);
+      setAudioError(null);
+    };
     const handleEnded = () => {
       if (currentTrackIndex < tracks.length - 1) {
         setCurrentTrackIndex(currentTrackIndex + 1);
@@ -62,14 +67,28 @@ export default function MusicPlayer({
   }, [currentTrackIndex, tracks.length]);
 
   useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play();
-      } else {
-        audioRef.current.pause();
+    const audio = audioRef.current;
+    if (!audio || !hasTracks) return;
+
+    if (isPlaying) {
+      try {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            setIsPlaying(false);
+          });
+        }
+      } catch {
+        setIsPlaying(false);
       }
+    } else {
+      audio.pause();
     }
-  }, [isPlaying, currentTrackIndex]);
+  }, [isPlaying, currentTrackIndex, hasTracks]);
+
+  useEffect(() => {
+    setAudioError(null);
+  }, [currentTrackIndex]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -138,15 +157,32 @@ export default function MusicPlayer({
               <p className="text-lg text-navy/70 dark:text-ivory-light/70 mb-8">
                 {artist}
               </p>
-              <p className="text-gold-warm dark:text-gold-bright font-medium mb-8">
-                {currentTrack.title}
-              </p>
+              {hasTracks && (
+                <p className="text-gold-warm dark:text-gold-bright font-medium mb-8">
+                  {currentTrack?.title}
+                </p>
+              )}
             </div>
 
-            <div className="space-y-6">
+              <div className="space-y-6">
               <div
                 className="relative h-1 bg-navy/20 dark:bg-ivory-light/20 rounded-full cursor-pointer group"
                 onClick={handleProgressClick}
+                role="slider"
+                aria-label="Progress control"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(progress)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const delta = e.key === 'ArrowLeft' ? -5 : 5;
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + delta));
+                    }
+                  }
+                }}
               >
                 <div
                   className="absolute h-full bg-gold-warm dark:bg-gold-bright rounded-full transition-all"
@@ -230,37 +266,39 @@ export default function MusicPlayer({
               </div>
             </div>
 
-            <div className="mt-8 space-y-2">
-              {tracks.map((track, index) => (
-                <button
-                  key={track.id}
-                  onClick={() => handleTrackClick(index)}
-                  className={`w-full flex items-center justify-between p-4 rounded-xl transition-all duration-300 ${
-                    index === currentTrackIndex
-                      ? 'bg-ivory dark:bg-navy-deep'
-                      : 'hover:bg-ivory/50 dark:hover:bg-navy-deep/50'
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm text-navy/40 dark:text-ivory-light/40 w-6">
-                      {track.id}
+            {hasTracks && (
+              <div className="mt-8 space-y-2">
+                {tracks.map((track, index) => (
+                  <button
+                    key={track.id}
+                    onClick={() => handleTrackClick(index)}
+                    className={`w-full flex items-center justify-between p-4 rounded-xl transition-all duration-300 ${
+                      index === currentTrackIndex
+                        ? 'bg-ivory dark:bg-navy-deep'
+                        : 'hover:bg-ivory/50 dark:hover:bg-navy-deep/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm text-navy/40 dark:text-ivory-light/40 w-6">
+                        {track.id}
+                      </span>
+                      <span
+                        className={`font-medium ${
+                          index === currentTrackIndex
+                            ? 'text-gold-warm dark:text-gold-bright'
+                            : 'text-navy dark:text-ivory-light'
+                        }`}
+                      >
+                        {track.title}
+                      </span>
+                    </div>
+                    <span className="text-sm text-navy/60 dark:text-ivory-light/60">
+                      {track.duration}
                     </span>
-                    <span
-                      className={`font-medium ${
-                        index === currentTrackIndex
-                          ? 'text-gold-warm dark:text-gold-bright'
-                          : 'text-navy dark:text-ivory-light'
-                      }`}
-                    >
-                      {track.title}
-                    </span>
-                  </div>
-                  <span className="text-sm text-navy/60 dark:text-ivory-light/60">
-                    {track.duration}
-                  </span>
-                </button>
-              ))}
-            </div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -290,7 +328,36 @@ export default function MusicPlayer({
         </div>
       )}
 
-      <audio ref={audioRef} src={currentTrack.audio_file} preload="metadata" />
+      {hasTracks && (
+        <audio
+          ref={audioRef}
+          src={currentTrack?.audio_file}
+          preload="metadata"
+          onError={() => {
+            setIsPlaying(false);
+            setAudioError('Piesa audio nu a putut fi redată. Încearcă alt track sau reîncarcă pagina.');
+          }}
+        />
+      )}
+
+      {audioError && (
+        <div className="p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-2xl space-y-3">
+          <p className="text-sm text-red-800 dark:text-red-200">
+            {audioError}
+          </p>
+          <button
+            onClick={() => {
+              setAudioError(null);
+              if (audioRef.current) {
+                audioRef.current.load();
+              }
+            }}
+            className="text-sm text-red-800 dark:text-red-200 underline hover:no-underline"
+          >
+            Încearcă din nou
+          </button>
+        </div>
+      )}
     </div>
   );
 }

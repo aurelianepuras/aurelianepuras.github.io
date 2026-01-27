@@ -18,6 +18,8 @@ export default defineConfig({
   integrations: [
     tailwind(),
     react(),
+   // ⚠️ Atenție: allowHTML: true permite HTML arbitrar în conținut Markdoc.
+   // Folosește-l doar dacă sursele de conținut sunt de încredere, altfel există risc de XSS.
    markdoc({ allowHTML: true }),
 
     // Keystatic este activ DOAR în development
