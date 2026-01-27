@@ -30,7 +30,6 @@ const articleImage = post.data.cover_image
 const seoTitle = post.data.meta_title || `${post.data.title} | Blog Aurelian Epuraș`;
 const seoDescription = post.data.meta_description || post.data.description;
 
-// Date structurate sub formă de Graph pentru a lega articolul de identitatea ta
 const blogSchema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -143,8 +142,22 @@ const relatedPosts = allPosts
   </section>
 </Layout>
 
-<!-- YOUTUBE EMBED AUTO - adăugat la final -->
+<!-- LIGHTBOX MODAL -->
+<div id="lightbox" class="lightbox">
+  <button class="lightbox-close" aria-label="Închide">&times;</button>
+  <button class="lightbox-prev" aria-label="Anterior">‹</button>
+  <button class="lightbox-next" aria-label="Următor">›</button>
+  <div class="lightbox-content">
+    <img src="" alt="" id="lightbox-img" />
+    <div class="lightbox-counter"></div>
+  </div>
+</div>
+
+<!-- AUTO-TRANSFORMĂRI CONTENT -->
 <script>
+  // =============================================================================
+  // YOUTUBE AUTO-EMBED
+  // =============================================================================
   function embedYouTube() {
     const content = document.querySelector('.prose');
     if (!content) return;
@@ -155,12 +168,10 @@ const relatedPosts = allPosts
       const link = p.querySelector('a[href*="youtube.com/watch"], a[href*="youtu.be/"]') as HTMLAnchorElement | null;
       const text = p.textContent?.trim() || '';
       
-      // Caz 1: Link ca <a> element
       if (link && (p as HTMLElement).innerText.trim() === link.innerText.trim()) {
         const videoId = extractVideoId(link.href);
         if (videoId) replaceWithEmbed(p as HTMLElement, videoId);
       }
-      // Caz 2: Link ca text simplu
       else if (!link && /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.test(text)) {
         const match = text.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
         if (match) replaceWithEmbed(p as HTMLElement, match[1]);
@@ -190,23 +201,238 @@ const relatedPosts = allPosts
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
-        loading="lazy"
       ></iframe>
     `;
     element.replaceWith(wrapper);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', embedYouTube);
-  } else {
+  // =============================================================================
+  // AUTO IMAGE GALLERY + LIGHTBOX
+  // =============================================================================
+  let currentImageIndex = 0;
+  let galleryImages: HTMLImageElement[] = [];
+
+  function createImageGalleries() {
+    const content = document.querySelector('.prose');
+    if (!content) return;
+
+    const paragraphs = Array.from(content.querySelectorAll('p'));
+    const processed = new Set<HTMLElement>();
+
+    paragraphs.forEach((p) => {
+      if (processed.has(p)) return;
+
+      // CAZ 1: Multiple imagini în ACELAȘI paragraf (fără rânduri goale în Markdown)
+      const imgsInParagraph = Array.from(p.querySelectorAll('img')) as HTMLImageElement[];
+      if (imgsInParagraph.length >= 2 && imgsInParagraph.length <= 10) {
+        createGalleryFromImages(p, imgsInParagraph);
+        processed.add(p);
+        return;
+      }
+
+      // CAZ 2: O singură imagine per paragraf (cu rânduri goale în Markdown)
+      const img = p.querySelector('img');
+      if (!img || p.children.length !== 1) return;
+
+      // Caută paragrafe consecutive cu imagini
+      const group: HTMLParagraphElement[] = [p];
+      let nextEl = p.nextElementSibling;
+
+      while (nextEl && nextEl.tagName === 'P') {
+        const nextImg = nextEl.querySelector('img');
+        if (nextImg && nextEl.children.length === 1) {
+          group.push(nextEl as HTMLParagraphElement);
+          processed.add(nextEl as HTMLElement);
+          nextEl = nextEl.nextElementSibling;
+        } else {
+          break;
+        }
+      }
+
+      // Dacă sunt 2-10 imagini consecutive, creează galerie
+      if (group.length >= 2 && group.length <= 10) {
+        createGallery(group);
+        processed.add(p);
+      }
+    });
+  }
+
+  // Funcție pentru imagini din același paragraf (fără rânduri goale)
+  function createGalleryFromImages(paragraph: HTMLParagraphElement, images: HTMLImageElement[]) {
+    const gallery = document.createElement('div');
+    gallery.className = 'image-gallery';
+    
+    const count = images.length;
+    
+    // Logică inteligentă pentru layout
+    if (count === 4) {
+      gallery.style.setProperty('--img-count', '2');
+    } else if (count > 4) {
+      gallery.style.setProperty('--img-count', '3');
+    } else {
+      gallery.style.setProperty('--img-count', count.toString());
+    }
+
+    const galleryImages: HTMLImageElement[] = [];
+
+    images.forEach((img) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'gallery-item';
+      
+      const clonedImg = img.cloneNode(true) as HTMLImageElement;
+      clonedImg.style.cssText = '';
+      clonedImg.classList.add('gallery-image');
+      
+      clonedImg.addEventListener('click', () => {
+        openLightbox(galleryImages, galleryImages.indexOf(clonedImg));
+      });
+      
+      galleryImages.push(clonedImg);
+      wrapper.appendChild(clonedImg);
+      gallery.appendChild(wrapper);
+    });
+
+    paragraph.replaceWith(gallery);
+  }
+
+  // Funcție pentru paragrafe separate (cu rânduri goale)
+  function createGallery(paragraphs: HTMLParagraphElement[]) {
+    const gallery = document.createElement('div');
+    gallery.className = 'image-gallery';
+    
+    const count = paragraphs.length;
+    
+    // Logică inteligentă pentru layout
+    if (count === 4) {
+      gallery.style.setProperty('--img-count', '2');
+    } else if (count > 4) {
+      gallery.style.setProperty('--img-count', '3');
+    } else {
+      gallery.style.setProperty('--img-count', count.toString());
+    }
+
+    const images: HTMLImageElement[] = [];
+
+    paragraphs.forEach((p) => {
+      const img = p.querySelector('img') as HTMLImageElement;
+      if (img) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'gallery-item';
+        
+        const clonedImg = img.cloneNode(true) as HTMLImageElement;
+        clonedImg.style.cssText = '';
+        clonedImg.classList.add('gallery-image');
+        
+        clonedImg.addEventListener('click', () => {
+          openLightbox(images, images.indexOf(clonedImg));
+        });
+        
+        images.push(clonedImg);
+        wrapper.appendChild(clonedImg);
+        gallery.appendChild(wrapper);
+      }
+    });
+
+    // Elimină paragrafe goale înainte de galerie
+    let prevEl = paragraphs[0].previousElementSibling;
+    while (prevEl && prevEl.tagName === 'P' && !prevEl.textContent?.trim()) {
+      const toRemove = prevEl;
+      prevEl = prevEl.previousElementSibling;
+      toRemove.remove();
+    }
+
+    paragraphs[0].replaceWith(gallery);
+    paragraphs.slice(1).forEach(p => p.remove());
+  }
+
+  // =============================================================================
+  // LIGHTBOX
+  // =============================================================================
+  function openLightbox(images: HTMLImageElement[], index: number) {
+    galleryImages = images;
+    currentImageIndex = index;
+    
+    const lightbox = document.getElementById('lightbox') as HTMLElement;
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const counter = lightbox.querySelector('.lightbox-counter') as HTMLElement;
+    
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    showImage();
+  }
+
+  function showImage() {
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const counter = document.querySelector('.lightbox-counter') as HTMLElement;
+    const currentImg = galleryImages[currentImageIndex];
+    
+    lightboxImg.src = currentImg.src;
+    lightboxImg.alt = currentImg.alt;
+    counter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+  }
+
+  function closeLightbox() {
+    const lightbox = document.getElementById('lightbox') as HTMLElement;
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+    showImage();
+  }
+
+  function prevImage() {
+    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+    showImage();
+  }
+
+  // Event listeners pentru lightbox
+  document.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.getElementById('lightbox');
+    
+    lightbox?.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
+    lightbox?.querySelector('.lightbox-next')?.addEventListener('click', nextImage);
+    lightbox?.querySelector('.lightbox-prev')?.addEventListener('click', prevImage);
+    
+    // Click pe background închide lightbox
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox?.classList.contains('active')) return;
+      
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    });
+  });
+
+  // =============================================================================
+  // INIȚIALIZARE
+  // =============================================================================
+  function initContentTransforms() {
     embedYouTube();
+    createImageGalleries();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContentTransforms);
+  } else {
+    initContentTransforms();
   }
 </script>
 
 <style is:global>
+  /* =============================================================================
+     VIDEO CONTAINER
+     ============================================================================= */
   .video-container {
     position: relative;
-    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+    padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
     margin: 2rem 0;
@@ -223,8 +449,183 @@ const relatedPosts = allPosts
     border: none;
   }
 
-  /* Stiluri pentru dark mode */
   :global(.dark) .video-container {
     background: #1a1a1a;
+  }
+
+  /* =============================================================================
+     IMAGE GALLERIES
+     ============================================================================= */
+  .image-gallery {
+  display: grid;
+  grid-template-columns: repeat(var(--img-count, 3), 1fr);
+  gap: 1.25rem;
+  margin: 0.25rem 0 2rem 0 !important; /* 4px sus - foarte puțin */
+}
+
+/* ADAUGĂ ACEST BLOC NOU */
+.prose > .image-gallery:first-child,
+.prose p + .image-gallery,
+.prose div + .image-gallery {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+  /* Forțează și pentru .prose */
+  .prose .image-gallery {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Elimină spațiu de la paragrafe goale înainte de galerie */
+  .prose p:has(+ .image-gallery) {
+    margin-bottom: 0 !important;
+  }
+
+  /* Mobile - toate pe 1 coloană */
+  @media (max-width: 768px) {
+    .image-gallery {
+      grid-template-columns: 1fr !important;
+      gap: 0rem !important; /* 8px în loc de 16px */
+    }
+  }
+
+  /* Tablet - max 2 coloane */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .image-gallery {
+      grid-template-columns: repeat(min(var(--img-count, 2), 2), 1fr) !important;
+    }
+  }
+
+  .gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: transparent;
+  cursor: pointer;
+  aspect-ratio: 1/1; /* Sau 3/2 sau 4/3 după preferință */
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cropează pentru a umple spațiul */
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+  .gallery-item:hover img {
+    transform: scale(1.02);
+  }
+
+  /* =============================================================================
+     LIGHTBOX
+     ============================================================================= */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #lightbox-img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .lightbox-counter {
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    padding: 1rem;
+    transition: background 0.3s;
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-prev:hover,
+  .lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .lightbox-close {
+    top: 2rem;
+    right: 2rem;
+  }
+
+  .lightbox-prev {
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .lightbox-next {
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Mobile - butoane mai mici */
+  @media (max-width: 768px) {
+    .lightbox-close,
+    .lightbox-prev,
+    .lightbox-next {
+      width: 50px;
+      height: 50px;
+      font-size: 2rem;
+      padding: 0.5rem;
+    }
+
+    .lightbox-close {
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .lightbox-prev {
+      left: 0.5rem;
+    }
+
+    .lightbox-next {
+      right: 0.5rem;
+    }
   }
 </style>
