@@ -72,6 +72,47 @@ const isActive = (path: string) => {
       const theme = savedTheme || systemTheme;
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
+    
+    <!-- Basic Error Tracking & Monitoring -->
+    <script>
+      // Initialize basic error tracking
+      if (typeof window !== 'undefined') {
+        // Track critical errors
+        window.addEventListener('error', (event) => {
+          // Log to console in development
+          if (import.meta.env?.DEV) {
+            console.error('🚨 JavaScript Error:', {
+              message: event.message,
+              source: event.filename,
+              line: event.lineno,
+              col: event.colno,
+              error: event.error
+            });
+          }
+          // In production, you could send to error tracking service
+          // Example: if (window.gtag) window.gtag('event', 'exception', { ... });
+        });
+
+        // Track unhandled promise rejections
+        window.addEventListener('unhandledrejection', (event) => {
+          if (import.meta.env?.DEV) {
+            console.error('🚨 Unhandled Promise Rejection:', event.reason);
+          }
+        });
+
+        // Track resource loading errors
+        window.addEventListener('error', (event) => {
+          if (event.target && (event.target as HTMLElement).tagName) {
+            const target = event.target as HTMLElement;
+            if (['IMG', 'SCRIPT', 'LINK'].includes(target.tagName)) {
+              if (import.meta.env?.DEV) {
+                console.warn('⚠️ Resource loading error:', target);
+              }
+            }
+          }
+        }, true);
+      }
+    </script>
   </head>
   <body class="font-sans bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light transition-colors min-h-screen flex flex-col">
     <a 
