@@ -142,3 +142,89 @@ const relatedPosts = allPosts
     </div>
   </section>
 </Layout>
+
+<!-- YOUTUBE EMBED AUTO - adăugat la final -->
+<script>
+  function embedYouTube() {
+    const content = document.querySelector('.prose');
+    if (!content) return;
+
+    const paragraphs = content.querySelectorAll('p');
+    
+    paragraphs.forEach((p: Element) => {
+      const link = p.querySelector('a[href*="youtube.com/watch"], a[href*="youtu.be/"]') as HTMLAnchorElement | null;
+      const text = p.textContent?.trim() || '';
+      
+      // Caz 1: Link ca <a> element
+      if (link && (p as HTMLElement).innerText.trim() === link.innerText.trim()) {
+        const videoId = extractVideoId(link.href);
+        if (videoId) replaceWithEmbed(p as HTMLElement, videoId);
+      }
+      // Caz 2: Link ca text simplu
+      else if (!link && /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/.test(text)) {
+        const match = text.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+        if (match) replaceWithEmbed(p as HTMLElement, match[1]);
+      }
+    });
+  }
+
+  function extractVideoId(url: string): string | null {
+    try {
+      const urlObj = new URL(url);
+      if (urlObj.hostname.includes('youtu.be')) {
+        return urlObj.pathname.slice(1).split('?')[0];
+      } else {
+        return urlObj.searchParams.get('v');
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  function replaceWithEmbed(element: HTMLElement, videoId: string) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'video-container';
+    wrapper.innerHTML = `
+      <iframe
+        src="https://www.youtube.com/embed/${videoId}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
+    `;
+    element.replaceWith(wrapper);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', embedYouTube);
+  } else {
+    embedYouTube();
+  }
+</script>
+
+<style is:global>
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+    height: 0;
+    overflow: hidden;
+    margin: 2rem 0;
+    border-radius: 16px;
+    background: #000;
+  }
+  
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Stiluri pentru dark mode */
+  :global(.dark) .video-container {
+    background: #1a1a1a;
+  }
+</style>

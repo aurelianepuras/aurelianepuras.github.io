@@ -6,6 +6,7 @@ import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
 import sitemap from '@astrojs/sitemap';
 
+
 // Detectăm mediul pentru a NU încărca Keystatic în producție
 const isProduction = process.env.NODE_ENV === 'production';
 
