@@ -57,12 +57,16 @@ const musicSchema = {
       "image": `https://aurelianepuras.github.io${albumCover}`,
       "datePublished": "2023",
       "numTracks": tracks.length,
-      "track": tracks.map(track => {
+      "track": tracks.map((track, index) => {
         const isoDuration = toIsoDuration(track.duration) || toIsoDuration('4:32');
         return {
           "@type": "MusicRecording",
+          "position": index + 1,
           "name": track.title,
-          "duration": isoDuration
+          "url": `https://aurelianepuras.github.io/muzica/#track-${track.id}`,
+          "byArtist": { "@id": "https://aurelianepuras.github.io/#person" },
+          "duration": isoDuration,
+          "inAlbum": { "@id": "https://aurelianepuras.github.io/muzica/#album" }
         };
       })
     },

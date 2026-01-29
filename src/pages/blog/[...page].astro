@@ -32,12 +32,16 @@ const blogListSchema = {
       "@id": "https://aurelianepuras.github.io/blog/#blog",
       "name": "Blog Aurelian Epuraș",
       "description": description,
+      "inLanguage": "ro-RO",
+      "isPartOf": { "@id": "https://aurelianepuras.github.io/#website" },
+      "author": { "@id": "https://aurelianepuras.github.io/#person" },
       "publisher": { "@id": "https://aurelianepuras.github.io/#person" },
       "blogPost": page.data.map((post) => ({
         "@type": "BlogPosting",
         "headline": post.data.title,
         "url": `https://aurelianepuras.github.io/blog/${post.slug}/`,
-        "datePublished": new Date(post.data.date).toISOString()
+        "datePublished": new Date(post.data.date).toISOString(),
+        "inLanguage": "ro-RO"
       }))
     },
     {
