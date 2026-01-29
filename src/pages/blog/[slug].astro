@@ -255,7 +255,7 @@ const relatedPosts = allPosts
 
       // CAZ 1: Multiple imagini în ACELAȘI paragraf (fără rânduri goale în Markdown)
       const imgsInParagraph = Array.from(p.querySelectorAll('img')) as HTMLImageElement[];
-      if (imgsInParagraph.length >= 2 && imgsInParagraph.length <= 10) {
+      if (imgsInParagraph.length >= 2) {
         createGalleryFromImages(p, imgsInParagraph);
         processed.add(p);
         return;
@@ -280,8 +280,8 @@ const relatedPosts = allPosts
         }
       }
 
-      // Dacă sunt 2-10 imagini consecutive, creează galerie
-      if (group.length >= 2 && group.length <= 10) {
+      // Dacă sunt 2+ imagini consecutive, creează galerie (max 6 pe rând)
+      if (group.length >= 2) {
         createGallery(group);
         processed.add(p);
       }
@@ -292,17 +292,8 @@ const relatedPosts = allPosts
   function createGalleryFromImages(paragraph: HTMLParagraphElement, images: HTMLImageElement[]) {
     const gallery = document.createElement('div');
     gallery.className = 'image-gallery';
-    
-    const count = images.length;
-    
-    // Logică inteligentă pentru layout
-    if (count === 4) {
-      gallery.style.setProperty('--img-count', '2');
-    } else if (count > 4) {
-      gallery.style.setProperty('--img-count', '3');
-    } else {
-      gallery.style.setProperty('--img-count', count.toString());
-    }
+    // 4 imagini pe rând pe site (format 1:1)
+    gallery.style.setProperty('--img-count', '4');
 
     const localGalleryImages: HTMLImageElement[] = [];
 
@@ -330,17 +321,8 @@ const relatedPosts = allPosts
   function createGallery(paragraphs: HTMLParagraphElement[]) {
     const gallery = document.createElement('div');
     gallery.className = 'image-gallery';
-    
-    const count = paragraphs.length;
-    
-    // Logică inteligentă pentru layout
-    if (count === 4) {
-      gallery.style.setProperty('--img-count', '2');
-    } else if (count > 4) {
-      gallery.style.setProperty('--img-count', '3');
-    } else {
-      gallery.style.setProperty('--img-count', count.toString());
-    }
+    // 4 imagini pe rând pe site
+    gallery.style.setProperty('--img-count', '4');
 
     const images: HTMLImageElement[] = [];
 
@@ -493,14 +475,37 @@ const relatedPosts = allPosts
   }
 
   /* =============================================================================
-     IMAGE GALLERIES
+     IMAGE GALLERIES – 4 imagini pe rând, format 1:1
      ============================================================================= */
   .image-gallery {
   display: grid;
-  grid-template-columns: repeat(var(--img-count, 3), 1fr);
-  gap: 1.25rem;
-  margin: 0.25rem 0 2rem 0 !important; /* 4px sus - foarte puțin */
+  grid-template-columns: repeat(var(--img-count, 4), 1fr);
+  gap: 0.75rem;
+  margin: 1.25rem 0 !important;
+  row-gap: 0.75rem;
+  column-gap: 0.75rem;
 }
+
+  /* Fallback: paragrafe cu mai multe imagini – grid 4 coloane, 1:1 */
+  .prose p:has(img:nth-of-type(2)) {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin: 1.25rem 0 !important;
+  }
+  .prose p:has(img:nth-of-type(2)) img {
+    aspect-ratio: 1 !important;
+    object-fit: cover !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px;
+  }
+  @media (max-width: 640px) {
+    .prose p:has(img:nth-of-type(2)) { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+  }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .prose p:has(img:nth-of-type(2)) { grid-template-columns: repeat(4, 1fr); }
+  }
 
 /* ADAUGĂ ACEST BLOC NOU */
 .prose > .image-gallery:first-child,
@@ -521,28 +526,29 @@ const relatedPosts = allPosts
     margin-bottom: 0 !important;
   }
 
-  /* Mobile - toate pe 1 coloană */
-  @media (max-width: 768px) {
+  /* Mobile - 2 coloane */
+  @media (max-width: 640px) {
     .image-gallery {
-      grid-template-columns: 1fr !important;
-      gap: 1.25rem !important; /* ACEEAȘI DISTANȚĂ ca pe desktop */
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 0.5rem !important;
     }
   }
 
-  /* Tablet - max 2 coloane */
-  @media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet - 4 coloane (ca pe desktop) */
+  @media (min-width: 641px) and (max-width: 1024px) {
     .image-gallery {
-      grid-template-columns: repeat(min(var(--img-count, 2), 2), 1fr) !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 0.75rem !important;
     }
   }
 
   .gallery-item {
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 12px;
   background: transparent;
   cursor: pointer;
-  aspect-ratio: 1/1; /* Sau 3/2 sau 4/3 după preferință */
+  aspect-ratio: 1 / 1; /* format 1:1 ca în editor */
 }
 
 .gallery-item img {
