@@ -20,8 +20,12 @@ const { page } = Astro.props;
 
 const title = "Video | Aurelian Epuraș (Epuras)";
 const description = "Urmărește interpretările lui Aurelian Epuraș (Epuras). Videoclipuri din concerte live, sesiuni de studio și compoziții la pian care surprind emoția momentului.";
-const image = "/uploads/images/Aurelian-Epuras.jpg"; 
+const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Video Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
+
+// Generer URL corect pentru pagina curenta
+const pageUrl = page.currentPage > 1 ? `/video/${page.currentPage}/` : '/video/';
+const pageId = `https://aurelianepuras.github.io${pageUrl}`;
 
 // Schema optimizată: VideoObject îi spune lui Google că ai conținut video real, nu doar o listă
 const videoSchema = {
@@ -29,8 +33,8 @@ const videoSchema = {
   "@graph": [
     {
       "@type": "WebPage",
-      "@id": `https://aurelianepuras.github.io/video/${page.currentPage > 1 ? page.currentPage : ''}`,
-      "url": `https://aurelianepuras.github.io/video/${page.currentPage > 1 ? page.currentPage : ''}`,
+      "@id": `${pageId}#webpage`,
+      "url": pageId,
       "name": title,
       "isPartOf": { "@id": "https://aurelianepuras.github.io/#website" },
       "breadcrumb": { "@id": "https://aurelianepuras.github.io/video/#breadcrumb" }
@@ -43,14 +47,15 @@ const videoSchema = {
         { "@type": "ListItem", "position": 2, "item": { "@id": "https://aurelianepuras.github.io/video/", "name": "Video" } }
       ]
     },
-    ...page.data.map((video) => ({
+    ...page.data.map((video, index) => ({
       "@type": "VideoObject",
+      "@id": `https://aurelianepuras.github.io/video/#video-${index + 1}`,
       "name": video.data.title,
       "description": video.data.description || description,
-     "thumbnailUrl": `https://aurelianepuras.github.io${video.data.thumbnail || '/uploads/images/aurelian-epuras-square.webp'}`, // Am adăugat o variantă de rezervă ca să nu mai apară 'undefined'
+      "thumbnailUrl": `https://aurelianepuras.github.io${video.data.thumbnail || '/uploads/images/aurelian-epuras-square.webp'}`,
       "uploadDate": video.data.pubDate,
       "contentUrl": video.data.external_url,
-      "author": { 
+      "author": {
         "@type": "Person",
         "name": "Aurelian Epuraș",
         "url": "https://aurelianepuras.github.io/"
