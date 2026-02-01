@@ -16,6 +16,8 @@ const { title, external_url, thumbnail, description } = Astro.props;
         <img
           src={thumbnail}
           alt={title}
+          width="640"
+          height="360"
           loading="lazy"
           decoding="async"
           class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

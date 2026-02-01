@@ -5,6 +5,8 @@ import react from '@astrojs/react';
 import markdoc from '@astrojs/markdoc';
 import keystatic from '@keystatic/astro';
 import sitemap from '@astrojs/sitemap';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 
 // Detectăm mediul pentru a NU încărca Keystatic în producție
@@ -54,7 +56,24 @@ export default defineConfig({
       exclude: [
         '@markdoc/markdoc'
       ]
-    }
+    },
+    plugins: [
+      {
+        name: 'patch-content-modules',
+        buildStart() {
+          const contentModulesPath = join(process.cwd(), '.astro', 'content-modules.mjs');
+          if (!existsSync(contentModulesPath)) return;
+          let content = readFileSync(contentModulesPath, 'utf8');
+          const oldFlatPath = /(fileName=)(src%2Fcontent%2Fblog%2F)([^%&]+)(\.mdoc)/g;
+          const patched = content.replace(oldFlatPath, (full) => {
+            if (full.includes('%2Findex.mdoc')) return full;
+            const m = full.match(/(fileName=)(src%2Fcontent%2Fblog%2F)([^%&]+)(\.mdoc)/);
+            return m ? `${m[1]}${m[2]}${m[3]}%2Findex${m[4]}` : full;
+          });
+          if (patched !== content) writeFileSync(contentModulesPath, patched);
+        }
+      }
+    ]
   }
 });
 

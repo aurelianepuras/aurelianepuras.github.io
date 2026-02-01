@@ -6,7 +6,7 @@ describe('ScrollToTop', () => {
   let scrollToMock: ReturnType<typeof vi.fn>
 
   beforeEach(() => {
-    scrollToMock = vi.fn() as typeof window.scrollTo
+    scrollToMock = vi.fn()
     window.scrollTo = scrollToMock
     // Reset scroll position
     Object.defineProperty(window, 'scrollY', {

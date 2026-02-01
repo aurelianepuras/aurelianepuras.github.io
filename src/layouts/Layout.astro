@@ -43,7 +43,6 @@ const isActive = (path: string) => {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" as="style" />
-    <link rel="preload" href="/uploads/images/Aurelian-Epuras.jpg" as="image" />
     <link rel="dns-prefetch" href="https://www.youtube.com" />
     <link rel="dns-prefetch" href="https://api.emailjs.com" />
     <link href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -228,6 +227,17 @@ const isActive = (path: string) => {
 
     <style is:global>
       html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+      /* Accesibilitate: focus vizibil la navigare cu tastatura */
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid #c9a227;
+        outline-offset: 2px;
+      }
+      .dark a:focus-visible,
+      .dark button:focus-visible {
+        outline-color: #e8d48a;
+      }
 
       /* Hamburger Animation */
       #mobile-menu-toggle.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); width: 1.5rem; }

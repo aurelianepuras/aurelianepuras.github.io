@@ -151,6 +151,8 @@ src/content/blog/de-37-de-ani-in-dialog-cu-88-de-clape.mdoc
 public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla/cover_image.jpg
 *.jpg
 *.mdoc
+# Excepție: conținutul din src/content trebuie trackat pentru Astro și Keystatic
+!src/content/**/*.mdoc
 *.jpg
 public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla/cover_image.jpg
 src/content/blog/de-37-de-ani-in-dialog-cu-88-de-clape.mdoc
@@ -158,4 +160,3 @@ src/content/blog/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla.mdo
 src/content/blog/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla.mdoc
 src/content/blog/de-37-de-ani-in-dialog-cu-88-de-clape.mdoc
 public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla/cover_image.jpg
-*.mdoc

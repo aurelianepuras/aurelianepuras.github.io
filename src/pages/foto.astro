@@ -13,8 +13,8 @@ const gallery = allPhotos.sort((a, b) => {
   return dateB - dateA;
 });
 
-const title = "Foto | Aurelian Epuraș";
-const description = "Descoperă universul vizual al lui Aurelian Epuraș (Epuras). Imagini din culise, concerte și momentele în care muzica prinde formă.";
+const title = "Galerie foto | Aurelian Epuraș";
+const description = "Explorează galeria foto a pianistului și compozitorului Aurelian Epuraș. Imagini din culise, concerte și momente în care muzica prinde formă.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 
@@ -102,7 +102,7 @@ const photoSchema = {
     </button>
 
     <div class="max-w-5xl w-full flex flex-col items-center">
-      <img id="lightbox-image" src="" alt="Imagine galerie" class="max-h-[80vh] w-auto rounded-lg shadow-2xl" />
+      <img id="lightbox-image" src="" alt="Imagine galerie" class="max-h-[80vh] w-auto rounded-lg shadow-2xl" aria-hidden="true" />
       <p id="lightbox-description" class="mt-4 text-navy dark:text-ivory-light font-medium"></p>
     </div>
 
