@@ -42,11 +42,14 @@ const isActive = (path: string) => {
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" as="style" />
+    <link rel="preload" href="/uploads/images/Aurelian-Epuras.jpg" as="image" />
     <link rel="dns-prefetch" href="https://www.youtube.com" />
     <link rel="dns-prefetch" href="https://api.emailjs.com" />
     <link href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
+    <meta name="title" content={title} />
     <slot name="head" />
     <meta name="description" content={description} />
     {robots && <meta name="robots" content={robots} />}
@@ -72,47 +75,6 @@ const isActive = (path: string) => {
       const theme = savedTheme || systemTheme;
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
-    
-    <!-- Basic Error Tracking & Monitoring -->
-    <script>
-      // Initialize basic error tracking
-      if (typeof window !== 'undefined') {
-        // Track critical errors
-        window.addEventListener('error', (event) => {
-          // Log to console in development
-          if (import.meta.env?.DEV) {
-            console.error('🚨 JavaScript Error:', {
-              message: event.message,
-              source: event.filename,
-              line: event.lineno,
-              col: event.colno,
-              error: event.error
-            });
-          }
-          // In production, you could send to error tracking service
-          // Example: if (window.gtag) window.gtag('event', 'exception', { ... });
-        });
-
-        // Track unhandled promise rejections
-        window.addEventListener('unhandledrejection', (event) => {
-          if (import.meta.env?.DEV) {
-            console.error('🚨 Unhandled Promise Rejection:', event.reason);
-          }
-        });
-
-        // Track resource loading errors
-        window.addEventListener('error', (event) => {
-          if (event.target && (event.target as HTMLElement).tagName) {
-            const target = event.target as HTMLElement;
-            if (['IMG', 'SCRIPT', 'LINK'].includes(target.tagName)) {
-              if (import.meta.env?.DEV) {
-                console.warn('⚠️ Resource loading error:', target);
-              }
-            }
-          }
-        }, true);
-      }
-    </script>
   </head>
   <body class="font-sans bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light transition-colors min-h-screen flex flex-col">
     <a 
@@ -130,12 +92,16 @@ const isActive = (path: string) => {
   <img 
     src="/logo-negru.svg" 
     alt="Aurelian Epuraș" 
+    width="160" 
+    height="56"
     class="h-14 md:h-14 w-auto dark:hidden" 
     onerror="this.style.display='none';"
   />
   <img 
     src="/logo-alb.svg" 
     alt="Aurelian Epuraș" 
+    width="160" 
+    height="56"
     class="h-14 md:h-14 w-auto hidden dark:block" 
     onerror="this.style.display='none';"
   />

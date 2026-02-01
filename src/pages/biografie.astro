@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 
 // AICI definești variabilele pentru seo //
 const title = "Biografie | Aurelian Epuraș";
 const description = "Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte.";
-const image = "/uploads/images/Aurelian-Epuras.jpg"; 
+const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 ---
 
@@ -82,9 +83,12 @@ const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
             <img
               src="/uploads/images/Aurelian-Epuras.jpg"
               alt={imageAlt}
+              width="600"
+              height="400"
               loading="eager"
               fetchpriority="high"
               class="w-full h-full object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
         </div>

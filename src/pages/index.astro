@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 
 const title = "Aurelian Epuraș | Pianist Compozitor";
 const description = "Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.";
@@ -42,8 +43,17 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         "@id": "https://aurelianepuras.github.io/#website",
         "url": "https://aurelianepuras.github.io/",
         "name": "Aurelian Epuraș",
+        "description": "Pianist, Compozitor și Profesor de pian - Muzică Clasică și Contemporană",
         "publisher": {
           "@id": "https://aurelianepuras.github.io/#person"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://aurelianepuras.github.io/blog?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
         }
       },
       {
@@ -54,6 +64,38 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         "isPartOf": { "@id": "https://aurelianepuras.github.io/#website" },
         "about": { "@id": "https://aurelianepuras.github.io/#person" },
         "description": "Aurelian Epuraș - Pianist, Compozitor și Profesor de pian. Descoperă universul muzical, compozițiile originale și povestea unui artist cu peste 37 de ani de experiență."
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://aurelianepuras.github.io/#sections",
+        "name": "Secțiuni principale",
+        "mainEntity": {
+          "@type": "ItemList",
+          "name": "Zonele principale ale site-ului",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Muzica mea",
+              "description": "Ascultă albumele și piesele originale",
+              "url": "https://aurelianepuras.github.io/muzica"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Galerie foto",
+              "description": "Momente din concerte și viața de artist",
+              "url": "https://aurelianepuras.github.io/foto"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Articole din blog",
+              "description": "Gânduri despre muzică, creație și viață",
+              "url": "https://aurelianepuras.github.io/blog"
+            }
+          ]
+        }
       }
     ]
   }
@@ -108,7 +150,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         <div class="group">
           <a href="/muzica" class="block">
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <img src="/uploads/images/muzica.jpg" alt="Muzica mea" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <img src="/uploads/images/muzica.jpg" alt="Muzica mea" width="400" height="300" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
             </div>
             <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight">Muzica mea</h3>
@@ -118,7 +160,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         <div class="group">
           <a href="/foto" class="block">
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <img src="/uploads/images/galerie.jpg" alt="Galerie foto" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <img src="/uploads/images/galerie.jpg" alt="Galerie foto" width="400" height="300" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
             </div>
             <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight">Galerie foto</h3>
@@ -128,7 +170,7 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         <div class="group">
           <a href="/blog" class="block">
             <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <img src="/uploads/images/blog.jpg" alt="Blog" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <img src="/uploads/images/blog.jpg" alt="Blog" width="400" height="300" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
             </div>
             <h3 class="font-serif text-3xl text-gold-warm dark:text-gold-bright mb-3 leading-tight">Articole din blog</h3>
