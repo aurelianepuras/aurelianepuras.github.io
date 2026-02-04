@@ -4,14 +4,22 @@ export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = useCallback(() => {
-    if (window.scrollY > 300) {
-      setIsVisible(true);
+    if (typeof window === 'undefined') return;
+    const { scrollY, innerHeight } = window;
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      // Pe mobil: apare doar când te apropie de footer (puțin deasupra)
+      const scrollHeight = document.documentElement.scrollHeight;
+      const footerApproach = 350;
+      setIsVisible(scrollY + innerHeight > scrollHeight - footerApproach);
     } else {
-      setIsVisible(false);
+      // Pe desktop: apare după un scroll moderat
+      setIsVisible(scrollY > 300);
     }
   }, []);
 
   useEffect(() => {
+    toggleVisibility();
     window.addEventListener('scroll', toggleVisibility);
 
     return () => {
