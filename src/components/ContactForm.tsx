@@ -66,7 +66,7 @@ export default function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-ivory-card dark:bg-navy-card border border-navy/10 dark:border-ivory-light/10 p-8 rounded-2xl space-y-6">
+    <form onSubmit={handleSubmit} className="bg-ivory-card dark:bg-navy-card p-8 rounded-2xl shadow-lg space-y-6">
       <div>
         {/* Câmp honeypot invizibil pentru utilizatori, poziționat off-screen pentru boți */}
         <div
@@ -96,7 +96,7 @@ export default function ContactForm() {
           value={formData.name}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/20 dark:border-ivory-light/20 text-navy dark:text-ivory-light focus:border-gold-warm dark:focus:border-gold-bright focus:ring-2 focus:ring-gold-warm/20 dark:focus:ring-gold-bright/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="Numele tău"
         />
       </div>
@@ -113,7 +113,7 @@ export default function ContactForm() {
           value={formData.email}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/20 dark:border-ivory-light/20 text-navy dark:text-ivory-light focus:border-gold-warm dark:focus:border-gold-bright focus:ring-2 focus:ring-gold-warm/20 dark:focus:ring-gold-bright/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="email@example.com"
         />
       </div>
@@ -130,7 +130,7 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/20 dark:border-ivory-light/20 text-navy dark:text-ivory-light focus:border-gold-warm dark:focus:border-gold-bright focus:ring-2 focus:ring-gold-warm/20 dark:focus:ring-gold-bright/20 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="Scrie mesajul tău aici..."
         ></textarea>
       </div>

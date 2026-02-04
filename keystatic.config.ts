@@ -91,54 +91,55 @@ export default config({
       },
     }),
   },
-  singletons: {
-    home: singleton({
-      label: 'Pagina Home',
-      path: 'src/content/pages/home',
-      schema: {
-        meta_title: fields.text({ label: 'Meta Title (SEO)' }),
-        meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
-        hero_title: fields.text({ label: 'Hero Title', multiline: true }),
-        hero_subtitle: fields.text({ label: 'Hero Subtitle', multiline: true }),
-        hero_image: fields.image({
-          label: 'Hero Image',
-          directory: 'public/uploads/images',
-          publicPath: '/uploads/images/',
-        }),
-      },
-    }),
-    biografie: singleton({
-      label: 'Biografie',
-      path: 'src/content/pages/biografie',
-      schema: {
-        meta_title: fields.text({ label: 'Meta Title (SEO)' }),
-        meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
-        profile_photo: fields.image({
-          label: 'Fotografie Profil',
-          directory: 'public/uploads/images',
-          publicPath: '/uploads/images/',
-        }),
-        content: fields.markdoc({ label: 'Conținut Biografie' }),
-      },
-    }),
-    contact: singleton({
-      label: 'Contact',
-      path: 'src/content/pages/contact',
-      schema: {
-        meta_title: fields.text({ label: 'Meta Title (SEO)' }),
-        meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
-        email: fields.text({ label: 'Email' }),
-        phone: fields.text({ label: 'Telefon' }),
-      },
-    }),
-    social: singleton({
-      label: 'Social Media',
-      path: 'src/content/pages/social',
-      schema: {
-        youtube: fields.url({ label: 'YouTube URL' }),
-        facebook: fields.url({ label: 'Facebook URL' }),
-        instagram: fields.url({ label: 'Instagram URL' }),
-      },
-    }),
-  },
+  // Singletons dezactivate – decomentează blocul de mai jos pentru a le reactiva
+  // singletons: {
+  //   home: singleton({
+  //     label: 'Pagina Home',
+  //     path: 'src/content/pages/home',
+  //     schema: {
+  //       meta_title: fields.text({ label: 'Meta Title (SEO)' }),
+  //       meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
+  //       hero_title: fields.text({ label: 'Hero Title', multiline: true }),
+  //       hero_subtitle: fields.text({ label: 'Hero Subtitle', multiline: true }),
+  //       hero_image: fields.image({
+  //         label: 'Hero Image',
+  //         directory: 'public/uploads/images',
+  //         publicPath: '/uploads/images/',
+  //       }),
+  //     },
+  //   }),
+  //   biografie: singleton({
+  //     label: 'Biografie',
+  //     path: 'src/content/pages/biografie',
+  //     schema: {
+  //       meta_title: fields.text({ label: 'Meta Title (SEO)' }),
+  //       meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
+  //       profile_photo: fields.image({
+  //         label: 'Fotografie Profil',
+  //         directory: 'public/uploads/images',
+  //         publicPath: '/uploads/images/',
+  //       }),
+  //       content: fields.markdoc({ label: 'Conținut Biografie' }),
+  //     },
+  //   }),
+  //   contact: singleton({
+  //     label: 'Contact',
+  //     path: 'src/content/pages/contact',
+  //     schema: {
+  //       meta_title: fields.text({ label: 'Meta Title (SEO)' }),
+  //       meta_description: fields.text({ label: 'Meta Description (SEO)', multiline: true }),
+  //       email: fields.text({ label: 'Email' }),
+  //       phone: fields.text({ label: 'Telefon' }),
+  //     },
+  //   }),
+  //   social: singleton({
+  //     label: 'Social Media',
+  //     path: 'src/content/pages/social',
+  //     schema: {
+  //       youtube: fields.url({ label: 'YouTube URL' }),
+  //       facebook: fields.url({ label: 'Facebook URL' }),
+  //       instagram: fields.url({ label: 'Instagram URL' }),
+  //     },
+  //   }),
+  // },
 });

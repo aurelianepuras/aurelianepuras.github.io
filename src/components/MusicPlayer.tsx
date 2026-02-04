@@ -138,8 +138,9 @@ export default function MusicPlayer({
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="space-y-6">
-      <div className="bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden border border-navy/10 dark:border-ivory-light/10">
+    <>
+    <div className="grid gap-6 md:grid-cols-[1fr_minmax(280px,360px)]">
+      <div className="bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg">
         <div className="grid md:grid-cols-[300px_1fr] gap-0">
           <div className="relative aspect-square md:aspect-auto">
             <img
@@ -153,14 +154,14 @@ export default function MusicPlayer({
 
           <div className="p-6 md:p-8 flex flex-col justify-between">
             <div>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-navy dark:text-ivory-light mb-2">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[hsl(220,10%,50%)] mb-2">
                 {albumTitle}
               </h2>
-              <p className="text-lg text-navy/70 dark:text-ivory-light/70 mb-8">
+              <p className="text-lg text-[hsl(30,25%,75%)] mb-8">
                 {artist}
               </p>
               {hasTracks && (
-                <p className="text-gold-warm dark:text-gold-bright font-medium mb-8">
+                <p className="text-[hsl(220,10%,50%)] font-medium mb-8">
                   {currentTrack?.title}
                 </p>
               )}
@@ -288,13 +289,13 @@ export default function MusicPlayer({
                         className={`font-medium ${
                           index === currentTrackIndex
                             ? 'text-gold-warm dark:text-gold-bright'
-                            : 'text-navy dark:text-ivory-light'
+                            : 'text-[hsl(220,10%,50%)]'
                         }`}
                       >
                         {track.title}
                       </span>
                     </div>
-                    <span className="text-sm text-navy/60 dark:text-ivory-light/60">
+                    <span className="text-sm text-[hsl(30,25%,75%)]">
                       {track.duration}
                     </span>
                   </button>
@@ -306,29 +307,30 @@ export default function MusicPlayer({
       </div>
 
       {(albumDescription || productionNotes) && (
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-6 h-full min-h-0">
           {albumDescription && (
-            <div className="bg-ivory-card dark:bg-navy-card rounded-2xl p-8 border border-navy/10 dark:border-ivory-light/10">
-              <h3 className="font-serif text-2xl font-bold text-navy dark:text-ivory-light mb-4">
+            <div className={`bg-ivory-card dark:bg-navy-card rounded-2xl p-8 shadow-lg flex flex-col justify-center ${productionNotes ? 'flex-shrink-0' : 'flex-1 min-h-0'}`}>
+              <h3 className="font-serif text-2xl font-bold text-[hsl(220,10%,50%)] mb-4">
                 Despre acest album
               </h3>
-              <p className="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+              <p className="text-[hsl(30,25%,75%)] leading-relaxed">
                 {albumDescription}
               </p>
             </div>
           )}
           {productionNotes && (
-            <div className="bg-ivory-card dark:bg-navy-card rounded-2xl p-8 border border-navy/10 dark:border-ivory-light/10">
-              <h3 className="font-serif text-2xl font-bold text-navy dark:text-ivory-light mb-4">
+            <div className="bg-ivory-card dark:bg-navy-card rounded-2xl p-8 shadow-lg flex-1 min-h-0 flex flex-col justify-center">
+              <h3 className="font-serif text-2xl font-bold text-[hsl(220,10%,50%)] mb-4">
                 Note de producție
               </h3>
-              <p className="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
+              <p className="text-[hsl(30,25%,75%)] leading-relaxed">
                 {productionNotes}
               </p>
             </div>
           )}
         </div>
       )}
+    </div>
 
       {hasTracks && (
         <audio
@@ -360,6 +362,6 @@ export default function MusicPlayer({
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 }

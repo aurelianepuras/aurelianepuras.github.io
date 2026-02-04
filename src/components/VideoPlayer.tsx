@@ -35,7 +35,7 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
   };
 
   return (
-    <article className="group bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border border-navy/10 dark:border-ivory-light/10">
+    <article className="group bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
       <div className="relative aspect-video overflow-hidden bg-ivory dark:bg-navy-deep">
         {!isPlaying ? (
           <>
@@ -63,14 +63,14 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
   {/* Overlay negru care apare la hover */}
   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
   
-  {/* Butonul rotund care apare la hover */}
-  <div className="relative w-14 h-14 bg-gold-warm/80 dark:bg-gold-bright/80 rounded-full flex items-center justify-center backdrop-blur-sm shadow-2xl opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
-    <svg className="w-6 h-6 text-navy ml-1" fill="currentColor" viewBox="0 0 24 24">
+  {/* Butonul rotund care apare la hover – roșu YouTube */}
+  <div className="relative w-11 h-11 bg-[#FF0000] rounded-full flex items-center justify-center backdrop-blur-sm shadow-xl opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
+    <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
       <path d="M8 5v14l11-7z"/>
     </svg>
   </div>
 </button>
-            <div className="absolute top-3 right-3 bg-gold-warm dark:bg-gold-bright text-navy px-3 py-1 rounded-2xl text-xs font-semibold">
+            <div className="absolute top-3 right-3 bg-[#FF0000] text-white px-3 py-1 rounded-2xl text-xs font-semibold">
               YouTube
             </div>
           </>
@@ -88,12 +88,12 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
       </div>
       <div className="p-6">
         {/* Titlu setat direct pe Auriu (text-gold-warm / text-gold-bright) */}
-        <h3 className="font-serif text-2xl md:text-[27px] text-gold-warm/90 dark:text-gold-bright/90 mb-2 leading-tight line-clamp-2">
-  {title}
-</h3>
+        <h3 className="font-serif text-2xl md:text-[27px] text-[hsl(220,10%,50%)] mb-2 leading-tight line-clamp-2">
+          {title}
+        </h3>
         
         {description && (
-          <p className="mt-3 text-navy/70 dark:text-ivory-light/70 line-clamp-2">
+          <p className="mt-3 text-[hsl(30,25%,75%)] line-clamp-2">
             {description}
           </p>
         )}
