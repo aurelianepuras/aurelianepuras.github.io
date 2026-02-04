@@ -153,6 +153,8 @@ public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzoll
 *.mdoc
 # Excepție: conținutul din src/content trebuie trackat pentru Astro și Keystatic
 !src/content/**/*.mdoc
+# Excepție: imaginea hero pentru pagina principală
+!public/uploads/images/hero.jpg
 *.jpg
 public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla/cover_image.jpg
 src/content/blog/de-37-de-ani-in-dialog-cu-88-de-clape.mdoc
