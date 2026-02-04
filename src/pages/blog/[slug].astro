@@ -113,11 +113,11 @@ const relatedPosts = allPosts
   <article class="pt-12 pb-10 bg-ivory dark:bg-navy-deep">
     <div class="container mx-auto px-4 max-w-5xl">
       <header class="mb-0">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-center text-navy dark:text-ivory-light mb-8 leading-tight">
+        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-left lg:text-center text-navy dark:text-ivory-light mb-8 leading-tight">
           {post.data.title}
         </h1>
 
-        <div class="flex flex-wrap items-center justify-center gap-4 text-navy/60 dark:text-ivory-light/60 mb-12 text-sm md:text-base">
+        <div class="flex flex-wrap items-center justify-start lg:justify-center gap-4 text-navy/60 dark:text-ivory-light/60 mb-12 text-sm md:text-base">
           <span>{post.data.author || 'Aurelian Epuraș'}</span>
           <span class="hidden md:inline">•</span>
           <time>{formattedDate}</time>
@@ -140,7 +140,7 @@ const relatedPosts = allPosts
         )}
 
         {post.data.description && (
-          <p class="text-lg text-center text-navy/70 dark:text-ivory-light/70 max-w-3xl mx-auto leading-relaxed mb-0">
+          <p class="font-serif text-[1.4625rem] lg:text-lg text-left lg:text-center text-navy/70 dark:text-ivory-light/70 max-w-3xl mr-auto lg:mx-auto leading-relaxed mb-0">
             {post.data.description}
           </p>
         )}
