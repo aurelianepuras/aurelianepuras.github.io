@@ -152,16 +152,16 @@ export default function MusicPlayer({
             />
           </div>
 
-          <div className="p-6 md:p-8 flex flex-col justify-between">
+              <div className="p-6 md:p-8 flex flex-col justify-between">
             <div>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[hsl(220,10%,50%)] mb-2">
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-2">
                 {albumTitle}
               </h2>
-              <p className="text-lg text-[hsl(30,25%,75%)] mb-8">
+              <p className="text-lg text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] mb-8">
                 {artist}
               </p>
               {hasTracks && (
-                <p className="text-[hsl(220,10%,50%)] font-medium mb-8">
+                <p className="text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] font-medium mb-8">
                   {currentTrack?.title}
                 </p>
               )}
@@ -288,14 +288,14 @@ export default function MusicPlayer({
                       <span
                         className={`font-medium ${
                           index === currentTrackIndex
-                            ? 'text-gold-warm dark:text-gold-bright'
-                            : 'text-[hsl(220,10%,50%)]'
+                            ? 'text-navy/70 dark:text-ivory-light/70'
+                            : 'text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)]'
                         }`}
                       >
                         {track.title}
                       </span>
                     </div>
-                    <span className="text-sm text-[hsl(30,25%,75%)]">
+                    <span className="text-sm text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)]">
                       {track.duration}
                     </span>
                   </button>
@@ -310,20 +310,20 @@ export default function MusicPlayer({
         <div className="flex flex-col gap-6 h-full min-h-0">
           {albumDescription && (
             <div className={`bg-ivory-card dark:bg-navy-card rounded-2xl p-8 shadow-lg flex flex-col justify-center ${productionNotes ? 'flex-shrink-0' : 'flex-1 min-h-0'}`}>
-              <h3 className="font-serif text-2xl font-bold text-[hsl(220,10%,50%)] mb-4">
+              <h3 className="font-serif text-2xl font-bold text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-4">
                 Despre acest album
               </h3>
-              <p className="text-[hsl(30,25%,75%)] leading-relaxed">
+              <p className="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">
                 {albumDescription}
               </p>
             </div>
           )}
           {productionNotes && (
             <div className="bg-ivory-card dark:bg-navy-card rounded-2xl p-8 shadow-lg flex-1 min-h-0 flex flex-col justify-center">
-              <h3 className="font-serif text-2xl font-bold text-[hsl(220,10%,50%)] mb-4">
+              <h3 className="font-serif text-2xl font-bold text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-4">
                 Note de producție
               </h3>
-              <p className="text-[hsl(30,25%,75%)] leading-relaxed">
+              <p className="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">
                 {productionNotes}
               </p>
             </div>

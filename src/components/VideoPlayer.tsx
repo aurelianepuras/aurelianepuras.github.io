@@ -88,12 +88,12 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
       </div>
       <div className="p-6">
         {/* Titlu setat direct pe Auriu (text-gold-warm / text-gold-bright) */}
-        <h3 className="font-serif text-2xl md:text-[27px] text-[hsl(220,10%,50%)] mb-2 leading-tight line-clamp-2">
+        <h3 className="font-serif text-2xl md:text-[27px] text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-2 leading-tight line-clamp-2">
           {title}
         </h3>
         
         {description && (
-          <p className="mt-3 text-[hsl(30,25%,75%)] line-clamp-2">
+          <p className="mt-3 text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] line-clamp-2">
             {description}
           </p>
         )}

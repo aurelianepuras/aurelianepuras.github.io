@@ -33,13 +33,13 @@ const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
       </div>
     )}
     <div class="p-6">
-      {/* Titlu – gri-albăstrui (ca la video) */}
-      <h3 class="font-serif text-[1.65rem] md:text-[27px] text-[hsl(220,10%,50%)] mb-3 leading-tight line-clamp-2">
+      {/* Titlu – gri neutru (ca la video / index) */}
+      <h3 class="font-serif text-[1.65rem] md:text-[27px] text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-3 leading-tight line-clamp-2">
         {title}
       </h3>
       
       {description && (
-        <p class="text-[1.05rem] md:text-base text-[hsl(30,25%,75%)] line-clamp-2 mb-4">
+        <p class="text-[1.05rem] md:text-base text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] line-clamp-2 mb-4">
           {description}
         </p>
       )}

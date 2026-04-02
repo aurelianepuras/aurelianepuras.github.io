@@ -96,7 +96,7 @@ export default function ContactForm() {
           value={formData.name}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light placeholder:text-navy/60 dark:placeholder:text-ivory-light/60 focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="Numele tău"
         />
       </div>
@@ -113,7 +113,7 @@ export default function ContactForm() {
           value={formData.email}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light placeholder:text-navy/60 dark:placeholder:text-ivory-light/60 focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="email@example.com"
         />
       </div>
@@ -130,7 +130,7 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           disabled={status === 'loading'}
-          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-3 rounded-2xl bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light placeholder:text-navy/60 dark:placeholder:text-ivory-light/60 focus:ring-2 focus:ring-gold-warm/30 dark:focus:ring-gold-bright/30 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="Scrie mesajul tău aici..."
         ></textarea>
       </div>
