@@ -471,6 +471,12 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .ft-copy, .ft-legal { font: 400 11px "Geist Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
       .ft-legal { display: flex; gap: 24px; }
       .ft-legal a:hover { color: var(--accent); }
+      @media (max-width: 760px) {
+        /* pe mobil: textul sus, persoana din poză jos, fără suprapunere */
+        .ft-stage { justify-content: space-between; }
+        .ft-stage::before { background-position: center 100%; background-size: auto 78%; }
+        .ft-cta { padding-top: 96px; padding-bottom: 40px; }
+      }
       @media (max-width: 1000px) { .ft-body { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
       @media (max-width: 560px) { .ft-body { grid-template-columns: 1fr; } .ft-cta-r > * { flex: 1 1 100%; } }
       .ft-top { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--fg); transition: background .3s, color .3s, border-color .3s, opacity .3s, transform .3s; }
