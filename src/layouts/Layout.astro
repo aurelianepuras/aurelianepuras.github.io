@@ -474,7 +474,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       @media (max-width: 760px) {
         /* pe mobil: textul sus, apoi poza (lățime întreagă, mărită), apoi numele — fără goluri */
         .ft-stage { justify-content: flex-start; min-height: 0; }
-        .ft-stage::before { inset: 0; opacity: .7; background-position: center bottom; background-size: 150% auto; -webkit-mask-image: linear-gradient(180deg, transparent 30%, #000 55%); mask-image: linear-gradient(180deg, transparent 30%, #000 55%); }
+        /* poza ocupă doar zona de sub butoane; masca pornește de la marginea ei de sus, deci nu apare nicio linie */
+        .ft-stage::before { inset: auto 0 0 0; height: calc(100vw + 110px); opacity: .9; background-position: center 30%; background-size: cover; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 45%); mask-image: linear-gradient(180deg, transparent 0%, #000 45%); }
         .ft-cta { padding-top: 88px; padding-bottom: calc(100vw - 150px); }
       }
       @media (max-width: 1000px) { .ft-body { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
