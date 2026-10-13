@@ -63,32 +63,30 @@ const photoSchema = {
   {/* ACEASTĂ LINIE ESTE ESENȚIALĂ PENTRU VERIFICARE: */}
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(photoSchema)} />
   
-  <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12 max-w-5xl mx-auto">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Galerie foto</h1>
-        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-        
-        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed not-italic">
-          Fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit. 
-          Sunt fragmente vizuale care surprind emoția momentului, pasiunea din studio și 
-          legătura pe care o am cu fiecare spațiu în care pianul meu prinde viață.
-        </p>
+  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-foto.webp')">
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">Galerie</p>
+          <h1 class="page-title">Momente <em>de scenă</em></h1>
+        </div>
+        <p>Fiecare imagine spune o poveste din spatele scenei, chiar și după ce muzica s-a oprit. Fragmente care surprind emoția momentului și legătura cu fiecare spațiu în care pianul prinde viață.</p>
       </div>
+    </div>
+  </header>
 
-      <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {gallery.map((item, index) => (
-          <div class="cursor-pointer">
-            <GalleryCard
-              title={item.data.title}
-              image={item.data.image}
-              description={item.data.description}
-              loading={index < 6 ? "eager" : "lazy"}
-              fetchpriority={index < 6 ? "high" : "auto"}
-            />
-          </div>
-        ))}
-      </div>
+  <section class="page">
+    <div id="gallery-grid" class="grid-cards">
+      {gallery.map((item, index) => (
+        <GalleryCard
+          title={item.data.title}
+          image={item.data.image}
+          description={item.data.description}
+          index={index}
+          loading={index < 6 ? "eager" : "lazy"}
+          fetchpriority={index < 3 ? "high" : "auto"}
+        />
+      ))}
     </div>
   </section>
 
@@ -102,8 +100,8 @@ const photoSchema = {
     </button>
 
     <div class="max-w-5xl w-full flex flex-col items-center">
-      <img id="lightbox-image" src="" alt="Imagine galerie" class="max-h-[80vh] w-auto rounded-lg shadow-2xl" aria-hidden="true" />
-      <p id="lightbox-description" class="mt-4 text-navy dark:text-ivory-light font-medium"></p>
+      <img id="lightbox-image" src="" alt="Imagine galerie" class="max-h-[80vh] w-auto" aria-hidden="true" />
+      <p id="lightbox-description" class="mt-5 font-serif text-lg text-navy dark:text-ivory-light"></p>
     </div>
 
     <button id="lightbox-next" aria-label="Imaginea următoare" class="hidden md:flex absolute right-4 md:right-10 text-navy dark:text-ivory-light hover:text-gold-warm z-[10001] p-4 transition-transform hover:scale-110">

@@ -137,200 +137,113 @@ export default function MusicPlayer({
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  const playIcon = isPlaying ? (
+    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg>
+  ) : (
+    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
+  );
+
   return (
     <>
-    <div className="grid gap-6 md:grid-cols-[1fr_minmax(280px,360px)]">
-      <div className="bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg">
-        <div className="grid md:grid-cols-[300px_1fr] gap-0">
-          <div className="relative aspect-square md:aspect-auto">
-            <img
-              src={albumCover}
-              alt={albumTitle}
-              width={300}
-              height={300}
-              className="w-full h-full object-cover"
-            />
+      <div className="mp">
+        <div className={`mp-art ${isPlaying ? 'is-playing' : ''}`}>
+          <div className="mp-vinyl" aria-hidden="true">
+            <div className="mp-label" style={{ backgroundImage: `url(${albumCover})` }} />
+          </div>
+          <div className="mp-sleeve notch">
+            <img src={albumCover} alt={albumTitle} width={600} height={600} />
+          </div>
+        </div>
+
+        <div className="mp-body">
+          <p className="eyebrow">Album</p>
+          <h2 className="mp-title">{albumTitle}</h2>
+          <p className="mp-artist">{artist}</p>
+
+          <div className="mp-now">
+            <button onClick={togglePlay} className="mp-play" aria-label={isPlaying ? 'Pauză' : 'Redă'} disabled={!hasTracks}>
+              {playIcon}
+            </button>
+            <div className="mp-now-text">
+              <small>{isPlaying ? 'Acum se aude' : 'Pregătit'}</small>
+              <b>{currentTrack?.title || currentTrackTitle}</b>
+            </div>
+            <div className="mp-skip">
+              <button onClick={handlePrevious} disabled={currentTrackIndex === 0} aria-label="Piesa anterioară">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" /></svg>
+              </button>
+              <button onClick={handleNext} disabled={currentTrackIndex === tracks.length - 1} aria-label="Piesa următoare">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M16 18h2V6h-2zm-11-7l8.5-6v12z" /></svg>
+              </button>
+              <button onClick={() => setVolume(volume > 0 ? 0 : 1)} aria-label={volume > 0 ? 'Fără sunet' : 'Cu sunet'}>
+                {volume > 0 ? (
+                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24"><path d="M15.536 8.464a5 5 0 010 7.072M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                ) : (
+                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth={1.6} viewBox="0 0 24 24"><path d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" /></svg>
+                )}
+              </button>
+            </div>
           </div>
 
-              <div className="p-6 md:p-8 flex flex-col justify-between">
-            <div>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-2">
-                {albumTitle}
-              </h2>
-              <p className="text-lg text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] mb-8">
-                {artist}
-              </p>
-              {hasTracks && (
-                <p className="text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] font-medium mb-8">
-                  {currentTrack?.title}
-                </p>
-              )}
-            </div>
-
-              <div className="space-y-6">
-              <div
-                className="relative h-1 bg-navy/20 dark:bg-ivory-light/20 rounded-full cursor-pointer group"
-                onClick={handleProgressClick}
-                role="slider"
-                aria-label="Progress control"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={Math.round(progress)}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    const delta = e.key === 'ArrowLeft' ? -5 : 5;
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + delta));
-                    }
-                  }
-                }}
-              >
-                <div
-                  className="absolute h-full bg-gold-warm dark:bg-gold-bright rounded-full transition-all"
-                  style={{ width: `${progress}%` }}
-                >
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-gold-warm dark:bg-gold-bright rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              </div>
-
-              <div className="flex justify-between items-center text-sm text-navy/60 dark:text-ivory-light/60">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={handlePrevious}
-                    disabled={currentTrackIndex === 0}
-                    className="p-2 text-navy dark:text-ivory-light hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Previous track"
-                  >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
-                    </svg>
-                  </button>
-
-                  <button
-                    onClick={togglePlay}
-                    className="w-16 h-16 rounded-full bg-gold-warm dark:bg-gold-bright hover:bg-gold-bright dark:hover:bg-gold-warm text-navy flex items-center justify-center transition-all duration-300 hover:scale-105 shadow-lg"
-                    aria-label={isPlaying ? 'Pause' : 'Play'}
-                  >
-                    {isPlaying ? (
-                      <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                      </svg>
-                    ) : (
-                      <svg className="w-7 h-7 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    )}
-                  </button>
-
-                  <button
-                    onClick={handleNext}
-                    disabled={currentTrackIndex === tracks.length - 1}
-                    className="p-2 text-navy dark:text-ivory-light hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                    aria-label="Next track"
-                  >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M16 18h2V6h-2zm-11-7l8.5-6v12z" />
-                    </svg>
-                  </button>
-                </div>
-
-                <button
-                  onClick={() => setVolume(volume > 0 ? 0 : 1)}
-                  className="p-2 text-navy dark:text-ivory-light hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300"
-                  aria-label={volume > 0 ? 'Mute' : 'Unmute'}
-                >
-                  {volume > 0 ? (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                      />
-                    </svg>
-                  ) : (
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
-                      />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {hasTracks && (
-              <div className="mt-8 space-y-2">
-                {tracks.map((track, index) => (
-                  <button
-                    key={track.id}
-                    onClick={() => handleTrackClick(index)}
-                    className={`w-full flex items-center justify-between p-4 rounded-xl transition-all duration-300 ${
-                      index === currentTrackIndex
-                        ? 'bg-ivory dark:bg-navy-deep'
-                        : 'hover:bg-ivory/50 dark:hover:bg-navy-deep/50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-navy/40 dark:text-ivory-light/40 w-6">
-                        {track.id}
-                      </span>
-                      <span
-                        className={`font-medium ${
-                          index === currentTrackIndex
-                            ? 'text-navy/70 dark:text-ivory-light/70'
-                            : 'text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)]'
-                        }`}
-                      >
-                        {track.title}
-                      </span>
-                    </div>
-                    <span className="text-sm text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)]">
-                      {track.duration}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
+          <div
+            className="mp-bar"
+            onClick={handleProgressClick}
+            role="slider"
+            aria-label="Progres piesă"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress)}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                const delta = e.key === 'ArrowLeft' ? -5 : 5;
+                if (audioRef.current) {
+                  audioRef.current.currentTime = Math.max(0, Math.min(duration, audioRef.current.currentTime + delta));
+                }
+              }
+            }}
+          >
+            <span style={{ width: `${progress}%` }} />
           </div>
+          <div className="mp-time">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+
+          {hasTracks && (
+            <ol className="mp-list">
+              {tracks.map((track, index) => (
+                <li key={track.id}>
+                  <button onClick={() => handleTrackClick(index)} className={index === currentTrackIndex ? 'on' : ''} aria-current={index === currentTrackIndex ? 'true' : undefined}>
+                    <small>{String(track.id).padStart(2, '0')}</small>
+                    <span>{track.title}</span>
+                    <em>{track.duration}</em>
+                    <i aria-hidden="true">{index === currentTrackIndex && isPlaying ? '❚❚' : '▶'}</i>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
       </div>
 
       {(albumDescription || productionNotes) && (
-        <div className="flex flex-col gap-6 h-full min-h-0">
+        <div className="mp-notes">
           {albumDescription && (
-            <div className={`bg-ivory-card dark:bg-navy-card rounded-2xl p-8 shadow-lg flex flex-col justify-center ${productionNotes ? 'flex-shrink-0' : 'flex-1 min-h-0'}`}>
-              <h3 className="font-serif text-2xl font-bold text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-4">
-                Despre acest album
-              </h3>
-              <p className="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">
-                {albumDescription}
-              </p>
+            <div>
+              <p className="eyebrow">Despre acest album</p>
+              <p className="mp-desc">{albumDescription}</p>
             </div>
           )}
           {productionNotes && (
-            <div className="bg-ivory-card dark:bg-navy-card rounded-2xl p-8 shadow-lg flex-1 min-h-0 flex flex-col justify-center">
-              <h3 className="font-serif text-2xl font-bold text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-4">
-                Note de producție
-              </h3>
-              <p className="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">
-                {productionNotes}
-              </p>
+            <div>
+              <p className="eyebrow">Note de producție</p>
+              <p className="mp-prod">{productionNotes}</p>
             </div>
           )}
         </div>
       )}
-    </div>
 
       {hasTracks && (
         <audio
@@ -345,10 +258,8 @@ export default function MusicPlayer({
       )}
 
       {audioError && (
-        <div className="p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-2xl space-y-3">
-          <p className="text-sm text-red-800 dark:text-red-200">
-            {audioError}
-          </p>
+        <div className="mp-error" role="alert">
+          <p>{audioError}</p>
           <button
             onClick={() => {
               setAudioError(null);
@@ -356,7 +267,7 @@ export default function MusicPlayer({
                 audioRef.current.load();
               }
             }}
-            className="text-sm text-red-800 dark:text-red-200 underline hover:no-underline"
+            className="link-u"
           >
             Încearcă din nou
           </button>

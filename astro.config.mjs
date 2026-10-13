@@ -28,7 +28,8 @@ export default defineConfig({
     // În producție este exclus complet
     ...(!isProduction ? [keystatic()] : []),
 
-    sitemap()
+    // Paginile legale nu au ce căuta în harta site-ului trimisă la Google
+    sitemap({ filter: (page) => !/\/(confidentialitate|cookies)\/$/.test(page) })
   ],
 
   output: 'static',
@@ -53,6 +54,9 @@ export default defineConfig({
    */
   vite: {
     optimizeDeps: {
+      // React e pre-încărcat de la pornire, ca serverul de test să nu-l
+      // re-optimizeze din mers (altfel apare „jsxDEV is not a function”)
+      include: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom/client'],
       exclude: [
         '@markdoc/markdoc'
       ]
@@ -76,31 +80,3 @@ export default defineConfig({
     ]
   }
 });
-
-// ⚠️ VARIANTĂ VECHE – DEZACTIVATĂ
-// Motiv: Vite genera warning-uri legate de dep optimizer
-// și chunk-uri lipsă (.vite/deps).
-// Această variantă excludea și Markdoc din optimizeDeps,
-// ceea ce NU este necesar și poate crea confuzie.
-//
-// export default defineConfig({
-//   site: 'https://aurelianepuras.github.io/',
-//   integrations: [
-//     tailwind(),
-//     react(),
-//     markdoc(),
-//     ...(!isProduction ? [keystatic()] : []),
-//     sitemap()
-//   ],
-//   output: 'static',
-//
-//   vite: {
-//     optimizeDeps: {
-//       exclude: [
-//         'keystatic',
-//         '@keystatic/core',
-//         '@markdoc/markdoc'
-//       ]
-//     }
-//   }
-// });

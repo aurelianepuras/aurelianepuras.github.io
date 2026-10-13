@@ -1,11 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 
 const title = "Aurelian Epuraș | Pianist Compozitor";
 const description = "Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.";
 const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
+
+const [posts, videos, photos] = await Promise.all([
+  getCollection('blog'),
+  getCollection('videos'),
+  getCollection('gallery'),
+]);
+
+const stats = [
+  { value: '37+', label: 'ani în dialog cu pianul' },
+  { value: String(posts.length), label: 'povești pe blog' },
+  { value: String(videos.length), label: 'videoclipuri' },
+  { value: String(photos.length), label: 'momente în galerie' },
+];
+
+const paths = [
+  { href: '/muzica', img: 'muzica', title: 'Muzica mea', text: 'Ascultă albumele și piesele originale.' },
+  { href: '/foto', img: 'galerie', title: 'Galerie foto', text: 'Momente din concerte și viața de artist.' },
+  { href: '/blog', img: 'blog', title: 'Articole din blog', text: 'Gânduri despre muzică, creație și viață.' },
+];
 ---
 
 <Layout
@@ -35,7 +54,9 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
         "sameAs": [
           "https://www.facebook.com/epurasaurelian",
           "https://www.instagram.com/aurelian.epuras/",
-          "https://www.youtube.com/@aurelianepuras"
+          "https://www.youtube.com/@aurelianepuras",
+          "https://lectiidepiancuaurelian.ro/",
+          "https://fabricadepian.github.io/"
         ]
       },
       {
@@ -101,94 +122,170 @@ const imageAlt = "Aurelian Epuraș | Pianist Compozitor";
   }
 </script>
 
-  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/uploads/images/hero.jpg');" aria-hidden="true" />
-    <div class="absolute inset-0 bg-ivory dark:bg-navy-deep opacity-[85%] dark:opacity-[93%]" aria-hidden="true" />
-    <div class="container mx-auto px-4 py-20 relative z-10">
-      <div class="text-center max-w-4xl mx-auto">
-        <p class="text-[15px] tracking-[0.3em] uppercase text-gold-warm dark:text-gold-bright mb-8 font-sans">Bine ai venit în</p>
-        <h1 class="font-serif font-light text-5xl md:text-6xl lg:text-7xl text-navy dark:text-ivory-light mb-4">
-          UNIVERSUL MEU
-        </h1>
-        <p class="text-xl md:text-2xl text-navy/60 dark:text-ivory-light/60 italic mb-8 font-serif">
-          pianist / compozitor / profesor
-        </p>
-        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-8"></div>
-        <p class="text-lg md:text-xl text-navy/70 dark:text-ivory-light/70 max-w-2xl mx-auto mb-12 leading-relaxed">
-          Tot ce vezi aici vine din viață, din bucurii, doruri și momente care m-au schimbat.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/muzica" class="px-8 py-4 bg-gold-warm dark:bg-gold-bright text-navy hover:bg-gold-bright dark:hover:bg-gold-warm transition-all duration-300 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-            Muzica mea
-          </a>
-          <a href="/biografie" class="px-8 py-4 bg-ivory-card dark:bg-navy-card text-navy dark:text-ivory-light hover:bg-navy/5 dark:hover:bg-ivory-light/5 border border-navy/20 dark:border-ivory-light/20 transition-all duration-300 rounded-full font-semibold">
-            Biografie
-          </a>
-        </div>
+  <section class="hero stage-dark">
+    <picture class="hero-media" aria-hidden="true">
+      <source type="image/webp" srcset="/uploads/images/scena-800.webp 800w, /uploads/images/scena-1400.webp 1400w, /uploads/images/scena-2400.webp 2000w" sizes="100vw" />
+      <img src="/uploads/images/scena.jpg" alt="" width="2000" height="1333" fetchpriority="high" decoding="async" />
+    </picture>
+    <div class="hero-text">
+      <p class="eyebrow hero-eyebrow">Album 13 · Teatrul Dramatic „Ion D. Sîrbu” Petroșani</p>
+      <h1>
+        <span>Aurelian</span>
+        <span class="accent">Epuraș</span>
+      </h1>
+      <p class="hero-sub"><span>pianist / compozitor / profesor</span></p>
+      <p class="hero-p">Tot ce vezi aici vine din viață, din bucurii, doruri și momente care m-au schimbat.</p>
+      <div class="hero-ctas">
+        <a href="/muzica" class="btn-solid"><span aria-hidden="true">▶</span> Ascultă albumul 13</a>
+        <a href="/contact" class="btn-line">Concerte și evenimente <span aria-hidden="true">↗</span></a>
       </div>
+      <dl class="hero-stats">
+        {stats.map((st) => (
+          <div>
+            <dt>{st.label}</dt>
+            <dd>{st.value.replace('+', '')}{st.value.endsWith('+') && <em>+</em>}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
-  <svg class="w-6 h-6 text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img">
-    <title>Săgeată pentru scroll în jos</title>
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-  </svg>
-</div>
+    <a href="#continut" class="hero-scroll" aria-label="Derulează în jos"><span>Derulează</span><i aria-hidden="true"></i></a>
+  </section>
+  <span id="continut"></span>
+
+
+  <section class="home-section">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Explorează</p>
+        <h2 class="h2">Descoperă muzica, povestea și <em>universul meu artistic</em></h2>
+      </div>
+      <p class="sign">— Aurelian Epuraș</p>
+    </div>
+
+    <div class="paths">
+      {paths.map((p, i) => (
+        <a href={p.href} class="path group">
+          <div class="path-img notch">
+            <img src={`/uploads/images/card-${p.img}.webp`} alt="" width="900" height="675" loading="lazy" decoding="async" />
+          </div>
+          <div class="path-meta">
+            <small>{String(i + 1).padStart(2, '0')}</small>
+            <span class="path-go" aria-hidden="true">↗</span>
+          </div>
+          <h3>{p.title}</h3>
+          <p>{p.text}</p>
+        </a>
+      ))}
+    </div>
   </section>
 
-  <section class="py-20 md:py-32 bg-ivory-card dark:bg-navy-card">
-    <div class="container mx-auto px-4">
-      <div class="text-center max-w-4xl mx-auto">
-        <h2 class="font-serif text-3xl md:text-3xl lg:text-[40px] text-navy dark:text-ivory-light italic leading-relaxed mb-8">
-          Descoperă muzica, povestea și universul meu artistic
-        </h2>
-        <p class="text-gold-warm dark:text-gold-bright font-sans not-italic">— Aurelian Epuraș</p>
+  <section class="home-section projects-sec">
+    <div class="head-row">
+      <div>
+        <p class="eyebrow">Proiectele mele</p>
+        <h2 class="h2">Muzica merge mai departe <em>prin alții</em></h2>
       </div>
+      <p class="sign">Două site-uri, aceeași poveste</p>
+    </div>
+    <div class="projects">
+      {[
+        { href: 'https://lectiidepiancuaurelian.ro/', img: '/uploads/images/proiect-lectii.webp', pos: '50% 50%', domain: 'lectiidepiancuaurelian.ro', t1: 'Lecții de pian', t2: 'cu Aurelian', text: 'Lecții de pian pentru copii și adulți, la Petroșani și online. Fără grabă, cu repertoriul care îți place.', cta: 'Vezi lecțiile' },
+        { href: 'https://fabricadepian.github.io/', img: '/uploads/images/proiect-fabrica.webp', pos: '50% 50%', domain: 'fabricadepian.github.io', t1: 'Fabrica', t2: 'de Pian', text: 'Proiectul cultural prin care două săli ale secției de muzică din Petroșani au fost complet modernizate.', cta: 'Descoperă proiectul' },
+      ].map((p, i) => (
+        <a href={p.href} class="project" target="_blank" rel="noopener">
+          <div class="project-img">
+            <img src={p.img} alt="" width="1100" height="733" loading="lazy" decoding="async" style={`object-position: ${p.pos}`} />
+            <small>{String(i + 1).padStart(2, '0')} · {p.domain}</small>
+          </div>
+          <div class="project-body">
+            <h3>{p.t1} <em>{p.t2}</em></h3>
+            <p>{p.text}</p>
+            <span class="link-u">{p.cta} ↗</span>
+          </div>
+        </a>
+      ))}
     </div>
   </section>
 
-  <section class="py-20 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="group">
-          <a href="/muzica" class="block">
-            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <picture>
-                <source srcset="/uploads/images/muzica.webp" type="image/webp" />
-                <img src="/uploads/images/muzica.jpg" alt="Muzica mea" width="400" height="300" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-              </picture>
-              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
-            </div>
-            <h3 class="font-serif text-3xl text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-3 leading-tight">Muzica mea</h3>
-            <p class="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">Ascultă albumele și piesele originale.</p>
-          </a>
-        </div>
-        <div class="group">
-          <a href="/foto" class="block">
-            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <picture>
-                <source srcset="/uploads/images/galerie.webp" type="image/webp" />
-                <img src="/uploads/images/galerie.jpg" alt="Galerie foto" width="400" height="300" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-              </picture>
-              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
-            </div>
-            <h3 class="font-serif text-3xl text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-3 leading-tight">Galerie foto</h3>
-            <p class="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">Momente din concerte și viața de artist.</p>
-          </a>
-        </div>
-        <div class="group">
-          <a href="/blog" class="block">
-            <div class="relative overflow-hidden rounded-2xl mb-6 aspect-[4/3]">
-              <picture>
-                <source srcset="/uploads/images/blog.webp" type="image/webp" />
-                <img src="/uploads/images/blog.jpg" alt="Blog" width="400" height="300" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-              </picture>
-              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent"></div>
-            </div>
-            <h3 class="font-serif text-3xl text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-3 leading-tight">Articole din blog</h3>
-            <p class="text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] leading-relaxed">Gânduri despre muzică, creație și viață.</p>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <style>
+    /* ===== proiecte ===== */
+    .projects-sec { padding-top: 0; }
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: clamp(24px, 3vw, 40px); }
+    .project { display: flex; flex-direction: column; background: var(--bg-2); box-shadow: 0 28px 56px -30px var(--shadow); transition: box-shadow .5s var(--ease), transform .5s var(--ease); }
+    .project:hover { transform: translateY(-4px); box-shadow: 0 40px 70px -30px var(--shadow); }
+    .project-img { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #0f1218; }
+    .project-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85) brightness(.85); transition: transform 1.2s var(--ease), filter .6s; }
+    .project:hover .project-img img { transform: scale(1.04); filter: none; }
+    .project-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, color-mix(in srgb, #0f1218 75%, transparent)); }
+    .project-img small { position: absolute; z-index: 1; left: 24px; bottom: 18px; font: 400 11px "Geist Mono", monospace; letter-spacing: .14em; color: #D4AF37; }
+    .project-body { display: flex; flex-direction: column; gap: 14px; padding: 28px 28px 32px; }
+    .project h3 { font: 400 clamp(26px, 2.6vw, 38px)/1.08 Cinzel, serif; letter-spacing: .01em; transition: color .3s; }
+    .project h3 em { font-style: normal; color: var(--accent); }
+    .project p { font-size: 15px; line-height: 1.7; color: var(--mute); max-width: 46ch; }
+    .project .link-u { align-self: flex-start; margin-top: 6px; }
+
+    /* ===== hero ===== */
+    .hero { position: relative; z-index: 1; min-height: max(600px, calc(100svh - var(--hdr-h))); display: flex; align-items: flex-end; overflow: hidden; background: #0f1218; color: var(--fg); }
+    .hero::after { content: ""; position: absolute; z-index: 1; inset: auto 0 0; height: clamp(80px, 9vw, 140px); background: linear-gradient(180deg, transparent, var(--stage-fade)); pointer-events: none; }
+    .hero-media { position: absolute; inset: 0; }
+    .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 38% 45%; animation: hero-in 2.4s var(--ease) both; }
+    @keyframes hero-in { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
+    .hero-media::after { content: ""; position: absolute; inset: 0; background:
+      radial-gradient(ellipse 40% 45% at 38% 42%, color-mix(in srgb, #D4AF37 14%, transparent), transparent 70%),
+      linear-gradient(180deg, color-mix(in srgb, #0f1218 30%, transparent) 0%, transparent 30%, color-mix(in srgb, #0f1218 70%, transparent) 62%, #0f1218 100%); }
+    .hero-text { position: relative; z-index: 2; width: 100%; max-width: 1440px; margin: 0 auto; padding: 64px var(--pad-x) clamp(104px, 12vw, 176px); }
+    .hero-eyebrow { margin-bottom: 26px; animation: rise 1.1s var(--ease) .3s both; }
+    .hero h1 { font: 400 clamp(52px, 8vw, 150px)/.95 Cinzel, serif; letter-spacing: .01em; }
+    .hero h1 span { display: block; animation: rise 1.2s var(--ease) .4s both; }
+    .hero h1 span + span { animation-delay: .55s; }
+    .hero h1 .accent { color: var(--accent); }
+    .hero-sub { display: flex; align-items: center; gap: 18px; margin-top: 26px; animation: rise 1.1s var(--ease) .7s both; }
+    .hero-sub span { font: 400 clamp(13px, 1.25vw, 17px) Cinzel, serif; letter-spacing: .14em; color: var(--mute); }
+    .hero-p { margin-top: 20px; max-width: 34rem; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.7; color: var(--mute); text-wrap: pretty; animation: rise 1.1s var(--ease) .8s both; }
+    .hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 36px; animation: rise 1.1s var(--ease) .9s both; }
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 20px clamp(28px, 4vw, 64px); margin: clamp(40px, 5vw, 64px) 0 0; animation: rise 1.1s var(--ease) 1s both; }
+    .hero-stats div { display: flex; flex-direction: column-reverse; gap: 8px; }
+    .hero-stats dd { margin: 0; font: 300 clamp(30px, 2.8vw, 42px)/1 Geist, sans-serif; letter-spacing: -.04em; }
+    .hero-stats dd em { font-style: normal; color: var(--accent); }
+    .hero-stats dt { font: 400 10.5px/1.4 "Geist Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+    @media (max-width: 760px) { .hero-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .hero-scroll { position: absolute; z-index: 2; right: var(--pad-x); bottom: clamp(104px, 12vw, 176px); display: flex; flex-direction: column; align-items: center; gap: 14px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--mute); writing-mode: vertical-rl; }
+    .hero-scroll i { position: relative; width: 1px; height: 64px; background: var(--line); overflow: hidden; }
+    .hero-scroll i::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--accent); animation: drip 2.2s var(--ease) infinite; }
+    @keyframes drip { to { top: 100%; } }
+    @media (min-width: 761px) {
+      /* pianistul în dreapta, textul pe scena goală din stânga */
+      .hero-media img { left: 6%; width: 150%; max-width: none; object-position: 0% 42%; }
+      .hero-media::after { background:
+        radial-gradient(ellipse 30% 45% at 72% 42%, color-mix(in srgb, #D4AF37 14%, transparent), transparent 70%),
+        linear-gradient(90deg, #0f1218 0%, color-mix(in srgb, #0f1218 80%, transparent) 35%, transparent 60%),
+        linear-gradient(180deg, color-mix(in srgb, #0f1218 30%, transparent) 0%, transparent 30%, transparent 70%, #0f1218 100%); }
+    }
+    @media (max-width: 760px) { .hero-scroll { display: none; } .hero-media { bottom: auto; height: 64%; } .hero-media img { object-position: 44% 45%; } }
+
+    /* ===== cifre ===== */
+    @media (max-width: 860px) {
+    }
+
+    /* ===== drumuri ===== */
+    .home-section { max-width: 1440px; width: 100%; margin: 0 auto; padding: clamp(72px, 8vw, 112px) var(--pad-x); }
+    .head-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: last baseline; gap: 24px; margin-bottom: clamp(40px, 4.4vw, 64px); }
+    .head-row .eyebrow { margin-bottom: 22px; }
+    .h2 { font: 400 clamp(32px, 4vw, 60px)/1.1 Cinzel, serif; letter-spacing: .01em; max-width: 22ch; }
+    .h2 em { font-style: normal; color: var(--accent); }
+    .sign { font: 400 11px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+    .paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 48px clamp(24px, 3vw, 48px); }
+    .path { display: block; }
+    .path-img { aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg-2); }
+    .path-img::after { border-bottom-color: var(--bg); }
+    .path-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9); transition: transform 1.2s var(--ease), filter .6s; }
+    .path:hover .path-img img { transform: scale(1.04); filter: none; }
+    .path-meta { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 14px; margin-top: 18px; border-top: 1px solid var(--line); }
+    .path-meta small { font: 400 11px "Geist Mono", monospace; letter-spacing: .14em; color: var(--accent); }
+    .path-go { font-size: 18px; color: var(--mute); transition: transform .5s var(--ease), color .3s; }
+    .path:hover .path-go { color: var(--accent); transform: translate(3px, -3px); }
+    .path h3 { font: 400 clamp(22px, 2vw, 28px)/1.15 Cinzel, serif; letter-spacing: .02em; margin-bottom: 10px; transition: color .3s; }
+    .path:hover h3 { color: var(--accent); }
+    .path p { font-size: 15px; line-height: 1.7; color: var(--mute); }
+  </style>
 </Layout>

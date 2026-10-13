@@ -1,4 +1,6 @@
 ---
+import { thumb } from '../utils/thumb';
+
 interface Props {
   title: string;
   slug: string;
@@ -17,47 +19,35 @@ const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
 });
 ---
 
-<article class="group bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+<article class="blog-card">
   <a href={`/blog/${slug}`} class="block">
     {cover_image && (
-      <div class="aspect-video overflow-hidden">
-        <img
-          src={cover_image}
-          alt={title}
-          width="800"
-          height="450"
-          loading="lazy"
-          decoding="async"
-          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
+      <div class="media notch aspect-video">
+        <picture>
+          {thumb(cover_image) && <source srcset={thumb(cover_image)} type="image/webp" />}
+          <img
+            src={cover_image}
+            alt={title}
+            width="800"
+            height="450"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
       </div>
     )}
-    <div class="p-6">
-      {/* Titlu – gri neutru (ca la video / index) */}
-      <h3 class="font-serif text-[1.65rem] md:text-[27px] text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-3 leading-tight line-clamp-2">
-        {title}
-      </h3>
-      
-      {description && (
-        <p class="text-[1.05rem] md:text-base text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] line-clamp-2 mb-4">
-          {description}
-        </p>
-      )}
-
-      <div class="flex flex-wrap items-center justify-between gap-2 text-sm border-t border-navy/10 dark:border-ivory-light/10 pt-4">
-        {/* Data calendaristică */}
-        <time class="text-navy/60 dark:text-ivory-light/60 font-medium whitespace-nowrap">
-          {formattedDate}
-        </time>
-
-        {/* "Citește articol" - acum are ACEEAȘI culoare ca data (text-navy/60 / text-ivory-light/60) */}
-        <div class="flex items-center gap-2 text-navy/60 dark:text-ivory-light/60 group-hover:text-gold-warm dark:group-hover:text-gold-bright transition-all duration-300 whitespace-nowrap">
-          <span class="text-sm font-semibold">Citește articol</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </div>
-      </div>
+    <div class="card-meta">
+      <small><time datetime={new Date(date).toISOString()}>{formattedDate}</time></small>
+      <span class="go" aria-hidden="true">↗</span>
     </div>
+    <h3 class="card-title line-clamp-2">{title}</h3>
+    {description && (
+      <p class="blog-card-desc line-clamp-2">{description}</p>
+    )}
   </a>
 </article>
+
+<style>
+  .blog-card-desc { margin-top: 10px; font-size: 15px; line-height: 1.7; color: var(--mute); }
+  .card-meta small { text-transform: uppercase; }
+</style>

@@ -5,6 +5,7 @@ interface VideoPlayerProps {
   videoUrl: string;
   thumbnail?: string;
   description?: string;
+  index?: number;
 }
 
 function extractYouTubeId(url: string): string | null {
@@ -25,7 +26,7 @@ function getYouTubeThumbnail(videoId: string): string {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 }
 
-export default function VideoPlayer({ title, videoUrl, thumbnail, description }: VideoPlayerProps) {
+export default function VideoPlayer({ title, videoUrl, thumbnail, description, index }: VideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoId = extractYouTubeId(videoUrl);
   const thumbnailUrl = thumbnail || (videoId ? getYouTubeThumbnail(videoId) : null);
@@ -35,8 +36,8 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
   };
 
   return (
-    <article className="group bg-ivory-card dark:bg-navy-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
-      <div className="relative aspect-video overflow-hidden bg-ivory dark:bg-navy-deep">
+    <article className="group">
+      <div className="media notch aspect-video">
         {!isPlaying ? (
           <>
             {thumbnailUrl ? (
@@ -46,7 +47,7 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
                 width={640}
                 height={360}
                 loading="lazy"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
@@ -70,14 +71,14 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
     </svg>
   </div>
 </button>
-            <div className="absolute top-3 right-3 bg-[#FF0000] text-white px-3 py-1 rounded-2xl text-xs font-semibold">
+            <div className="absolute top-3 right-3 bg-[#FF0000] text-white px-3 py-1 font-mono text-[10px] tracking-[0.16em] uppercase">
               YouTube
             </div>
           </>
         ) : (
           videoId && (
             <iframe
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=0`}
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
               title={title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -86,18 +87,16 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description }:
           )
         )}
       </div>
-      <div className="p-6">
-        {/* Titlu setat direct pe Auriu (text-gold-warm / text-gold-bright) */}
-        <h3 className="font-serif text-2xl md:text-[27px] text-[hsl(0,0%,52%)] dark:text-[hsl(0,0%,82%)] mb-2 leading-tight line-clamp-2">
-          {title}
-        </h3>
-        
-        {description && (
-          <p className="mt-3 text-[hsl(0,0%,62%)] dark:text-[hsl(0,0%,78%)] line-clamp-2">
-            {description}
-          </p>
-        )}
+      <div className="card-meta">
+        <small>{index !== undefined ? String(index + 1).padStart(2, '0') : 'VIDEO'}</small>
+        <span className="go" aria-hidden="true">▶</span>
       </div>
+      <h3 className="card-title line-clamp-2">{title}</h3>
+      {description && (
+        <p className="mt-2 text-[15px] leading-relaxed line-clamp-2" style={{ color: 'var(--mute)' }}>
+          {description}
+        </p>
+      )}
     </article>
   );
 }

@@ -27,7 +27,7 @@ const articleImage = post.data.cover_image
   ? `https://aurelianepuras.github.io${post.data.cover_image}`
   : `https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras.jpg`;
 
-const seoTitle = post.data.meta_title || `${post.data.title} | Blog Aurelian Epuraș`;
+const seoTitle = (post.data.meta_title || post.data.title).trim();
 const seoDescription = post.data.meta_description || post.data.description;
 
 const coverImage = post.data.cover_image || '/uploads/images/Aurelian-Epuras.jpg';
@@ -93,6 +93,8 @@ const relatedPosts = allPosts
   description={seoDescription}
   image={articleImage}
   imageAlt={post.data.title}
+  ogType="article"
+  publishedTime={publishedDate}
 >
   <script
     type="application/ld+json"

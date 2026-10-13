@@ -21,8 +21,9 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['EB Garmond', 'serif'],
-        sans: ['DM Sans', 'sans-serif'],
+        serif: ['Cinzel', 'serif'],
+        sans: ['Geist', 'system-ui', 'sans-serif'],
+        mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
       },
       transitionDuration: {
         '300': '300ms',

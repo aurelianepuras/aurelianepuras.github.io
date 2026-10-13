@@ -1,6 +1,4 @@
 ---
-import ThemeToggle from '../components/ThemeToggle';
-import ScrollToTop from '../components/ScrollToTop';
 
 interface Props {
   title?: string;
@@ -8,6 +6,8 @@ interface Props {
   image?: string;
   imageAlt?: string;
   robots?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
 }
 
 const {
@@ -15,8 +15,23 @@ const {
   description = 'Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.',
   image = '/uploads/images/Aurelian-Epuras.jpg',
   imageAlt = 'Portret Aurelian Pianist',
-  robots
+  robots,
+  ogType = 'website',
+  publishedTime
 } = Astro.props;
+
+// Titlu: fără spații în plus, cu numele în coadă dacă lipsește și încape
+const BRAND = 'Aurelian Epuraș';
+const cleanTitle = title.replace(/\s+/g, ' ').trim();
+const pageTitle = cleanTitle.includes('Epuraș') || cleanTitle.length + BRAND.length + 3 > 70
+  ? cleanTitle
+  : `${cleanTitle} | ${BRAND}`;
+
+// Descriere: max ~160 caractere, tăiată la cuvânt
+const cleanDesc = description.replace(/\s+/g, ' ').trim();
+const pageDescription = cleanDesc.length <= 160
+  ? cleanDesc
+  : cleanDesc.slice(0, 157).replace(/[\s,.;:–-]+\S*$/, '') + '…';
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const currentPath = Astro.url.pathname;
@@ -29,6 +44,29 @@ const isActive = (path: string) => {
   if (path === '/') return currentPath === '/';
   return currentPath.startsWith(path);
 };
+
+const navLinks = [
+  { href: '/', label: 'Origini' },
+  { href: '/biografie', label: 'Biografie' },
+  { href: '/foto', label: 'Foto' },
+  { href: '/video', label: 'Video' },
+  { href: '/muzica', label: 'Muzică' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const socials = [
+  { href: 'https://www.youtube.com/@aurelianepuras', label: 'YouTube', handle: '@aurelianepuras' },
+  { href: 'https://www.facebook.com/epurasaurelian', label: 'Facebook', handle: '/epurasaurelian' },
+  { href: 'https://www.instagram.com/aurelian.epuras/', label: 'Instagram', handle: '@aurelian.epuras' },
+];
+
+const projects = [
+  { href: 'https://lectiidepiancuaurelian.ro/', label: 'Lecții de pian cu Aurelian', short: 'Lecții de pian', text: 'Lecții de pian pentru copii și adulți, la Petroșani și online.' },
+  { href: 'https://fabricadepian.github.io/', label: 'Fabrica de Pian', short: 'Fabrica de Pian', text: 'Proiectul cultural care a modernizat sălile de muzică din Petroșani.' },
+];
+
+const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 
 <!doctype html>
@@ -42,127 +80,99 @@ const isActive = (path: string) => {
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" as="style" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" as="style" />
     <link rel="dns-prefetch" href="https://www.youtube.com" />
-    <link rel="dns-prefetch" href="https://api.emailjs.com" />
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garmond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
-    <title>{title}</title>
-    <meta name="title" content={title} />
+    <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
     <slot name="head" />
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     {robots && <meta name="robots" content={robots} />}
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {ogType === 'article' && <meta property="article:author" content="Aurelian Epuraș" />}
     <meta property="og:locale" content="ro_RO" />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={absoluteImage} />
     <meta property="og:image:alt" content={imageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={absoluteImage} />
     <meta name="twitter:image:alt" content={imageAlt} />
 
     <script is:inline>
-      const savedTheme = localStorage.getItem('theme');
+      let savedTheme = null;
+      try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       const theme = savedTheme || systemTheme;
       document.documentElement.classList.toggle('dark', theme === 'dark');
     </script>
   </head>
   <body class="font-sans bg-ivory dark:bg-navy-deep text-navy dark:text-ivory-light transition-colors min-h-screen flex flex-col">
-    <a 
-      href="#main-content" 
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-gold-warm focus:text-navy focus:rounded-lg focus:shadow-lg"
-    >
-      Skip to main content
-    </a>
-    <header class="sticky top-0 z-50 bg-ivory/80 dark:bg-navy-deep/80 backdrop-blur-md border-b border-navy/10 dark:border-ivory-light/10">
-      <nav class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <div>
-            {/* Logo principal; dacă fișierele lipsesc, browser-ul va afișa doar textul alternativ */}
-            <a href="/" class="block">
-  <img 
-    src="/logo-negru.svg" 
-    alt="Aurelian Epuraș" 
-    width="160" 
-    height="56"
-    class="h-[2.5rem] md:h-[2.75rem] w-auto dark:hidden" 
-    onerror="this.style.display='none';"
-  />
-  <img 
-    src="/logo-alb.svg" 
-    alt="Aurelian Epuraș" 
-    width="160" 
-    height="56"
-    class="h-[2.5rem] md:h-[2.75rem] w-auto hidden dark:block" 
-    onerror="this.style.display='none';"
-  />
-</a>
-          </div>
+    <a href="#main-content" class="skip">Sari la conținut</a>
+    <div class="progress" aria-hidden="true"></div>
 
-          <div class="hidden md:flex items-center gap-10">
-            <a href="/" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Origini</a>
-            <a href="/biografie" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/biografie') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Biografie</a>
-            <a href="/foto" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/foto') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Foto</a>
-            <a href="/video" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/video') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Video</a>
-            <a href="/muzica" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/muzica') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Muzică</a>
-            <a href="/blog" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/blog') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Blog</a>
-            <a href="/contact" class={`relative hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300 after:content-[''] after:absolute after:bottom-0 after:-left-2 after:h-0.5 after:bg-gold-warm dark:after:bg-gold-bright after:transition-all after:duration-300 ${isActive('/contact') ? 'text-gold-warm dark:text-gold-bright after:w-[calc(100%+1rem)]' : 'after:w-0 hover:after:w-[calc(100%+1rem)]'}`}>Contact</a>
-            <ThemeToggle client:load />
-          </div>
+    <header class="site-header">
+      <a href="/" class="brand" aria-label="Aurelian Epuraș, prima pagină">
+        <svg class="brand-mark" viewBox="236 228 608 608" aria-hidden="true"><path d="M298 822V380C298 300 345 255 415 255C480 255 515 305 530 380C548 465 580 492 640 515C700 538 735 550 760 585C778 610 782 640 782 680V822" fill="none" stroke="currentColor" stroke-width="26"/><path d="M248 822H832" stroke="currentColor" stroke-width="12"/><rect x="412" y="458" width="55" height="262" fill="var(--accent)"/><rect x="511" y="537" width="55" height="183" fill="currentColor"/><rect x="609" y="579" width="55" height="141" fill="currentColor"/></svg>
+        <span class="brand-name"><b>Aurelian Epuraș</b><small>Pianist · Compozitor</small></span>
+      </a>
 
-          <button id="mobile-menu-toggle" class="md:hidden p-3 flex flex-col items-end justify-center gap-1.5 w-12 h-12 rounded-full bg-ivory-card dark:bg-navy-card" aria-label="Toggle navigation menu">
-            <span class="hamburger-line w-6 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
-            <span class="hamburger-line w-4 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
-            <span class="hamburger-line w-6 h-0.5 bg-navy dark:bg-ivory-light rounded-full transition-all duration-300"></span>
-          </button>
-        </div>
+      <nav class="nav" aria-label="Meniu principal">
+        {navLinks.slice(0, -1).map((link, i) => (
+          <a href={link.href} class={isActive(link.href) ? 'on' : ''} aria-current={isActive(link.href) ? 'page' : undefined}>
+            <small>{num(i)}</small>{link.label}
+          </a>
+        ))}
       </nav>
+
+      <div class="hdr-r">
+        <div class="hdr-theme"><button type="button" class="theme-toggle" aria-label="Schimbă tema" aria-pressed="false">
+            <svg class="i-moon" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            <svg class="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          </button></div>
+        <span class="hdr-sep" aria-hidden="true"></span>
+        <a href="/contact" class={`header-cta ${isActive('/contact') ? 'on' : ''}`}>Scrie-mi ↗</a>
+        <button id="mobile-menu-toggle" class="burger" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mobile-menu">
+          <span><i></i><i></i></span>
+        </button>
+      </div>
     </header>
 
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-[100] transition-opacity duration-300 opacity-0">
-      <div class="absolute inset-0 bg-[#F7F5F0]/90 dark:bg-navy-deep/90 backdrop-blur-md"></div>
-      <div id="mobile-menu-content" class="relative h-full flex flex-col transition-transform duration-300 translate-y-4">
-        <div class="flex items-center justify-end px-6 py-6">
-          <button id="mobile-menu-close" class="p-3 rounded-full bg-ivory-card dark:bg-navy-card">
-            <svg class="w-6 h-6 text-navy dark:text-ivory-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
+    <div id="mobile-menu" class="mmenu" aria-hidden="true">
+      <span class="ghost" aria-hidden="true">A</span>
+      <nav class="mnav" aria-label="Meniu mobil">
+        {navLinks.map((link, i) => (
+          <a href={link.href} class={isActive(link.href) ? 'on' : ''} style={`--dl:${0.08 + i * 0.05}s`}>
+            <span class="row"><span><small>{num(i)}</small><b>{link.label}</b><span class="dot">•</span></span></span>
+            <span class="rule"></span>
+          </a>
+        ))}
+      </nav>
+      <div class="mfoot">
+        <div class="mprojects">
+          {projects.map((p) => (
+            <a href={p.href} target="_blank" rel="noopener">{p.short} <span aria-hidden="true">↗</span></a>
+          ))}
         </div>
-
-        <nav class="flex-1 flex flex-col items-center justify-center space-y-8 px-6">
-          <a href="/" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Origini</a>
-          <a href="/biografie" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Biografie</a>
-          <a href="/foto" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Foto</a>
-          <a href="/video" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Video</a>
-          <a href="/muzica" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Muzică</a>
-          <a href="/blog" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Blog</a>
-          <a href="/contact" class="menu-link text-4xl font-serif text-navy dark:text-ivory-light">Contact</a>
-        </nav>
-
-        <div class="px-6 py-8 flex flex-col items-center gap-6">
-          <div class="flex items-center gap-4">
-            <div class="w-11 h-11 flex items-center justify-center rounded-full border border-navy/20 dark:border-ivory-light/20">
-              <ThemeToggle client:load />
-            </div>
-            <a href="https://www.youtube.com/@aurelianepuras" target="_blank" rel="noopener noreferrer" class="w-11 h-11 flex items-center justify-center rounded-full border border-navy/20 dark:border-ivory-light/20 text-navy dark:text-ivory-light hover:bg-gold-warm transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            </a>
-            <a href="https://www.facebook.com/epurasaurelian" target="_blank" rel="noopener noreferrer" class="w-11 h-11 flex items-center justify-center rounded-full border border-navy/20 dark:border-ivory-light/20 text-navy dark:text-ivory-light hover:bg-gold-warm transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/aurelian.epuras/" target="_blank" rel="noopener noreferrer" class="w-11 h-11 flex items-center justify-center rounded-full border border-navy/20 dark:border-ivory-light/20 text-navy dark:text-ivory-light hover:bg-gold-warm transition-colors">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
-            </a>
-          </div>
+        <div class="mctas">
+          {socials.map((s) => (
+            <a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+          ))}
+        </div>
+        <div class="mmeta">
+          <span>PIANIST · COMPOZITOR · PROFESOR</span>
+          <div class="hdr-theme"><button type="button" class="theme-toggle" aria-label="Schimbă tema" aria-pressed="false">
+            <svg class="i-moon" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+            <svg class="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          </button></div>
         </div>
       </div>
     </div>
@@ -172,121 +182,318 @@ const isActive = (path: string) => {
     </main>
 
     <div class="hidden md:block">
-      <ScrollToTop client:load />
+      <button type="button" id="scroll-top" class="scroll-top" aria-label="Înapoi sus">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+      </button>
     </div>
 
     <!-- Mobil: buton înapoi sus fix, apare la ~45% scroll -->
     <div class="md:hidden fixed right-4 bottom-8 z-50">
-      <button type="button" id="footer-back-to-top" data-visible="false" class="p-2.5 rounded-full bg-[hsl(218,22%,42%)] text-white/90 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 opacity-80 hover:opacity-100" aria-label="Înapoi sus">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+      <button type="button" id="footer-back-to-top" data-visible="false" class="ft-top bg-ivory dark:bg-navy-deep" aria-label="Înapoi sus">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
       </button>
     </div>
 
-    <footer id="site-footer" class="bg-ivory-card dark:bg-navy-card border-t border-navy/10 dark:border-ivory-light/10">
-      <div class="container mx-auto px-4 pt-10 pb-10">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 items-center">
+    <footer id="site-footer" class="footer-wrap stage-dark">
+      <div class="ft-stage">
+        <div class="footer-inner ft-cta">
           <div>
-            <h4 class="text-2xl font-bold font-serif text-navy dark:text-ivory-light tracking-wide">Aurelian Epuraș</h4>
-            <p class="text-base text-navy/60 dark:text-ivory-light/60 italic mb-4">pianist / compozitor / profesor</p>
-            <p class="text-base text-navy/70 dark:text-ivory-light/70 leading-relaxed">Sper ca experiența de aici să-ți ofere exact ce cauți. Acest site este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să-mi cunoască drumul prin lumea muzicală.</p>
+            <p class="eyebrow">Concerte · evenimente · colaborări</p>
+            <p class="ft-quote">Hai să facem muzică <em>împreună.</em></p>
           </div>
-
-          <div>
-            <h4 class="text-2xl font-bold mb-6 font-serif text-navy dark:text-ivory-light tracking-wide">Navigare</h4>
-            <div class="grid grid-cols-2 gap-x-8 gap-y-2">
-              <ul class="space-y-2 text-base text-navy/70 dark:text-ivory-light/70">
-                <li><a href="/" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Origini</a></li>
-                <li><a href="/muzica" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Muzica mea</a></li>
-                <li><a href="/video" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Video</a></li>
-                <li><a href="/contact" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Contact</a></li>
-              </ul>
-              <ul class="space-y-2 text-base text-navy/70 dark:text-ivory-light/70">
-                <li><a href="/biografie" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Biografie</a></li>
-                <li><a href="/foto" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Foto</a></li>
-                <li><a href="/blog" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Blog</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div>
-            <h4 class="text-2xl font-bold font-serif text-navy dark:text-ivory-light tracking-wide">Urmărește-mă</h4>
-            <div class="flex gap-3 mb-6 mt-6">
-              <a href="https://www.youtube.com/@aurelianepuras" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-full border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm dark:hover:bg-gold-bright hover:border-gold-warm dark:hover:border-gold-bright hover:text-navy dark:hover:text-navy transition-all duration-300" aria-label="YouTube">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              </a>
-              <a href="https://www.facebook.com/epurasaurelian" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-full border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm dark:hover:bg-gold-bright hover:border-gold-warm dark:hover:border-gold-bright hover:text-navy dark:hover:text-navy transition-all duration-300" aria-label="Facebook">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              </a>
-              <a href="https://www.instagram.com/aurelian.epuras/" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-full border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm dark:hover:bg-gold-bright hover:border-gold-warm dark:hover:border-gold-bright hover:text-navy dark:hover:text-navy transition-all duration-300" aria-label="Instagram">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
-              </a>
-            </div>
-            <div class="flex flex-wrap items-center justify-between gap-4 text-base text-navy/70 dark:text-ivory-light/70">
-              <div class="flex gap-4">
-                <a href="/confidentialitate" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Confidențialitate</a>
-                <a href="/cookies" class="hover:text-gold-warm dark:hover:text-gold-bright transition-all duration-300">Cookie-uri</a>
-              </div>
-            </div>
+          <div class="ft-cta-r">
+            <a href="/contact" class="btn-solid">Scrie-mi <span aria-hidden="true">↗</span></a>
+            <a href="tel:+40736674176" class="btn-line">+40 736 674 176</a>
           </div>
         </div>
 
-        <div class="mt-8 pt-8 border-t border-navy/10 dark:border-ivory-light/10 text-left md:text-center text-base text-navy/70 dark:text-ivory-light/70">
-          <p class="my-0">&copy; {new Date().getFullYear()} Aurelian Epuraș. Toate drepturile rezervate.</p>
+        <div class="footer-inner">
+          <div class="ft-sign-wrap">
+            <p class="ft-sign" aria-hidden="true">Aurelian <em>Epuraș</em></p>
+          </div>
+          <div class="footer">
+            <small class="ft-copy">&copy; {new Date().getFullYear()} Aurelian Epuraș · Toate drepturile rezervate</small>
+            <nav class="ft-legal" aria-label="Informații legale">
+              <a href="/confidentialitate">Confidențialitate</a>
+              <a href="/cookies">Cookie-uri</a>
+            </nav>
+          </div>
         </div>
       </div>
     </footer>
 
     <style is:global>
-      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+      /* Culorile existente ale site-ului, ca variabile (nu adaugă culori noi) */
+      :root {
+        --page-bg: #F7F5F0;
+        /* culoarea în care se topesc imaginile de scenă: pe tema luminoasă rămân închise (margine netă) */
+        --stage-fade: #0f1218;
+        --bg: #F7F5F0; --bg-2: #F3F0E8; --fg: #1E2433; --accent: #C4A035;
+        /* același auriu, mai închis, doar pentru textele mici (contrast lizibil pe ivory) */
+        --accent-ink: #866A1E;
+        --shadow: rgb(30 36 51 / .22);
+        --mute: color-mix(in srgb, #1E2433 62%, transparent);
+        --line: color-mix(in srgb, #1E2433 13%, transparent);
+        --pad-x: clamp(20px, 4vw, 56px);
+        --ease: cubic-bezier(.16, 1, .3, 1);
+        --hdr-h: 78px;
+      }
+      .dark {
+        --page-bg: #161A24;
+        --stage-fade: #161A24;
+        --bg: #161A24; --bg-2: #1F232F; --fg: #EDE9E0; --accent: #D4AF37; --accent-ink: #D4AF37; --shadow: rgb(0 0 0 / .6);
+        --mute: color-mix(in srgb, #EDE9E0 60%, transparent);
+        --line: color-mix(in srgb, #EDE9E0 13%, transparent);
+      }
+
+      /* Tema „Scenă”: zonele de afiș rămân întunecate și pe tema luminoasă */
+      .stage-dark {
+        --shadow: rgb(0 0 0 / .6);
+        --bg: #161A24; --bg-2: #1F232F; --fg: #EDE9E0; --accent: #D4AF37; --accent-ink: #D4AF37;
+        --mute: color-mix(in srgb, #EDE9E0 66%, transparent);
+        --line: color-mix(in srgb, #EDE9E0 18%, transparent);
+        color: var(--fg);
+      }
+      .stage-dark .btn-solid { background: #EDE9E0; color: #161A24; border-color: #EDE9E0; }
+      .stage-dark .btn-solid:hover { background: transparent; color: #EDE9E0; }
+      .stage-dark .btn-line { border-color: color-mix(in srgb, #EDE9E0 45%, transparent); }
+
+      /* Antet de pagină ca afiș: fotografie de scenă întunecată în spate */
+      .stage { position: relative; overflow: hidden; background: #0f1218; }
+      .stage::before { content: ""; position: absolute; inset: 0; background: var(--img) center 35% / cover no-repeat; opacity: .5; filter: grayscale(.35); animation: stage-in 1.8s var(--ease) both; }
+      .stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, #0f1218 55%, transparent) 0%, color-mix(in srgb, #0f1218 35%, transparent) 40%, color-mix(in srgb, #0f1218 85%, var(--stage-fade)) 82%, var(--stage-fade) 100%); }
+      @keyframes stage-in { from { opacity: 0; transform: scale(1.05); } to { opacity: .5; transform: none; } }
+      .stage > .page { position: relative; z-index: 1; padding-top: clamp(150px, 19vw, 290px); padding-bottom: clamp(72px, 8vw, 120px); }
+      .stage .page-head { margin-bottom: 0; }
+      .stage .page-title { font-size: clamp(48px, 7.4vw, 124px); }
+
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: var(--hdr-h); }
+      html, body { overflow-x: clip; }
+      body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+      h1, h2 { text-wrap: balance; letter-spacing: .02em; }
+
+      /* Margini drepte, ca pe site-ul de lecții */
+      .rounded-2xl, .rounded-xl, .rounded-lg,
+      a.rounded-full[class*="px-"], button.rounded-full[class*="px-"] { border-radius: 0 !important; }
 
       /* Accesibilitate: focus vizibil la navigare cu tastatura */
-      a:focus-visible,
-      button:focus-visible {
-        outline: 2px solid #c9a227;
-        outline-offset: 2px;
+      :focus:not(:focus-visible) { outline: none; }
+      a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+      .skip { position: fixed; left: 16px; top: -60px; z-index: 200; background: var(--fg); color: var(--bg); padding: 10px 16px; font: 500 13px Geist, sans-serif; }
+      .skip:focus { top: 16px; }
+
+      /* Elemente comune, folosibile pe orice pagină */
+      .eyebrow { display: flex; align-items: center; gap: 10px; font: 400 11px "Geist Mono", monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+      .mono { font-family: "Geist Mono", monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+      .notch { position: relative; }
+      .notch::after { content: ""; position: absolute; right: -1px; bottom: -1px; border-left: 11px solid transparent; border-bottom: 11px solid var(--accent); }
+      .btn-solid, .btn-line { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 28px; font: 500 11px Geist, sans-serif; letter-spacing: .18em; text-transform: uppercase; border: 1px solid var(--fg); transition: background .35s, color .35s, border-color .35s; }
+      .btn-solid { background: var(--fg); color: var(--bg); }
+      .btn-solid:hover { background: transparent; color: var(--fg); }
+      .btn-line { color: var(--fg); border-color: var(--line); }
+      .btn-line:hover { border-color: var(--fg); }
+      .link-u { font: 500 11px Geist, sans-serif; letter-spacing: .18em; text-transform: uppercase; border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); padding-bottom: 5px; transition: color .3s; }
+      .link-u:hover { color: var(--accent); }
+
+      /* Pagini interioare: antet, secțiuni, titluri */
+      .page { max-width: 1440px; width: 100%; margin: 0 auto; padding: clamp(64px, 8vw, 120px) var(--pad-x); }
+      .page + .page { padding-top: 0; }
+      .stage + .page { padding-top: clamp(56px, 7vw, 104px); }
+      .page-band { background: var(--bg-2); }
+      .page-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: last baseline; gap: 24px; margin-bottom: clamp(40px, 4.4vw, 64px); }
+      .page-head .eyebrow { margin-bottom: 22px; }
+      .page-head > p, .page-head .aside { max-width: 320px; font-size: 14px; line-height: 1.7; color: var(--mute); }
+      .page-title { font: 400 clamp(40px, 5.6vw, 88px)/1.04 Cinzel, serif; letter-spacing: .02em; animation: rise 1.1s var(--ease) both; }
+      .page-title em, .h2 em { font-style: normal; color: var(--accent); }
+      .h2 { font: 400 clamp(32px, 4vw, 60px)/1.1 Cinzel, serif; letter-spacing: .01em; }
+      .lead { font-size: clamp(16px, 1.2vw, 19px); line-height: 1.75; color: var(--mute); text-wrap: pretty; }
+      .lead + .lead { margin-top: 1.2em; }
+      .media { position: relative; overflow: hidden; background: var(--bg-2); }
+      .media.notch::after { border-bottom-color: var(--bg); }
+      .media img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9); transition: transform 1.2s var(--ease), filter .6s; }
+      a:hover .media img, .group:hover .media img, .media:hover img { transform: scale(1.04); filter: none; }
+      .card-meta { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 12px; margin-top: 16px; border-top: 1px solid var(--line); }
+      .card-meta small { font: 400 11px "Geist Mono", monospace; letter-spacing: .14em; color: var(--accent); }
+      .card-meta .go { font-size: 18px; color: var(--mute); transition: transform .5s var(--ease), color .3s; }
+      a:hover .card-meta .go { color: var(--accent); transform: translate(3px, -3px); }
+      .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 56px clamp(24px, 3vw, 48px); }
+      .card-title { font: 400 clamp(19px, 1.7vw, 24px)/1.2 Cinzel, serif; letter-spacing: .02em; transition: color .3s; }
+      a:hover .card-title, .group:hover .card-title { color: var(--accent); }
+
+      /* Rânduri suprapuse cu umbră (ca pe site-ul de lecții) */
+      .rows { display: flex; flex-direction: column; }
+      .row-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 260px) 44px; align-items: center; gap: 14px clamp(24px, 4vw, 56px); padding: clamp(24px, 2.6vw, 34px) clamp(18px, 2vw, 28px); background: var(--bg-2); box-shadow: 0 -14px 28px -18px var(--shadow); transition: background .4s, padding .4s var(--ease); }
+      .rows.stack .row-card { position: sticky; top: calc(var(--hdr-h) + var(--i, 0) * 14px); }
+      .row-card:last-child { box-shadow: 0 -14px 28px -18px var(--shadow), inset 0 -14px 28px -18px var(--shadow); }
+      a.row-card:hover { background: color-mix(in srgb, var(--fg) 3.5%, var(--bg-2)); }
+      .row-card h3 { font: 400 clamp(20px, 1.8vw, 27px)/1.2 Geist, sans-serif; letter-spacing: -.01em; }
+      .row-card p { margin-top: 6px; font-size: 14px; line-height: 1.6; color: var(--mute); max-width: 52ch; }
+      .row-meta { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+      .row-meta small { font: 400 10.5px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+      .row-meta b { font: 400 13px "Geist Mono", monospace; letter-spacing: .08em; overflow-wrap: anywhere; }
+      .circ { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--fg) 32%, transparent); color: var(--fg); transition: background .35s, color .35s, border-color .35s, transform .5s var(--ease); justify-self: end; }
+      .circ svg { width: 15px; height: 15px; }
+      a.row-card:hover .circ { background: var(--fg); color: var(--bg); border-color: var(--fg); transform: rotate(45deg); }
+      @media (max-width: 700px) {
+        .row-card { grid-template-columns: minmax(0, 1fr) 40px; }
+        .row-meta { grid-column: 1; grid-row: 2; }
+        .circ { grid-column: 2; grid-row: 1 / span 2; }
+        .rows.stack .row-card { position: relative; top: auto; }
       }
-      .dark a:focus-visible,
-      .dark button:focus-visible {
-        outline-color: #e8d48a;
+
+      /* Trecere moale între secțiuni: umbră care coboară */
+      .page-band { position: relative; }
+      .page-band::before { content: ""; position: absolute; inset: 0 0 auto; height: clamp(120px, 14vw, 220px); background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 60%, transparent) 35%, transparent 100%); pointer-events: none; }
+      .page-band::after { content: ""; position: absolute; inset: auto 0 0; height: clamp(100px, 12vw, 180px); background: linear-gradient(180deg, transparent, var(--page-bg)); pointer-events: none; }
+      .page-band > * { position: relative; z-index: 1; }
+
+      /* Bara de progres la scroll (doar unde browserul suportă) */
+      .progress { display: none; position: fixed; inset: 0 0 auto; height: 2px; background: var(--accent); transform-origin: left; z-index: 60; }
+      @keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+      @supports (animation-timeline: scroll()) {
+        .progress { display: block; animation: progress linear both; animation-timeline: scroll(root); }
       }
 
-      /* Hamburger Animation */
-      #mobile-menu-toggle.active .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); width: 1.5rem; }
-      #mobile-menu-toggle.active .hamburger-line:nth-child(2) { opacity: 0; width: 0; }
-      #mobile-menu-toggle.active .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); width: 1.5rem; }
+      /* ===== header ===== */
+      .site-header { position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; gap: 24px; height: var(--hdr-h); padding: 0 var(--pad-x); background: var(--bg); border-bottom: 0; box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .55); transition: background .3s; }
+      .brand { display: flex; align-items: center; gap: 14px; flex-shrink: 0; color: var(--fg); }
+      .brand-mark { width: 38px; height: 38px; flex-shrink: 0; transition: transform .6s var(--ease); }
+      .brand:hover .brand-mark { transform: translateY(-2px); }
+      .brand-name { display: flex; flex-direction: column; gap: 4px; }
+      .brand-name b { font: 500 17px/1.1 Cinzel, serif; letter-spacing: .06em; white-space: nowrap; }
+      .brand-name small { font: 400 10px/1.1 "Geist Mono", monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+      .nav { display: flex; gap: 4px; }
+      .nav a { position: relative; display: flex; align-items: baseline; gap: 8px; padding: 10px 14px; font: 400 11px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); white-space: nowrap; transition: color .3s; }
+      .nav a small { font-size: 10px; letter-spacing: .1em; color: var(--accent); }
+      .nav a::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: 2px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
+      .nav a:hover, .nav a.on { color: var(--fg); }
+      .nav a:hover::after, .nav a.on::after { transform: scaleX(1); transform-origin: left; }
+      .hdr-r { display: flex; align-items: center; gap: 18px; }
+      .hdr-sep { width: 1px; height: 22px; background: var(--line); }
+      .header-cta { display: flex; align-items: center; font: 400 11px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--fg); border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); padding: 4px 0; white-space: nowrap; transition: color .3s; }
+      .header-cta:hover, .header-cta.on { color: var(--accent); }
+      .hdr-theme button { padding: 0; width: 40px; height: 40px; display: grid; place-items: center; background: transparent !important; border: 1px solid var(--line) !important; color: var(--fg); }
+      .hdr-theme button:hover { border-color: color-mix(in srgb, var(--fg) 45%, transparent) !important; }
+      .hdr-theme button svg { width: 18px; height: 18px; }
+      .theme-toggle { cursor: pointer; }
+      .theme-toggle .i-sun, .dark .theme-toggle .i-moon { display: none; }
+      .dark .theme-toggle .i-sun { display: block; color: var(--accent); }
+      .scroll-top { position: fixed; right: 32px; bottom: 32px; z-index: 50; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 85%, transparent); color: var(--fg); border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); box-shadow: 0 10px 24px -10px var(--shadow); backdrop-filter: blur(6px); cursor: pointer; opacity: 0; transform: translateY(40px); pointer-events: none; transition: opacity .3s, transform .3s; }
+      .scroll-top svg { width: 18px; height: 18px; }
+      .scroll-top.on { opacity: 1; transform: none; pointer-events: auto; }
+      .scroll-top:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 
-      /* MOBILE MENU ANIMATION */
-      #mobile-menu.show { opacity: 1; pointer-events: auto; display: block; }
-      #mobile-menu.show #mobile-menu-content { transform: translateY(0); }
+      .burger { display: none; width: 48px; height: 48px; margin-right: -10px; border: 0; background: none; cursor: pointer; place-items: center; -webkit-tap-highlight-color: transparent; }
+      .burger span { position: relative; display: block; width: 28px; height: 10px; }
+      .burger i { position: absolute; right: 0; height: 1.5px; background: var(--fg); transition: transform .6s cubic-bezier(.76,0,.24,1), width .5s cubic-bezier(.76,0,.24,1); }
+      .burger i:first-child { top: 0; width: 28px; }
+      .burger i:last-child { top: 8.5px; width: 17px; }
+      .menu-open .burger i:first-child { transform: translateY(4.25px) rotate(45deg); }
+      .menu-open .burger i:last-child { width: 28px; transform: translateY(-4.25px) rotate(-45deg); }
 
-      .menu-link { opacity: 0; transition: opacity 0.5s ease-out 0.2s; }
-      #mobile-menu.show .menu-link { opacity: 1; }
+      @media (max-width: 1240px) {
+        .nav { gap: 0; }
+        .nav a { padding: 10px 9px; letter-spacing: .12em; }
+        .nav a small { display: none; }
+        .nav a::after { left: 9px; right: 9px; }
+      }
+      @media (max-width: 960px) {
+        .nav, .hdr-sep, .header-cta, .site-header > .hdr-r > .hdr-theme { display: none; }
+        .burger { display: grid; }
+        .brand-mark { width: 34px; height: 34px; }
+        .brand-name b { font-size: 16px; }
+      }
 
+      /* ===== meniu mobil ===== */
+      .mmenu { position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; padding: calc(var(--hdr-h) + 18px) clamp(20px, 6vw, 56px) 24px; background: var(--bg); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; clip-path: circle(0 at calc(100% - 44px) 39px); visibility: hidden; transition: clip-path .9s cubic-bezier(.76,0,.24,1), visibility 0s linear .9s; }
+      .menu-open .mmenu { clip-path: circle(160% at calc(100% - 44px) 39px); visibility: visible; transition: clip-path .9s cubic-bezier(.76,0,.24,1), visibility 0s; }
+      .mmenu .ghost { position: absolute; right: -8vw; bottom: -6vw; font: 400 62vw/.8 Cinzel, serif; color: color-mix(in srgb, var(--accent) 7%, transparent); pointer-events: none; transform: translateY(20%) rotate(-8deg); transition: transform 1.4s var(--ease); }
+      .menu-open .mmenu .ghost { transform: none; }
+      .mnav { position: relative; display: flex; flex-direction: column; margin: auto 0; }
+      .mnav a { display: block; -webkit-tap-highlight-color: transparent; }
+      .mnav .row { display: block; overflow: hidden; padding: 8px 0 6px; }
+      .mnav .row > span { display: flex; align-items: baseline; gap: 16px; transform: translateY(115%); transition: transform 1s var(--ease); }
+      .mnav small { font: 400 11px "Geist Mono", monospace; letter-spacing: .1em; color: var(--accent); width: 22px; }
+      .mnav b { font: 400 clamp(30px, 8.5vw, 52px)/1 Cinzel, serif; letter-spacing: .02em; }
+      .mnav .dot { margin-left: auto; font-size: 24px; color: var(--accent); opacity: 0; transition: opacity .4s; }
+      .mnav .rule { display: block; height: 1px; background: var(--line); transform: scaleX(0); transform-origin: left; transition: transform 1.1s var(--ease); }
+      .menu-open .mnav .row > span { transform: none; transition-delay: var(--dl); }
+      .menu-open .mnav .rule { transform: scaleX(1); transition-delay: var(--dl); }
+      .mnav a.on b { color: var(--accent); }
+      .mnav a.on .dot { opacity: 1; }
+      .mfoot { position: relative; padding-top: 32px; display: flex; flex-direction: column; gap: 12px; opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform 1s var(--ease); }
+      .menu-open .mfoot { opacity: 1; transform: none; transition-delay: .55s; }
+      .mprojects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .mprojects a { height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--fg); color: var(--bg); font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; text-transform: uppercase; }
+      .mctas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+      .mctas a { height: 48px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
+      .mmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 12px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; color: var(--mute); }
       body.menu-open { overflow: hidden; }
+      @media (min-width: 961px) { .mmenu { display: none; } }
+
+      /* ===== footer (tema Scenă) ===== */
+      .footer-wrap { position: relative; background: #0f1218; }
+      .footer-inner { max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-x); }
+      .ft-stage { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: clamp(760px, 112vh, 1080px); }
+      .ft-stage::before { content: ""; position: absolute; inset: 0; background: url('/uploads/images/scena-footer.webp') center 35% / cover no-repeat; opacity: .5; }
+      .ft-stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--stage-fade) 0%, color-mix(in srgb, var(--stage-fade) 55%, transparent) 14%, transparent 22%), linear-gradient(90deg, #0f1218 0%, color-mix(in srgb, #0f1218 70%, transparent) 45%, color-mix(in srgb, #0f1218 30%, transparent) 100%), linear-gradient(180deg, transparent 45%, color-mix(in srgb, #0f1218 70%, transparent) 80%, #0f1218 100%); }
+      .ft-stage > .footer-inner { position: relative; z-index: 1; width: 100%; }
+      .ft-cta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px 48px; padding-top: clamp(72px, 9vw, 128px); padding-bottom: clamp(190px, 23vw, 360px); }
+      .ft-cta .eyebrow { margin-bottom: 22px; }
+      .ft-quote { font: 400 clamp(36px, 5vw, 76px)/1.04 Cinzel, serif; letter-spacing: .01em; max-width: 14ch; text-wrap: balance; }
+      .ft-quote em { font-style: normal; color: var(--accent); }
+      .ft-cta-r { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: calc(clamp(36px, 5vw, 76px) * .39); }
+      .ft-body { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px clamp(24px, 4vw, 64px); padding-top: clamp(28px, 3vw, 40px); padding-bottom: clamp(28px, 3vw, 40px); align-items: center; }
+      .ft-brand { display: flex; align-items: center; gap: 14px; color: var(--fg); margin-bottom: 6px; }
+      .ft-brand svg { width: 44px; height: 44px; flex-shrink: 0; }
+      .ft-brand span { display: flex; flex-direction: column; gap: 6px; }
+      .ft-brand b { font: 500 18px/1.1 Cinzel, serif; letter-spacing: .06em; }
+      .ft-brand small { font: 400 10px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+      .ft-col { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
+      .ft-label { font: 400 11px "Geist Mono", monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); line-height: 1.4; margin: 0 0 3px; }
+      .ft-brand-col .ft-brand { margin-bottom: 2px; }
+      .ft-item { display: flex; flex-direction: column; gap: 2px; color: var(--fg); }
+      .ft-item b { font: 400 15px/1.3 Geist, sans-serif; transition: color .3s; }
+      .ft-item b i { font-style: normal; color: var(--accent); }
+      .ft-item span { font-size: 13px; line-height: 1.5; color: var(--mute); max-width: 32ch; }
+      .ft-item:hover b { color: var(--accent); }
+      .ft-pages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 9px 24px; align-self: stretch; }
+      .ft-pages a { display: inline-flex; align-items: baseline; gap: 10px; font-size: 15px; color: var(--fg); transition: color .3s; }
+      .ft-pages a small { font: 400 10px "Geist Mono", monospace; letter-spacing: .1em; color: var(--mute); }
+      .ft-pages a:hover { color: var(--accent); }
+      /* numele pe toată lățimea coloanei de conținut; mărimea urmează lățimea (container query) */
+      .ft-sign-wrap { container-type: inline-size; padding: clamp(32px, 4vw, 56px) 0 clamp(16px, 2vw, 28px); }
+      .ft-sign { font: 400 11.5cqi/.82 Cinzel, serif; letter-spacing: 0; white-space: nowrap; color: color-mix(in srgb, #EDE9E0 11%, transparent); text-align: center; margin: 0; user-select: none; }
+      .ft-sign em { font-style: normal; color: color-mix(in srgb, #D4AF37 24%, transparent); }
+      .footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 32px; padding: 22px 0 28px; border-top: 1px solid var(--line); }
+      .ft-copy, .ft-legal { font: 400 11px "Geist Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+      .ft-legal { display: flex; gap: 24px; }
+      .ft-legal a:hover { color: var(--accent); }
+      @media (max-width: 1000px) { .ft-body { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+      @media (max-width: 560px) { .ft-body { grid-template-columns: 1fr; } .ft-cta-r > * { flex: 1 1 100%; } }
+      .ft-top { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--fg); transition: background .3s, color .3s, border-color .3s, opacity .3s, transform .3s; }
 
       .prose blockquote {
-        border-left: 3px solid #d4af37 !important;
+        border-left: 1px solid var(--line) !important;
         padding-left: 1.5rem !important;
         margin-top: 1.5rem !important;
         margin-bottom: 1.5rem !important;
-        font-style: italic !important;
+        font-style: normal !important;
       }
-      
-      header nav a::after { bottom: -9px !important; }
 
       /* Mobil înapoi-sus fix: ascuns până la ~45% scroll */
-      #footer-back-to-top[data-visible="false"] {
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(0.5rem);
-      }
-      #footer-back-to-top[data-visible="true"] {
-        opacity: 0.8;
-        pointer-events: auto;
-        transform: translateY(0);
-      }
-      #footer-back-to-top[data-visible="true"]:hover {
-        opacity: 1;
+      #footer-back-to-top[data-visible="false"] { opacity: 0; pointer-events: none; transform: translateY(0.5rem); }
+      #footer-back-to-top[data-visible="true"] { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+      /* Text mic auriu: varianta lizibilă pe tema luminoasă */
+      .eyebrow, .nav a small, .brand-name small, .card-meta small, .ft-label, .mnav small,
+      .channel small, .project small, .bio-facts small, .mp-now-text small, .mp-list small,
+      .contact-projects small, .path-meta small, .hero-eyebrow, .mp-list button.on span { color: var(--accent-ink); }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
       }
     </style>
 
@@ -294,46 +501,26 @@ const isActive = (path: string) => {
       function initMobileMenu() {
         const toggle = document.getElementById('mobile-menu-toggle');
         const menu = document.getElementById('mobile-menu');
-        const content = document.getElementById('mobile-menu-content');
-        const close = document.getElementById('mobile-menu-close');
+        if (!toggle || !menu) return;
+        const root = document.documentElement;
 
-        if (!toggle || !menu || !content || !close) return;
-
-        const openMenu = () => {
-          menu.classList.remove('hidden');
-          document.body.classList.add('menu-open');
-          toggle.classList.add('active');
-          requestAnimationFrame(() => {
-            menu.classList.add('show');
-          });
-        };
-
-        const closeMenu = () => {
-          menu.classList.remove('show');
-          toggle.classList.remove('active');
-          document.body.classList.remove('menu-open');
-          content.style.transform = 'none';
-
-          setTimeout(() => {
-            if (!menu.classList.contains('show')) {
-               menu.classList.add('hidden');
-               content.style.transform = ''; 
-            }
-          }, 300);
+        const setOpen = (open: boolean) => {
+          root.classList.toggle('menu-open', open);
+          document.body.classList.toggle('menu-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+          toggle.setAttribute('aria-label', open ? 'Închide meniul' : 'Deschide meniul');
+          menu.setAttribute('aria-hidden', String(!open));
         };
 
         toggle.onclick = (e) => {
           e.preventDefault();
-          menu.classList.contains('hidden') ? openMenu() : closeMenu();
+          setOpen(!root.classList.contains('menu-open'));
         };
-
-        close.onclick = (e) => {
-          e.preventDefault();
-          closeMenu();
-        };
-
-        menu.querySelectorAll('a').forEach(link => {
-          link.onclick = closeMenu;
+        menu.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => setOpen(false));
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && root.classList.contains('menu-open')) setOpen(false);
         });
       }
 
@@ -346,16 +533,43 @@ const isActive = (path: string) => {
         function checkVisibility() {
           const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
           const mid = scrollHeight * 0.45;
-          btn.setAttribute('data-visible', window.scrollY > mid ? 'true' : 'false');
+          btn!.setAttribute('data-visible', window.scrollY > mid ? 'true' : 'false');
         }
         window.addEventListener('scroll', checkVisibility);
         checkVisibility();
       }
       document.addEventListener('astro:page-load', initFooterBackToTop);
+
+      function initThemeAndTop() {
+        const root = document.documentElement;
+        document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((b) => {
+          b.setAttribute('aria-pressed', String(root.classList.contains('dark')));
+          b.onclick = () => {
+            const dark = !root.classList.contains('dark');
+            root.classList.toggle('dark', dark);
+            try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
+            document.querySelectorAll('.theme-toggle').forEach((x) => x.setAttribute('aria-pressed', String(dark)));
+          };
+        });
+        const top = document.getElementById('scroll-top');
+        if (!top) return;
+        const update = () => {
+          const { scrollY, innerHeight } = window;
+          const show = window.innerWidth < 768
+            ? scrollY + innerHeight > document.documentElement.scrollHeight - 350
+            : scrollY > 300;
+          top.classList.toggle('on', show);
+        };
+        top.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      }
+      document.addEventListener('astro:page-load', initThemeAndTop);
+      initThemeAndTop();
       initFooterBackToTop();
 
       document.addEventListener('click', (e) => {
-        if (e.target.closest('#footer-back-to-top')) {
+        if ((e.target as Element).closest('#footer-back-to-top')) {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }

@@ -26,12 +26,12 @@ const visiblePages = pages.slice(startPage - 1, endPage);
 ---
 
 {totalPages > 1 && (
-  <nav class="flex justify-center items-center gap-2 mt-12" aria-label="Pagination">
+  <nav class="pager" aria-label="Paginare">
     {prevUrl ? (
       <a
         href={prevUrl}
-        class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
-        aria-label="Previous page"
+        class="pg-btn"
+        aria-label="Pagina anterioară"
       >
         <span class="sr-only">Pagina anterioară</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +39,7 @@ const visiblePages = pages.slice(startPage - 1, endPage);
         </svg>
       </a>
     ) : (
-      <span class="px-4 py-2 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/10 dark:border-ivory-light/10 text-navy/40 dark:text-ivory-light/40 cursor-not-allowed">
+      <span class="pg-btn off" aria-hidden="true">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
@@ -51,13 +51,13 @@ const visiblePages = pages.slice(startPage - 1, endPage);
       const pageUrl = page === 1 ? baseUrl : `${baseUrl}/${page}`;
 
       return isActive ? (
-        <span class="px-4 py-2 rounded-2xl bg-gold-warm dark:bg-gold-bright text-navy font-semibold">
+        <span class="pg-btn on" aria-current="page">
           {page}
         </span>
       ) : (
         <a
           href={pageUrl}
-          class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
+          class="pg-btn"
         >
           {page}
         </a>
@@ -67,8 +67,8 @@ const visiblePages = pages.slice(startPage - 1, endPage);
     {nextUrl ? (
       <a
         href={nextUrl}
-        class="px-4 py-2 rounded-2xl bg-ivory-card dark:bg-navy-card border border-navy/20 dark:border-ivory-light/20 hover:bg-gold-warm hover:text-navy dark:hover:bg-gold-bright transition-all duration-300"
-        aria-label="Next page"
+        class="pg-btn"
+        aria-label="Pagina următoare"
       >
         <span class="sr-only">Pagina următoare</span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@ const visiblePages = pages.slice(startPage - 1, endPage);
         </svg>
       </a>
     ) : (
-      <span class="px-4 py-2 rounded-2xl bg-ivory dark:bg-navy-deep border border-navy/10 dark:border-ivory-light/10 text-navy/40 dark:text-ivory-light/40 cursor-not-allowed">
+      <span class="pg-btn off" aria-hidden="true">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -84,3 +84,12 @@ const visiblePages = pages.slice(startPage - 1, endPage);
     )}
   </nav>
 )}
+
+<style>
+  .pager { display: flex; justify-content: center; align-items: center; gap: 0; padding-top: 28px; }
+  .pg-btn { min-width: 48px; height: 48px; display: grid; place-items: center; font: 400 12px "Geist Mono", monospace; letter-spacing: .1em; color: var(--mute); border-bottom: 1px solid transparent; transition: color .3s, border-color .3s; }
+  a.pg-btn:hover { color: var(--fg); border-bottom-color: var(--fg); }
+  .pg-btn.on { color: var(--fg); border-bottom-color: var(--fg); }
+  .pg-btn.off { opacity: .35; }
+  .pg-btn svg { width: 18px; height: 18px; }
+</style>

@@ -162,3 +162,7 @@ src/content/blog/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla.mdo
 src/content/blog/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla.mdoc
 src/content/blog/de-37-de-ani-in-dialog-cu-88-de-clape.mdoc
 public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzolla/cover_image.jpg
+
+# Miniaturi generate la build (scripts/generate-thumbs.mjs)
+public/uploads/thumbs/
+!public/uploads/images/scena.jpg

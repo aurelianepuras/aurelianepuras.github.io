@@ -18,8 +18,9 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 
-const title = "Videoclipuri | Aurelian Epuraș";
-const description = "Urmărește interpretările lui Aurelian Epuraș. Videoclipuri din concerte live, sesiuni de studio și compoziții la pian care surprind emoția momentului.";
+const title = page.currentPage > 1 ? `Videoclipuri – Pagina ${page.currentPage} | Aurelian Epuraș` : "Videoclipuri | Aurelian Epuraș";
+const descriptionBase = "Urmărește interpretările lui Aurelian Epuraș. Videoclipuri din concerte live, sesiuni de studio și compoziții la pian care surprind emoția momentului.";
+const description = page.currentPage > 1 ? `Pagina ${page.currentPage} din ${page.lastPage}. ${descriptionBase}` : descriptionBase;
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 const imageAlt = "Video Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 
@@ -68,41 +69,39 @@ const videoSchema = {
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(videoSchema)} />
 
-  <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12 max-w-6xl mx-auto">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Videoclipuri</h1>
-        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-        
-        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-          Explorează momentele surprinse live, de la concerte pe scene mari până la sesiuni intime în studio. 
-          Fiecare cadru și fiecare notă înregistrată sunt martorele unei căutări continue a frumosului, 
-          oferindu-ți o fereastră deschisă către universul meu muzical în mișcare.
-        </p>
+  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-video.webp')">
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">Video</p>
+          <h1 class="page-title">Muzica <em>în mișcare</em></h1>
+        </div>
+        <p>Momente surprinse live, de la concerte pe scene mari până la sesiuni intime în studio. O fereastră deschisă către universul meu muzical.</p>
       </div>
+    </div>
+  </header>
 
-      <h2 class="sr-only">Lista de videoclipuri</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        {page.data.map((video, index) => (
-          <div class="video-item">
-            <VideoPlayer
-              client:visible 
-              title={video.data.title}
-              videoUrl={video.data.external_url}
-              thumbnail={video.data.thumbnail}
-              description={video.data.description}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-16">
-        <Pagination
-          currentPage={page.currentPage}
-          totalPages={page.lastPage}
-          baseUrl="/video"
+  <section class="page">
+    <h2 class="sr-only">Lista de videoclipuri</h2>
+    <div class="grid-cards">
+      {page.data.map((video, index) => (
+        <VideoPlayer
+          client:visible
+          title={video.data.title}
+          videoUrl={video.data.external_url}
+          thumbnail={video.data.thumbnail}
+          description={video.data.description}
+          index={page.start + index}
         />
-      </div>
+      ))}
+    </div>
+
+    <div class="mt-20">
+      <Pagination
+        currentPage={page.currentPage}
+        totalPages={page.lastPage}
+        baseUrl="/video"
+      />
     </div>
   </section>
 </Layout>

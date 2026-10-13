@@ -1,12 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Image } from 'astro:assets';
 
 // AICI definești variabilele pentru seo //
 const title = "Biografie | Aurelian Epuraș";
 const description = "Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte.";
 const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
+
+const milestones = [
+  { year: '1981', text: 'Petroșani, Hunedoara' },
+  { year: '1989', text: 'Școala de Muzică, Petroșani' },
+  { year: '1996', text: 'Liceul de Muzică Sigismund Toduță, Deva' },
+  { year: '2001', text: 'Profesor de pian, Corsica' },
+  { year: '2013', text: 'Am început să compun' },
+  { year: '2016', text: 'Profesor de pian, Petroșani', href: 'https://lectiidepiancuaurelian.ro/' },
+  { year: '2017', text: 'Academia de Muzică, Cluj-Napoca' },
+  { year: '2019', text: 'Lansarea proiectului Fabrica de Pian', href: 'https://fabricadepian.github.io/' },
+  { year: '2023', text: 'Lansarea albumului 13' },
+];
 ---
 
 <Layout
@@ -64,154 +75,111 @@ const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
   }
 </script>
 
- <section class="py-20 pb-4 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16 max-w-5xl mx-auto">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Biografie</h1>
-        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-        
-        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-          37 de ani petrecuți între clape, partituri și momente de liniște deplină. De la sălile de curs din Corsica până la proiectul Fabrica de Pian din Petroșani, muzica a fost singurul limbaj prin care am învățat să descopăr lumea și pe mine însumi.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-16 items-center max-w-4xl mx-auto mb-20">
-        <div class="relative">
-          <div class="rounded-2xl overflow-hidden shadow-2xl">
-            <picture>
-              <source srcset="/uploads/images/Aurelian-Epuras.webp" type="image/webp" />
-              <img
-                src="/uploads/images/Aurelian-Epuras.jpg"
-                alt={imageAlt}
-                width="600"
-                height="400"
-                loading="eager"
-                fetchpriority="high"
-                class="w-full h-full object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </picture>
-          </div>
+  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-biografie.webp')">
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">Despre mine</p>
+          <h1 class="page-title">Biografie<em>.</em></h1>
         </div>
-
-        <div class="space-y-6 text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-          <p class="text-[17px]">
-            Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte. Dacă ai ajuns aici, înseamnă că ai fost curios sau poate ai dat click din greșeală. Ce găsești totuși aici este rezultatul a 37 de ani petrecuți între clape, partituri și momente în care am uitat unde am pus cablul de alimentare. Pianul face parte din viața mea de când mă știu, iar drumul a trecut prin școala și liceul de muzică, apoi prin conservator, și încă nu s-a oprit. Corsica mi-a fost acasă vreme de 13 ani, timp în care pianul a fost mai mult decât un instrument, a devenit limbajul zilnic dintre mine și elevi. 
-          </p>
-        </div>
+        <p>37 de ani petrecuți între clape, partituri și momente de liniște deplină.</p>
       </div>
     </div>
-</section>
+  </header>
 
-  <section class="py-20 bg-ivory-card dark:bg-navy-card">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="space-y-6 text-navy/70 dark:text-ivory-light/70 leading-relaxed text-[17px]">
-          <p>Din 2016 predau în România, iar activitatea educațională a continuat și în zona de proiecte culturale care chiar au lăsat urme. Fabrica de Pian e un exemplu clar, cu două săli complet modernizate în Petroșani, unde elevii secției de muzică au acum spații care inspiră și funcționează cu adevărat.</p>
-          <p>Compozitor atunci când nu caut telecomanda și interpret atunci când nu mă încurc în cabluri, mi-am lansat albumul intitulat simplu 13, pentru că unele lucruri importante nu au nevoie de titluri pretențioase. Piesele de pe album fac parte din repertoriul concertelor pe care le susțin și reflectă o direcție clară, implicarea în educație, cultură și tot ce ține de comunitate, vie, autentică și prezentă.</p>
-          <p>Pe site găsești muzica mea, fie sub formă de album, fie ca piese individuale disponibile pentru achiziție, alături de ultimele compoziții, programul evenimentelor, înregistrări video, fotografii și detalii despre colaborările recente. Iar dacă îți dorești muzică live într-un spațiu care contează, poți chiar să comanzi un concert. Sper ca experiența de aici să-ți ofere exact ce cauți. Este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să cunoască mai bine drumul și lumea mea muzicală.</p>
+  <section class="page">
+    <div class="bio-grid">
+      <div class="media notch bio-img">
+        <picture>
+          <source srcset="/uploads/images/Aurelian-Epuras.webp" type="image/webp" />
+          <img src="/uploads/images/Aurelian-Epuras.jpg" alt={imageAlt} width="600" height="800" loading="eager" fetchpriority="high" sizes="(max-width: 860px) 100vw, 45vw" />
+        </picture>
+      </div>
+      <div class="bio-text">
+        <p class="bio-quote">De la sălile de curs din Corsica până la proiectul <a class="inline-link" href="https://fabricadepian.github.io/" target="_blank" rel="noopener">Fabrica de Pian</a> din Petroșani, muzica a fost <em>singurul limbaj</em> prin care am învățat să descopăr lumea.</p>
+        <p class="lead">Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte. Dacă ai ajuns aici, înseamnă că ai fost curios sau poate ai dat click din greșeală. Ce găsești totuși aici este rezultatul a 37 de ani petrecuți între clape, partituri și momente în care am uitat unde am pus cablul de alimentare. Pianul face parte din viața mea de când mă știu, iar drumul a trecut prin școala și liceul de muzică, apoi prin conservator, și încă nu s-a oprit. Corsica mi-a fost acasă vreme de 13 ani, timp în care pianul a fost mai mult decât un instrument, a devenit limbajul zilnic dintre mine și elevi.</p>
+        <div class="bio-sign">
+          <span class="bio-sign-name">— Aurelian <em>Epuraș</em></span>
+          <a href="https://lectiidepiancuaurelian.ro/" target="_blank" rel="noopener" class="btn-line">Lecții de pian <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-20 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="font-serif text-3xl md:text-4xl text-navy dark:text-ivory-light mb-12 text-left">Repere importante</h2>
-
-        <div class="space-y-8 text-[17px]">
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">1981</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Petroșani, Hunedoara</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">1989</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Școala de Muzică, Petroșani</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">1996</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Liceul de Muzică Sigismund Toduță, Deva</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">2001</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Profesor de pian Corsica</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">2013</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Am început să compun</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">2016</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Profesor de pian, Petroșani</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">2017</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Academia de Muzică, Cluj-Napoca</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">2019</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Lansarea proiectului Fabrica de Pian</p>
-            </div>
-          </div>
-
-          <div class="flex gap-6 items-start">
-            <div class="flex-shrink-0 w-auto text-right">
-              <span class="text-xl font-serif font-bold text-gold-warm dark:text-gold-bright">2023</span>
-            </div>
-            <div class="flex items-center gap-4 flex-1">
-              <div class="w-3 h-3 rounded-full bg-gold-warm dark:bg-gold-bright flex-shrink-0"></div>
-              <p class="text-navy/70 dark:text-ivory-light/70">Lansarea albumului 13</p>
-            </div>
-          </div>
+  <section class="page-band">
+    <div class="page bio-more">
+      <div class="bio-side">
+        <p class="eyebrow">Drumul de azi</p>
+        <h2 class="h2">Educație, cultură <em>și comunitate</em></h2>
+        <div class="media notch bio-side-img">
+          <img src="/uploads/images/bio-drum.webp" alt="Aurelian Epuraș vorbind publicului la Fabrica de Pian" width="1000" height="667" loading="lazy" decoding="async" />
         </div>
+      </div>
+      <div class="bio-more-text">
+        <p class="lead">Din 2016 <a class="inline-link" href="https://lectiidepiancuaurelian.ro/" target="_blank" rel="noopener">predau pian</a> în România, iar activitatea educațională a continuat și în zona de proiecte culturale care chiar au lăsat urme. <a class="inline-link" href="https://fabricadepian.github.io/" target="_blank" rel="noopener">Fabrica de Pian</a> e un exemplu clar, cu două săli complet modernizate în Petroșani, unde elevii secției de muzică au acum spații care inspiră și funcționează cu adevărat.</p>
+        <p class="lead">Compozitor atunci când nu caut telecomanda și interpret atunci când nu mă încurc în cabluri, mi-am lansat albumul intitulat simplu 13, pentru că unele lucruri importante nu au nevoie de titluri pretențioase. Piesele de pe album fac parte din repertoriul concertelor pe care le susțin și reflectă o direcție clară, implicarea în educație, cultură și tot ce ține de comunitate, vie, autentică și prezentă.</p>
+        <p class="lead">Pe site găsești muzica mea, fie sub formă de album, fie ca piese individuale disponibile pentru achiziție, alături de ultimele compoziții, programul evenimentelor, înregistrări video, fotografii și detalii despre colaborările recente. Iar dacă îți dorești muzică live într-un spațiu care contează, poți chiar să comanzi un concert. Sper ca experiența de aici să-ți ofere exact ce cauți. Este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să cunoască mai bine drumul și lumea mea muzicală.</p>
       </div>
     </div>
   </section>
+
+  <section class="page">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Cronologie</p>
+        <h2 class="h2">Repere <em>importante</em></h2>
+      </div>
+    </div>
+    <ol class="timeline">
+      {milestones.map((m) => (
+        <li class={m.href ? 'tl-item has-link' : 'tl-item'}>
+          <span class="tl-dot" aria-hidden="true"></span>
+          <span class="yr">{m.year}</span>
+          {m.href ? (
+            <a class="tl-text tl-link" href={m.href} target="_blank" rel="noopener">{m.text} <span aria-hidden="true">↗</span></a>
+          ) : (
+            <span class="tl-text">{m.text}</span>
+          )}
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <style>
+    .bio-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 96px); align-items: end; }
+    .bio-img { aspect-ratio: 3 / 4; }
+    .bio-quote { font: 400 clamp(22px, 2.2vw, 32px)/1.3 Cinzel, serif; letter-spacing: .01em; margin-bottom: 28px; text-wrap: balance; }
+    .bio-quote em { font-style: normal; color: var(--accent); }
+    .bio-more { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px clamp(32px, 6vw, 96px); }
+    .bio-sign { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 24px; margin-top: 40px; }
+    .bio-sign-name { font: 400 clamp(20px, 1.8vw, 26px)/1.2 Cinzel, serif; letter-spacing: .02em; }
+    .bio-sign-name em { font-style: normal; color: var(--accent); }
+    .bio-sign .btn-line { min-height: 44px; padding: 0 20px; }
+    .bio-more { align-items: start; }
+    .bio-side { position: sticky; top: calc(var(--hdr-h) + 32px); display: flex; flex-direction: column; gap: 22px; }
+    .bio-side .h2 { font-size: clamp(28px, 3vw, 44px); }
+    .bio-side-img { aspect-ratio: 3 / 2; margin-top: 10px; }
+    .bio-side-img.notch::after { border-bottom-color: var(--bg-2); }
+    .bio-more-text { padding-top: 6px; }
+    .bio-more-text .lead { color: var(--fg); opacity: .82; }
+    /* Repere — varianta C: listă simplă, doar linii fine */
+    .timeline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .tl-dot { display: none; }
+    .tl-item { display: grid; grid-template-columns: clamp(110px, 12vw, 180px) minmax(0, 1fr); align-items: baseline; gap: 8px 24px; padding: clamp(18px, 1.8vw, 26px) 0; border-bottom: 1px solid var(--line); transition: padding-left .5s var(--ease); }
+    .tl-item:hover { padding-left: 12px; }
+    .yr { font: 400 clamp(26px, 2.6vw, 38px)/1 Cinzel, serif; color: var(--accent); }
+    .tl-text { font-size: clamp(16px, 1.4vw, 20px); line-height: 1.4; }
+    .tl-link { border-bottom: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); justify-self: start; transition: color .3s, border-color .3s; }
+    .tl-link span { color: var(--accent); }
+    .tl-link:hover { color: var(--accent); border-color: var(--accent); }
+    @media (max-width: 560px) { .tl-item { grid-template-columns: 1fr; } }
+    .inline-link { color: var(--fg); border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); transition: color .3s; }
+    .inline-link:hover { color: var(--accent); }
+    .bio-quote .inline-link { color: inherit; }
+    @media (max-width: 860px) {
+      .bio-grid, .bio-more { grid-template-columns: 1fr; }
+      .bio-img { aspect-ratio: 4 / 5; }
+      .bio-side { position: static; }
+    }
+  </style>
 </Layout>

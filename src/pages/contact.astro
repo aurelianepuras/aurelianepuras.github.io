@@ -1,11 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContactForm from '../components/ContactForm';
 
 const title = "Contact | Aurelian Epuraș";
 const description = "Contactează-l pe Aurelian Epuraș pentru concerte, evenimente private sau ceremonii speciale. Transformă-ți povestea în muzică prin interpretări de pian pline de emoție.";
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 const imageAlt = "Contact Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
+
+const channels = [
+  { title: 'Scrie-mi un email', text: 'Pentru concerte, evenimente private sau colaborări. Îți răspund cu disponibilitatea.', label: 'Email', value: 'aurelian.epuras@gmail.com', href: 'mailto:aurelian.epuras@gmail.com' },
+  { title: 'Sună-mă', text: 'O discuție rapidă despre evenimentul tău și ce muzică i se potrivește.', label: 'Telefon', value: '+40 736 674 176', href: 'tel:+40736674176' },
+  { title: 'Scrie-mi pe WhatsApp', text: 'Cel mai simplu: un mesaj scurt și stabilim restul.', label: 'WhatsApp', value: '+40 736 674 176', href: 'https://wa.me/40736674176', external: true },
+  { title: 'Ascultă-mă pe YouTube', text: 'Concerte live, sesiuni de studio și compozițiile mele.', label: 'YouTube', value: '@aurelianepuras', href: 'https://www.youtube.com/@aurelianepuras', external: true },
+  { title: 'Urmărește-mă pe Instagram', text: 'Fotografii din concerte și din culisele lor.', label: 'Instagram', value: '@aurelian.epuras', href: 'https://www.instagram.com/aurelian.epuras/', external: true },
+];
 
 // Date structurate pentru Contact (Versiunea optimizată @graph)
 const contactSchema = {
@@ -57,77 +64,60 @@ const contactSchema = {
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(contactSchema)} />
 
-  <section class="pt-20 pb-20 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12 max-w-6xl mx-auto">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-navy dark:text-ivory-light mb-6">Contact</h1>
-        <div class="w-16 h-0.5 bg-gold-warm dark:bg-gold-bright mx-auto mb-6"></div>
-        
-        <p class="text-left md:text-center text-lg text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-          Fiecare moment special merită o coloană sonoră care să-l facă nemuritor. Spune-mi povestea ta, viziunea ta sau pur și simplu trimite-mi un gând. Sunt aici să transformăm emoțiile tale într-o experiență muzicală care să vibreze mult timp după ultima notă.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="flex flex-col gap-6">
-          <div class="bg-ivory-card dark:bg-navy-card p-8 rounded-2xl shadow-lg">
-            <h2 class="font-serif text-2xl md:text-3xl font-bold text-navy dark:text-ivory-light mb-6">Informații de Contact</h2>
-            <div class="space-y-4">
-              <div class="flex items-start gap-4">
-                <div class="p-3 bg-gold-warm/20 dark:bg-gold-bright/20 rounded-full">
-                  <svg class="w-6 h-6 text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-semibold text-navy dark:text-ivory-light">Email</div>
-                  <a href="mailto:aurelian.epuras@gmail.com" class="text-navy/70 dark:text-ivory-light/70 hover:underline">
-                    aurelian.epuras@gmail.com
-                  </a>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-4">
-                <div class="p-3 bg-gold-warm/20 dark:bg-gold-bright/20 rounded-full">
-                  <svg class="w-6 h-6 text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-semibold text-navy dark:text-ivory-light">Telefon</div>
-                  <a href="tel:+40736674176" class="text-navy/70 dark:text-ivory-light/70 hover:underline">
-                    +40 736 674 176
-                  </a>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-4">
-                <div class="p-3 bg-gold-warm/20 dark:bg-gold-bright/20 rounded-full">
-                  <svg class="w-6 h-6 text-gold-warm dark:text-gold-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <div class="font-semibold text-navy dark:text-ivory-light">Locație</div>
-                  <p class="text-navy/70 dark:text-ivory-light/70">București, România</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-ivory-card dark:bg-navy-card p-8 rounded-2xl shadow-lg flex flex-col flex-1">
-            <h2 class="font-serif text-2xl md:text-3xl font-bold text-navy dark:text-ivory-light mb-6">Să dăm viață poveștii tale</h2>
-            <p class="text-navy/70 dark:text-ivory-light/70 leading-relaxed">
-              Dacă îți dorești un moment muzical plin de emoție la evenimentul tău, fie că este un concert, o ceremonie specială sau un eveniment privat, lasă-mi un mesaj. Abia aștept să transformăm povestea ta în muzică.
-            </p>
-          </div>
-        </div>
-
+  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-contact.webp')">
+    <div class="page">
+      <div class="page-head">
         <div>
-          <ContactForm client:load />
+          <p class="eyebrow">Scrie-mi</p>
+          <h1 class="page-title">Hai să <em>vorbim.</em></h1>
         </div>
+        <p>Fiecare moment special merită o coloană sonoră care să-l facă nemuritor. Spune-mi povestea ta, viziunea ta sau pur și simplu trimite-mi un gând.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="page">
+    <div class="rows stack">
+      {channels.map((c, i) => (
+        <a href={c.href} class="row-card" style={`--i:${i}`} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}>
+          <div>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+          </div>
+          <div class="row-meta">
+            <small>{c.label}</small>
+            <b>{c.value}</b>
+          </div>
+          <span class="circ" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="page-band">
+    <div class="page contact-grid">
+      <div>
+        <p class="eyebrow">Concerte și evenimente</p>
+        <h2 class="h2">Să dăm viață <em>poveștii tale</em></h2>
+        <p class="lead" style="margin-top: 28px;">Dacă îți dorești un moment muzical plin de emoție la evenimentul tău, fie că este un concert, o ceremonie specială sau un eveniment privat, lasă-mi un mesaj. Abia aștept să transformăm povestea ta în muzică.</p>
+        <p class="mono" style="margin-top: 36px; color: var(--mute);">Locație · București, România</p>
+      </div>
+      <div class="contact-projects">
+          <a href="https://lectiidepiancuaurelian.ro/" target="_blank" rel="noopener"><small>Vrei să înveți pian?</small><b>Lecții de pian cu Aurelian ↗</b></a>
+          <a href="https://fabricadepian.github.io/" target="_blank" rel="noopener"><small>Proiect cultural</small><b>Fabrica de Pian ↗</b></a>
       </div>
     </div>
   </section>
+
+  <style is:global>
+    .contact-projects { display: flex; flex-direction: column; align-self: center; border-top: 1px solid var(--line); }
+    .contact-projects a { display: flex; flex-direction: column; gap: 6px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .contact-projects small { font: 400 11px "Geist Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+    .contact-projects b { font: 400 20px/1.2 Cinzel, serif; transition: color .3s; }
+    .contact-projects a:hover b { color: var(--accent); }
+    .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px clamp(40px, 6vw, 96px); align-items: start; }
+    @media (max-width: 860px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </Layout>

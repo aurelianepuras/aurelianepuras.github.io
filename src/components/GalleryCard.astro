@@ -1,10 +1,13 @@
 ---
+import { thumb } from '../utils/thumb';
+
 interface Props {
   title: string;
   image: string;
   description?: string;
   loading?: "lazy" | "eager"; // Permitem controlul încărcării
   fetchpriority?: "high" | "low" | "auto"; // Permitem prioritate înaltă
+  index?: number;
 }
 
 const { 
@@ -12,23 +15,30 @@ const {
   image, 
   description, 
   loading = "lazy", 
-  fetchpriority = "auto" 
+  fetchpriority = "auto",
+  index
 } = Astro.props;
 ---
 
-<div class="group cursor-pointer gallery-item" data-image={image} data-title={title} data-description={description || ''}>
-  <div class="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
-    <div class="aspect-square overflow-hidden">
-      <img
-        src={image}
-        alt={title}
-        width="400"
-        height="400"
-        loading={loading}
-        fetchpriority={fetchpriority}
-        decoding="async"
-        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-      />
-    </div>
+<div class="gallery-item" data-image={image} data-title={title} data-description={description || ''}>
+  <div class="media notch" style="aspect-ratio: 4 / 3;">
+    <picture>
+    {thumb(image) && <source srcset={thumb(image)} type="image/webp" />}
+    <img
+      src={image}
+      alt={title}
+      width="400"
+      height="300"
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+      class="cursor-zoom-in"
+    />
+    </picture>
   </div>
+  <div class="card-meta">
+    <small>{index !== undefined ? String(index + 1).padStart(2, '0') : 'FOTO'}</small>
+    <span class="go" aria-hidden="true">+</span>
+  </div>
+  <h3 class="card-title">{title}</h3>
 </div>
