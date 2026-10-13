@@ -266,7 +266,16 @@ const paths = [
         linear-gradient(90deg, #0f1218 0%, color-mix(in srgb, #0f1218 80%, transparent) 35%, transparent 60%),
         linear-gradient(180deg, color-mix(in srgb, #0f1218 30%, transparent) 0%, transparent 30%, transparent 70%, #0f1218 100%); }
     }
-    @media (max-width: 760px) { .hero-scroll { display: none; } .hero-media { bottom: auto; height: 64%; } .hero-media img { object-position: 44% 45%; } .hero-text { padding-bottom: 28px; } }
+    @media (max-width: 760px) {
+      /* pe telefon: poza într-un bloc separat sus, textul dedesubt — nu se pot suprapune pe niciun ecran */
+      .hero { display: block; min-height: 0; }
+      .hero-scroll { display: none; }
+      .hero-media { position: relative; inset: auto; display: block; height: auto; aspect-ratio: 4 / 4.2; }
+      .hero-media img { object-position: 45% 50%; }
+      .hero-media::after { background: radial-gradient(ellipse 50% 45% at 45% 50%, color-mix(in srgb, #D4AF37 12%, transparent), transparent 70%), linear-gradient(180deg, color-mix(in srgb, #0f1218 35%, transparent) 0%, transparent 25%, transparent 60%, #0f1218 100%); }
+      .hero-text { margin-top: -56px; padding-top: 0; padding-bottom: 44px; }
+      .hero::after { height: 56px; }
+    }
 
     /* ===== cifre ===== */
     @media (max-width: 860px) {
