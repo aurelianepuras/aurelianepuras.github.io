@@ -166,7 +166,7 @@ const paths = [
       {paths.map((p, i) => (
         <a href={p.href} class="path group">
           <div class="path-img notch">
-            <img src={`/uploads/images/card-${p.img}.webp`} alt="" width="900" height="675" loading="lazy" decoding="async" />
+            <img src={`/uploads/images/card-${p.img}.webp?v=2`} alt="" width="900" height="675" loading="lazy" decoding="async" />
           </div>
           <div class="path-meta">
             <small>{String(i + 1).padStart(2, '0')}</small>
@@ -189,7 +189,7 @@ const paths = [
     </div>
     <div class="projects">
       {[
-        { href: 'https://lectiidepiancuaurelian.ro/', img: '/uploads/images/proiect-lectii.webp', pos: '50% 50%', domain: 'lectiidepiancuaurelian.ro', t1: 'Lecții de pian', t2: 'cu Aurelian', text: 'Lecții de pian pentru copii și adulți, la Petroșani și online. Fără grabă, cu repertoriul care îți place.', cta: 'Vezi lecțiile' },
+        { href: 'https://lectiidepiancuaurelian.ro/', img: '/uploads/images/proiect-lectii.webp?v=2', pos: '50% 50%', domain: 'lectiidepiancuaurelian.ro', t1: 'Lecții de pian', t2: 'cu Aurelian', text: 'Lecții de pian pentru copii și adulți, la Petroșani și online. Fără grabă, cu repertoriul care îți place.', cta: 'Vezi lecțiile' },
         { href: 'https://fabricadepian.github.io/', img: '/uploads/images/proiect-fabrica.webp', pos: '50% 50%', domain: 'fabricadepian.github.io', t1: 'Fabrica', t2: 'de Pian', text: 'Proiectul cultural prin care două săli ale secției de muzică din Petroșani au fost complet modernizate.', cta: 'Descoperă proiectul' },
       ].map((p, i) => (
         <a href={p.href} class="project" target="_blank" rel="noopener">
