@@ -53,10 +53,11 @@ export default defineConfig({
    * - Nu afectează GitHub Pages
    */
   vite: {
+    // O singură copie de React pe serverul de test (altfel playerele de pe Muzică/Video nu pornesc)
+    resolve: {
+      dedupe: ['react', 'react-dom']
+    },
     optimizeDeps: {
-      // React e pre-încărcat de la pornire, ca serverul de test să nu-l
-      // re-optimizeze din mers (altfel apare „jsxDEV is not a function”)
-      include: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'react-dom/client'],
       exclude: [
         '@markdoc/markdoc'
       ]
