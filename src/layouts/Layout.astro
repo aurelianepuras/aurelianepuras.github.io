@@ -23,7 +23,7 @@ const {
 // Titlu: fără spații în plus, cu numele în coadă dacă lipsește și încape
 const BRAND = 'Aurelian Epuraș';
 const cleanTitle = title.replace(/\s+/g, ' ').trim();
-const pageTitle = cleanTitle.includes('Epuraș') || cleanTitle.length + BRAND.length + 3 > 70
+const pageTitle = cleanTitle.includes('Epuraș') || cleanTitle.length + BRAND.length + 3 > 65
   ? cleanTitle
   : `${cleanTitle} | ${BRAND}`;
 
@@ -139,7 +139,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
             <svg class="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
           </button></div>
         <span class="hdr-sep" aria-hidden="true"></span>
-        <a href="/contact" class={`header-cta ${isActive('/contact') ? 'on' : ''}`}>Scrie-mi ↗</a>
+        <a href="/contact" class={`header-cta ${isActive('/contact') ? 'on' : ''}`}>Scrie-mi ↗︎</a>
         <button id="mobile-menu-toggle" class="burger" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mobile-menu">
           <span><i></i><i></i></span>
         </button>
@@ -159,7 +159,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       <div class="mfoot">
         <div class="mprojects">
           {projects.map((p) => (
-            <a href={p.href} target="_blank" rel="noopener">{p.short} <span aria-hidden="true">↗</span></a>
+            <a href={p.href} target="_blank" rel="noopener">{p.short} <span aria-hidden="true">↗︎</span></a>
           ))}
         </div>
         <div class="mctas">
@@ -181,18 +181,9 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       <slot />
     </main>
 
-    <div class="hidden md:block">
-      <button type="button" id="scroll-top" class="scroll-top" aria-label="Înapoi sus">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
-      </button>
-    </div>
-
-    <!-- Mobil: buton înapoi sus fix, apare la ~45% scroll -->
-    <div class="md:hidden fixed right-4 bottom-8 z-50">
-      <button type="button" id="footer-back-to-top" data-visible="false" class="ft-top bg-ivory dark:bg-navy-deep" aria-label="Înapoi sus">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
-      </button>
-    </div>
+    <button type="button" id="scroll-top" class="scroll-top" aria-label="Înapoi sus">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+    </button>
 
     <footer id="site-footer" class="footer-wrap stage-dark">
       <div class="ft-stage">
@@ -202,7 +193,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
             <p class="ft-quote">Hai să facem muzică <em>împreună.</em></p>
           </div>
           <div class="ft-cta-r">
-            <a href="/contact" class="btn-solid">Scrie-mi <span aria-hidden="true">↗</span></a>
+            <a href="/contact" class="btn-solid">Scrie-mi <span aria-hidden="true">↗︎</span></a>
             <a href="tel:+40736674176" class="btn-line">+40 736 674 176</a>
           </div>
         </div>
@@ -303,7 +294,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .page-band { background: var(--bg-2); }
       .page-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: last baseline; gap: 24px; margin-bottom: clamp(40px, 4.4vw, 64px); }
       .page-head .eyebrow { margin-bottom: 22px; }
-      .page-head > p, .page-head .aside { max-width: 320px; font-size: 14px; line-height: 1.7; color: var(--mute); }
+      .page-head > p { max-width: 320px; font-size: 14px; line-height: 1.7; color: var(--mute); }
       .page-title { font: 400 clamp(40px, 5.6vw, 88px)/1.04 Cinzel, serif; letter-spacing: .02em; animation: rise 1.1s var(--ease) both; }
       .page-title em, .h2 em { font-style: normal; color: var(--accent); }
       .h2 { font: 400 clamp(32px, 4vw, 60px)/1.1 Cinzel, serif; letter-spacing: .01em; }
@@ -380,7 +371,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .theme-toggle { cursor: pointer; }
       .theme-toggle .i-sun, .dark .theme-toggle .i-moon { display: none; }
       .dark .theme-toggle .i-sun { display: block; color: var(--accent); }
-      .scroll-top { position: fixed; right: 32px; bottom: 32px; z-index: 50; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 85%, transparent); color: var(--fg); border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); box-shadow: 0 10px 24px -10px var(--shadow); backdrop-filter: blur(6px); cursor: pointer; opacity: 0; transform: translateY(40px); pointer-events: none; transition: opacity .3s, transform .3s; }
+      .scroll-top { position: fixed; right: clamp(16px, 3vw, 32px); bottom: clamp(16px, 3vw, 32px); z-index: 50; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 85%, transparent); color: var(--fg); border: 1px solid color-mix(in srgb, var(--fg) 25%, transparent); box-shadow: 0 10px 24px -10px var(--shadow); backdrop-filter: blur(6px); cursor: pointer; opacity: 0; transform: translateY(40px); pointer-events: none; transition: opacity .3s, transform .3s; }
       .scroll-top svg { width: 18px; height: 18px; }
       .scroll-top.on { opacity: 1; transform: none; pointer-events: auto; }
       .scroll-top:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
@@ -445,24 +436,6 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .ft-quote { font: 400 clamp(36px, 5vw, 76px)/1.04 Cinzel, serif; letter-spacing: .01em; max-width: 14ch; text-wrap: balance; }
       .ft-quote em { font-style: normal; color: var(--accent); }
       .ft-cta-r { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: calc(clamp(36px, 5vw, 76px) * .39); }
-      .ft-body { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px clamp(24px, 4vw, 64px); padding-top: clamp(28px, 3vw, 40px); padding-bottom: clamp(28px, 3vw, 40px); align-items: center; }
-      .ft-brand { display: flex; align-items: center; gap: 14px; color: var(--fg); margin-bottom: 6px; }
-      .ft-brand svg { width: 44px; height: 44px; flex-shrink: 0; }
-      .ft-brand span { display: flex; flex-direction: column; gap: 6px; }
-      .ft-brand b { font: 500 18px/1.1 Cinzel, serif; letter-spacing: .06em; }
-      .ft-brand small { font: 400 10px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
-      .ft-col { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
-      .ft-label { font: 400 11px "Geist Mono", monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); line-height: 1.4; margin: 0 0 3px; }
-      .ft-brand-col .ft-brand { margin-bottom: 2px; }
-      .ft-item { display: flex; flex-direction: column; gap: 2px; color: var(--fg); }
-      .ft-item b { font: 400 15px/1.3 Geist, sans-serif; transition: color .3s; }
-      .ft-item b i { font-style: normal; color: var(--accent); }
-      .ft-item span { font-size: 13px; line-height: 1.5; color: var(--mute); max-width: 32ch; }
-      .ft-item:hover b { color: var(--accent); }
-      .ft-pages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 9px 24px; align-self: stretch; }
-      .ft-pages a { display: inline-flex; align-items: baseline; gap: 10px; font-size: 15px; color: var(--fg); transition: color .3s; }
-      .ft-pages a small { font: 400 10px "Geist Mono", monospace; letter-spacing: .1em; color: var(--mute); }
-      .ft-pages a:hover { color: var(--accent); }
       /* numele pe toată lățimea coloanei de conținut; mărimea urmează lățimea (container query) */
       .ft-sign-wrap { container-type: inline-size; padding: clamp(32px, 4vw, 56px) 0 clamp(16px, 2vw, 28px); }
       .ft-sign { font: 400 11.5cqi/.82 Cinzel, serif; letter-spacing: 0; white-space: nowrap; color: color-mix(in srgb, #EDE9E0 15%, transparent); text-align: center; margin: 0; user-select: none; }
@@ -478,9 +451,6 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         .ft-stage::before { inset: auto 0 0 0; height: calc(150vw + 110px); opacity: .9; background-position: center 30%; background-size: cover; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 45%); mask-image: linear-gradient(180deg, transparent 0%, #000 45%); }
         .ft-cta { padding-top: 24px; padding-bottom: calc(150vw - 150px); }
       }
-      @media (max-width: 1000px) { .ft-body { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-      @media (max-width: 560px) { .ft-body { grid-template-columns: 1fr; } .ft-cta-r > * { flex: 1 1 100%; } }
-      .ft-top { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; color: var(--fg); transition: background .3s, color .3s, border-color .3s, opacity .3s, transform .3s; }
 
       .prose blockquote {
         border-left: 1px solid var(--line) !important;
@@ -490,13 +460,10 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         font-style: normal !important;
       }
 
-      /* Mobil înapoi-sus fix: ascuns până la ~45% scroll */
-      #footer-back-to-top[data-visible="false"] { opacity: 0; pointer-events: none; transform: translateY(0.5rem); }
-      #footer-back-to-top[data-visible="true"] { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
       /* Text mic auriu: varianta lizibilă pe tema luminoasă */
       .eyebrow, .nav a small, .brand-name small, .card-meta small, .ft-label, .mnav small,
-      .channel small, .project small, .bio-facts small, .mp-now-text small, .mp-list small,
+      .project small, .mp-now-text small, .mp-list small,
       .contact-projects small, .path-meta small, .hero-eyebrow, .mp-list button.on span { color: var(--accent-ink); }
 
       @media (prefers-reduced-motion: reduce) {
@@ -534,53 +501,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       document.addEventListener('astro:page-load', initMobileMenu);
       initMobileMenu();
 
-      function initFooterBackToTop() {
-        const btn = document.getElementById('footer-back-to-top');
-        if (!btn) return;
-        function checkVisibility() {
-          const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const mid = scrollHeight * 0.45;
-          btn!.setAttribute('data-visible', window.scrollY > mid ? 'true' : 'false');
-        }
-        window.addEventListener('scroll', checkVisibility);
-        checkVisibility();
-      }
-      document.addEventListener('astro:page-load', initFooterBackToTop);
 
-      function initThemeAndTop() {
-        const root = document.documentElement;
-        document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((b) => {
-          b.setAttribute('aria-pressed', String(root.classList.contains('dark')));
-          b.onclick = () => {
-            const dark = !root.classList.contains('dark');
-            root.classList.toggle('dark', dark);
-            try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
-            document.querySelectorAll('.theme-toggle').forEach((x) => x.setAttribute('aria-pressed', String(dark)));
-          };
-        });
-        const top = document.getElementById('scroll-top');
-        if (!top) return;
-        const update = () => {
-          const { scrollY, innerHeight } = window;
-          const show = window.innerWidth < 768
-            ? scrollY + innerHeight > document.documentElement.scrollHeight - 350
-            : scrollY > 300;
-          top.classList.toggle('on', show);
-        };
-        top.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-        window.addEventListener('scroll', update, { passive: true });
-        update();
-      }
-      document.addEventListener('astro:page-load', initThemeAndTop);
-      initThemeAndTop();
-      initFooterBackToTop();
-
-      document.addEventListener('click', (e) => {
-        if ((e.target as Element).closest('#footer-back-to-top')) {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
     </script>
   </body>
 </html>

@@ -219,7 +219,7 @@ export default function MusicPlayer({
                     <small>{String(track.id).padStart(2, '0')}</small>
                     <span>{track.title}</span>
                     <em>{track.duration}</em>
-                    <i aria-hidden="true">{index === currentTrackIndex && isPlaying ? '❚❚' : '▶'}</i>
+                    <i aria-hidden="true">{index === currentTrackIndex && isPlaying ? '❚❚' : '▶︎'}</i>
                   </button>
                 </li>
               ))}

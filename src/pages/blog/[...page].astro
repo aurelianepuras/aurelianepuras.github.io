@@ -19,7 +19,8 @@ const { page } = Astro.props;
 const title = page.currentPage > 1 
   ? `Blog | Aurelian Epuraș - Pagina ${page.currentPage}` 
   : "Blog | Aurelian Epuraș";
-const description = "Citește articolele lui Aurelian Epuraș despre proces creativ, muzică și colaborări.";
+const descriptionBase = "Citește articolele lui Aurelian Epuraș despre proces creativ, muzică și colaborări.";
+const description = page.currentPage > 1 ? `Pagina ${page.currentPage} din ${page.lastPage}. ${descriptionBase}` : descriptionBase;
 const image = "/uploads/images/Aurelian-Epuras.jpg"; 
 const imageAlt = "Blog | Aurelian Epuraș";
 

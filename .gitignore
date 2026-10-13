@@ -166,3 +166,4 @@ public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzoll
 # Miniaturi generate la build (scripts/generate-thumbs.mjs)
 public/uploads/thumbs/
 !public/uploads/images/scena.jpg
+public/uploads/large/

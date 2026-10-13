@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import { getCollection } from 'astro:content';
+import { thumb, large } from '../../utils/thumb';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (async () => {
@@ -112,53 +113,39 @@ const relatedPosts = allPosts
     )}
   />
 
-  <article class="pt-12 pb-10 bg-ivory dark:bg-navy-deep">
-    <div class="container mx-auto px-4 max-w-5xl">
-      <header class="mb-0">
-        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-left lg:text-center text-navy dark:text-ivory-light mb-[0.4275rem] lg:mb-8 leading-tight">
-          {post.data.title}
-        </h1>
-
-        <div class="flex flex-wrap items-center justify-start lg:justify-center gap-4 text-navy/60 dark:text-ivory-light/60 mb-12 text-sm md:text-base">
-          <span>{post.data.author || 'Aurelian Epuraș'}</span>
-          <span class="hidden md:inline">•</span>
-          <time>{formattedDate}</time>
-          <span class="hidden md:inline">•</span>
-          <a href="/blog" class="hover:text-navy dark:hover:text-ivory-light transition-colors font-medium">
-            ← înapoi la blog
-          </a>
-        </div>
-
-        {coverImage && (
-          <img
-            src={coverImage}
-            alt={post.data.title}
-            width={1200}
-            height={630}
-            loading={hasCustomCoverImage ? "eager" : "lazy"}
-            fetchpriority={hasCustomCoverImage ? "high" : "auto"}
-            class="w-full rounded-2xl shadow-lg mb-10"
-          />
-        )}
-
-        {post.data.description && (
-          <p class="font-serif text-[1.60875rem] text-left lg:text-center text-[hsl(220,10%,50%)] max-w-[42.24rem] lg:max-w-[56.32rem] mr-auto lg:mx-auto leading-[1.38125] mb-0">
-            {post.data.description}
-          </p>
-        )}
-      </header>
-
-      <div class="prose prose-lg dark:prose-invert max-w-full overflow-x-hidden prose-img:rounded-2xl mt-0">
-        <Content />
+  <header class="stage stage-dark post-stage" style={`--img: url('${large(coverImage) || thumb(coverImage) || coverImage}')`}>
+    <div class="page">
+      <div class="post-head">
+        <p class="eyebrow"><a href="/blog">Blog</a> · <time datetime={publishedDate}>{formattedDate}</time></p>
+        <h1 class="post-title">{post.data.title}</h1>
+        {post.data.description && <p class="post-lead">{post.data.description}</p>}
+        <p class="post-by mono">{post.data.author || 'Aurelian Epuraș'}</p>
       </div>
     </div>
+  </header>
+
+  <article class="page post-body">
+    {hasCustomCoverImage && (
+      <picture>
+        {large(coverImage) && <source type="image/webp" srcset={`${thumb(coverImage)} 900w, ${large(coverImage)} 1800w`} sizes="(max-width: 860px) 100vw, 820px" />}
+        <img src={coverImage} alt={post.data.title} width={1200} height={630} loading="eager" fetchpriority="high" class="post-cover" />
+      </picture>
+    )}
+    <div class="prose prose-lg dark:prose-invert max-w-full overflow-x-hidden">
+      <Content />
+    </div>
+    <p class="post-back"><a href="/blog" class="link-u">←︎ Înapoi la blog</a></p>
   </article>
 
-  <section class="pt-4 pb-20">
-    <div class="container mx-auto px-4 max-w-7xl">
-      <div class="border-t border-navy/10 dark:border-ivory-light/10 mb-8"></div>
-      <h2 class="font-serif text-4xl md:text-5xl text-center text-navy dark:text-ivory-light mb-12">Articole similare</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <section class="page-band">
+    <div class="page">
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">Mai departe</p>
+          <h2 class="h2">Articole <em>similare</em></h2>
+        </div>
+      </div>
+      <div class="grid-cards">
         {relatedPosts.map((relatedPost) => (
           <BlogCard
             title={relatedPost.data.title}
@@ -172,6 +159,24 @@ const relatedPosts = allPosts
       </div>
     </div>
   </section>
+
+  <style is:global>
+    .post-stage::before { filter: none; opacity: .42; }
+    .post-head { max-width: 900px; }
+    .post-head .eyebrow { margin-bottom: 22px; }
+    .post-head .eyebrow a:hover { color: var(--fg); }
+    .post-title { font: 400 clamp(36px, 5vw, 76px)/1.06 Cinzel, serif; letter-spacing: .01em; text-wrap: balance; animation: rise 1.1s var(--ease) both; }
+    .post-lead { margin-top: 24px; max-width: 46rem; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.7; color: var(--mute); }
+    .post-by { margin-top: 22px; color: var(--mute); }
+    .post-body { max-width: 860px; }
+    .post-cover { width: 100%; height: auto; margin-bottom: clamp(32px, 4vw, 56px); }
+    .post-body .prose { --tw-prose-body: var(--fg); --tw-prose-headings: var(--fg); --tw-prose-links: var(--fg); --tw-prose-bold: var(--fg); --tw-prose-quotes: var(--fg); font-size: clamp(17px, 1.25vw, 19px); line-height: 1.8; }
+    .post-body .prose :where(h2, h3) { font-family: Cinzel, serif; font-weight: 400; letter-spacing: .01em; }
+    .post-body .prose a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); }
+    .post-body .prose a:hover { color: var(--accent); }
+    .post-body .prose img { border-radius: 0; }
+    .post-back { margin-top: clamp(40px, 5vw, 64px); }
+  </style>
 </Layout>
 
 <!-- LIGHTBOX MODAL -->

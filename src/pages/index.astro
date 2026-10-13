@@ -136,8 +136,8 @@ const paths = [
       <p class="hero-sub"><span>pianist / compozitor / profesor</span></p>
       <p class="hero-p">Tot ce vezi aici vine din viață, din bucurii, doruri și momente care m-au schimbat.</p>
       <div class="hero-ctas">
-        <a href="/muzica" class="btn-solid"><span aria-hidden="true">▶</span> Ascultă albumul 13</a>
-        <a href="/contact" class="btn-line">Concerte și evenimente <span aria-hidden="true">↗</span></a>
+        <a href="/muzica" class="btn-solid"><span aria-hidden="true">▶︎</span> Ascultă albumul 13</a>
+        <a href="/contact" class="btn-line">Concerte și evenimente <span aria-hidden="true">↗︎</span></a>
       </div>
       <dl class="hero-stats">
         {stats.map((st) => (
@@ -170,7 +170,7 @@ const paths = [
           </div>
           <div class="path-meta">
             <small>{String(i + 1).padStart(2, '0')}</small>
-            <span class="path-go" aria-hidden="true">↗</span>
+            <span class="path-go" aria-hidden="true">↗︎</span>
           </div>
           <h3>{p.title}</h3>
           <p>{p.text}</p>
@@ -200,7 +200,7 @@ const paths = [
           <div class="project-body">
             <h3>{p.t1} <em>{p.t2}</em></h3>
             <p>{p.text}</p>
-            <span class="link-u">{p.cta} ↗</span>
+            <span class="link-u">{p.cta} ↗︎</span>
           </div>
         </a>
       ))}
