@@ -7,7 +7,7 @@
     "dev": "node scripts/generate-thumbs.mjs && astro dev",
     "build": "node scripts/generate-webp.mjs && node scripts/generate-thumbs.mjs && astro build",
     "preview": "astro preview",
-    "type-check": "tsc --noEmit",
+    "type-check": "astro sync && tsc --noEmit",
     "astro": "astro",
     "test": "vitest",
     "test:ui": "vitest --ui",
