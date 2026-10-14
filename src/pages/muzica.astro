@@ -175,7 +175,7 @@ const musicSchema = {
     .mp-prod { font-size: 14px; line-height: 1.75; color: var(--mute); }
     .mp-error { margin-top: 24px; padding: 16px 0; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; font-size: 14px; color: var(--mute); }
     @media (max-width: 860px) {
-      .mp { grid-template-columns: 1fr; }
+      .mp { grid-template-columns: minmax(0, 1fr); }
       .mp-art { width: 66%; }
     }
   </style>

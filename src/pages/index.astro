@@ -250,7 +250,7 @@ const paths = [
     .hero-scroll i { position: relative; width: 1px; height: 64px; background: var(--line); overflow: hidden; }
     .hero-scroll i::after { content: ""; position: absolute; left: 0; top: 0; width: 1px; height: 40%; background: var(--accent); transform: translateY(-100%); animation: drip 2.2s var(--ease) infinite; }
     @keyframes drip { to { transform: translateY(250%); } }
-    @media (min-width: 761px) {
+    @media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
       /* pianistul în dreapta, textul pe scena goală din stânga */
       .hero-media img { left: 6%; width: 150%; max-width: none; object-position: 0% 42%; }
       .hero-media::after { background:
@@ -258,8 +258,8 @@ const paths = [
         linear-gradient(90deg, #0f1218 0%, color-mix(in srgb, #0f1218 80%, transparent) 35%, transparent 60%),
         linear-gradient(180deg, color-mix(in srgb, #0f1218 30%, transparent) 0%, transparent 30%, transparent 70%, #0f1218 100%); }
     }
-    @media (max-width: 760px) {
-      /* pe telefon: poza într-un bloc separat sus, textul dedesubt — nu se pot suprapune pe niciun ecran */
+    @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+      /* pe telefon și tabletă verticală: poza într-un bloc separat sus, textul dedesubt — nu se pot suprapune pe niciun ecran */
       .hero { display: block; min-height: 0; }
       .hero-scroll { display: none; }
       .hero-media { position: relative; inset: auto; display: block; height: auto; aspect-ratio: 4 / 4.2; }
@@ -267,6 +267,10 @@ const paths = [
       .hero-media::after { background: radial-gradient(ellipse 50% 45% at 45% 50%, color-mix(in srgb, #D4AF37 12%, transparent), transparent 70%), linear-gradient(180deg, color-mix(in srgb, #0f1218 35%, transparent) 0%, transparent 25%, transparent 60%, #0f1218 100%); }
       .hero-text { margin-top: -56px; padding-top: 0; padding-bottom: 44px; }
       .hero::after { height: 56px; }
+    }
+    @media (min-width: 761px) and (max-width: 1024px) and (orientation: portrait) {
+      .hero-media { aspect-ratio: 4 / 3; }
+      .hero-text { margin-top: -72px; }
     }
 
     /* ===== drumuri ===== */
