@@ -91,7 +91,7 @@ export default function VideoPlayer({ title, videoUrl, thumbnail, description, i
         <small>{index !== undefined ? String(index + 1).padStart(2, '0') : 'VIDEO'}</small>
         <span className="go" aria-hidden="true">▶︎</span>
       </div>
-      <h3 className="card-title line-clamp-2">{title}</h3>
+      <h2 className="card-title line-clamp-2">{title}</h2>
       {description && (
         <p className="mt-2 text-[15px] leading-relaxed line-clamp-2" style={{ color: 'var(--mute)' }}>
           {description}

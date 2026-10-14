@@ -2,8 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 
 // AICI definești variabilele pentru seo //
-const title = "Biografie | Aurelian Epuraș";
-const description = "Bine ai venit în universul meu. E locul unde povestea mea prinde sunet. Intră, ascultă, simte.";
+const title = "Biografie – drumul unui pianist și compozitor | Aurelian Epuraș";
+const description = "Biografia pianistului și compozitorului Aurelian Epuraș: studiile, concertele, albumele și momentele care i-au format drumul în muzică.";
 const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
 
@@ -165,8 +165,9 @@ const milestones = [
     /* Repere — varianta C: listă simplă, doar linii fine */
     .timeline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
     .tl-dot { display: none; }
-    .tl-item { display: grid; grid-template-columns: clamp(110px, 12vw, 180px) minmax(0, 1fr); align-items: baseline; gap: 8px 24px; padding: clamp(18px, 1.8vw, 26px) 0; border-bottom: 1px solid var(--line); transition: padding-left .5s var(--ease); }
-    .tl-item:hover { padding-left: 12px; }
+    .tl-item { display: grid; grid-template-columns: clamp(110px, 12vw, 180px) minmax(0, 1fr); align-items: baseline; gap: 8px 24px; padding: clamp(18px, 1.8vw, 26px) 0; border-bottom: 1px solid var(--line); }
+    .tl-item > * { transition: transform .5s var(--ease); }
+    .tl-item:hover > * { transform: translateX(12px); }
     .yr { font: 400 clamp(26px, 2.6vw, 38px)/1 Cinzel, serif; color: var(--accent); }
     .tl-text { font-size: clamp(16px, 1.4vw, 20px); line-height: 1.4; }
     .tl-link { border-bottom: 1px solid color-mix(in srgb, var(--fg) 30%, transparent); justify-self: start; transition: color .3s, border-color .3s; }

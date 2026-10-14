@@ -4,6 +4,7 @@ import BlogCard from '../../components/BlogCard.astro';
 import { getCollection } from 'astro:content';
 import { thumb, large } from '../../utils/thumb';
 import type { GetStaticPaths } from 'astro';
+import sharp from 'sharp';
 
 export const getStaticPaths = (async () => {
   const blogPosts = await getCollection('blog');
@@ -26,12 +27,18 @@ const publishedDate = new Date(post.data.date).toISOString();
 
 const articleImage = post.data.cover_image
   ? `https://aurelianepuras.github.io${post.data.cover_image}`
-  : `https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras.jpg`;
+  : `https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras-og.jpg`;
 
 const seoTitle = (post.data.meta_title || post.data.title).trim();
 const seoDescription = post.data.meta_description || post.data.description;
 
 const coverImage = post.data.cover_image || '/uploads/images/Aurelian-Epuras.jpg';
+// Dimensiunile reale ale copertei, ca textul să nu sară la încărcare
+let coverW = 1200, coverH = 630;
+try {
+  const meta = await sharp(`public${decodeURI(coverImage)}`).metadata();
+  if (meta.width && meta.height) { coverW = meta.width; coverH = meta.height; }
+} catch {}
 const hasCustomCoverImage = Boolean(post.data.cover_image);
 
 const blogSchema = {
@@ -71,12 +78,6 @@ const blogSchema = {
   ]
 };
 
-const isValidBlogSchema = (schema: unknown): schema is Record<string, unknown> => {
-  if (!schema || typeof schema !== 'object') return false;
-  const ctx = (schema as any)['@context'];
-  const graph = (schema as any)['@graph'];
-  return ctx === 'https://schema.org' && Array.isArray(graph) && graph.length > 0;
-};
 
 const allPosts = await getCollection('blog');
 const relatedPosts = allPosts
@@ -101,16 +102,7 @@ const relatedPosts = allPosts
     type="application/ld+json"
     slot="head"
     is:inline
-    set:html={JSON.stringify(
-      isValidBlogSchema(blogSchema)
-        ? blogSchema
-        : {
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            url: `https://aurelianepuras.github.io/blog/${post.slug}/`,
-            name: seoTitle,
-          }
-    )}
+    set:html={JSON.stringify(blogSchema)}
   />
 
   <header class="stage stage-dark post-stage" style={`--img: url('${large(coverImage) || thumb(coverImage) || coverImage}')`}>
@@ -128,7 +120,7 @@ const relatedPosts = allPosts
     {hasCustomCoverImage && (
       <picture>
         {large(coverImage) && <source type="image/webp" srcset={`${thumb(coverImage)} 900w, ${large(coverImage)} 1800w`} sizes="(max-width: 860px) 100vw, 820px" />}
-        <img src={coverImage} alt={post.data.title} width={1200} height={630} loading="eager" fetchpriority="high" class="post-cover" />
+        <img src={coverImage} alt={post.data.title} width={coverW} height={coverH} loading="eager" fetchpriority="high" class="post-cover" />
       </picture>
     )}
     <div class="prose prose-lg dark:prose-invert max-w-full overflow-x-hidden">
@@ -177,15 +169,13 @@ const relatedPosts = allPosts
     .post-body .prose img { border-radius: 0; }
     .post-back { margin-top: clamp(40px, 5vw, 64px); }
   </style>
-</Layout>
-
 <!-- LIGHTBOX MODAL -->
 <div id="lightbox" class="lightbox">
-  <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
-  <button class="lightbox-prev" aria-label="Previous image">‹</button>
-  <button class="lightbox-next" aria-label="Next image">›</button>
+  <button class="lightbox-close" aria-label="Închide">&times;</button>
+  <button class="lightbox-prev" aria-label="Imaginea anterioară">‹</button>
+  <button class="lightbox-next" aria-label="Imaginea următoare">›</button>
   <div class="lightbox-content">
-    <img src="" alt="" id="lightbox-img" aria-hidden="true" />
+    <img alt="" id="lightbox-img" aria-hidden="true" />
     <div class="lightbox-counter"></div>
   </div>
 </div>
@@ -235,6 +225,7 @@ const relatedPosts = allPosts
 
     const iframe = document.createElement('iframe');
     iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`;
+    iframe.title = 'Videoclip YouTube';
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute(
       'allow',
@@ -684,3 +675,4 @@ const relatedPosts = allPosts
     }
   }
 </style>
+</Layout>

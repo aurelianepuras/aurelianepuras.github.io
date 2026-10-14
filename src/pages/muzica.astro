@@ -15,7 +15,7 @@ const sortedAudio = allAudioFiles.sort((a, b) => {
 });
 
 // SEO
-const title = "Muzică | Aurelian Epuraș";
+const title = "Muzică – albumul 13 și piese originale | Aurelian Epuraș";
 const description = "Ascultă compozițiile lui Aurelian Epuraș. Fragmente de suflet transpuse în sunet pur, de la pian solo la compoziții simfonice.";
 const image = "/uploads/images/Aurelian-Epuras.jpg";
 const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
@@ -151,17 +151,18 @@ const musicSchema = {
     .mp-now-text small { display: block; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
     .mp-now-text b { display: block; font: 400 clamp(17px, 1.5vw, 22px)/1.2 Cinzel, serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .mp-skip { display: flex; gap: 4px; }
-    .mp-skip button { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--line); background: none; color: var(--fg); cursor: pointer; transition: border-color .3s, color .3s; }
+    .mp-skip button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); background: none; color: var(--fg); cursor: pointer; transition: border-color .3s, color .3s; }
     .mp-skip button:hover:not(:disabled) { background: var(--fg); color: var(--bg); border-color: var(--fg); }
     .mp-skip button:disabled { opacity: .3; cursor: not-allowed; }
     .mp-bar { position: relative; height: 14px; cursor: pointer; }
     .mp-bar::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 1px; background: var(--line); }
-    .mp-bar span { position: absolute; left: 0; top: 6px; height: 2px; margin-top: -.5px; background: var(--accent); transition: width .2s linear; }
+    .mp-bar span { position: absolute; left: 0; top: 6px; height: 2px; margin-top: -.5px; width: 100%; background: var(--accent); transform-origin: left; transition: transform .2s linear; }
     .mp-time { display: flex; justify-content: space-between; font: 400 11px "Geist Mono", monospace; letter-spacing: .1em; color: var(--mute); margin-top: 4px; }
     .mp-list { list-style: none; margin: 32px 0 0; padding: 0; counter-reset: none; }
-    .mp-list button { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 0; border: 0; border-top: 1px solid var(--line); background: none; color: var(--fg); text-align: left; cursor: pointer; transition: padding-left .5s var(--ease), color .3s; }
+    .mp-list button { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 0; border: 0; border-top: 1px solid var(--line); background: none; color: var(--fg); text-align: left; cursor: pointer; transition: color .3s; }
+    .mp-list button > * { transition: transform .5s var(--ease); }
     .mp-list li:last-child button { border-bottom: 0; }
-    .mp-list button:hover { padding-left: 8px; }
+    .mp-list button:hover > * { transform: translateX(8px); }
     .mp-list small { font: 400 11px "Geist Mono", monospace; letter-spacing: .1em; color: var(--accent); width: 22px; }
     .mp-list span { flex: 1; font-size: clamp(16px, 1.3vw, 19px); }
     .mp-list i { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--fg) 32%, transparent); font-style: normal; font-size: 10px; transition: background .3s, color .3s; }

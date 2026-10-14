@@ -40,7 +40,7 @@ const formattedDate = new Date(date).toLocaleDateString('ro-RO', {
       <small><time datetime={new Date(date).toISOString()}>{formattedDate}</time></small>
       <span class="go" aria-hidden="true">↗︎</span>
     </div>
-    <h3 class="card-title line-clamp-2">{title}</h3>
+    <h2 class="card-title line-clamp-2">{title}</h2>
     {description && (
       <p class="blog-card-desc line-clamp-2">{description}</p>
     )}

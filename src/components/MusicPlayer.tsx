@@ -204,7 +204,7 @@ export default function MusicPlayer({
               }
             }}
           >
-            <span style={{ width: `${progress}%` }} />
+            <span style={{ transform: `scaleX(${progress / 100})` }} />
           </div>
           <div className="mp-time">
             <span>{formatTime(currentTime)}</span>

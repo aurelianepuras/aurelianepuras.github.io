@@ -13,7 +13,7 @@ interface Props {
 const {
   title = 'Aurelian Epuraș | Pianist Compozitor',
   description = 'Muzica este felul meu de a vorbi cu lumea. Te invit în universul meu artistic să asculți compozițiile mele și să descoperi povestea din spatele fiecărei note.',
-  image = '/uploads/images/Aurelian-Epuras.jpg',
+  image = '/uploads/images/Aurelian-Epuras-og.jpg',
   imageAlt = 'Portret Aurelian Pianist',
   robots,
   ogType = 'website',
@@ -47,12 +47,12 @@ const isActive = (path: string) => {
 
 const navLinks = [
   { href: '/', label: 'Origini' },
-  { href: '/biografie', label: 'Biografie' },
-  { href: '/foto', label: 'Foto' },
-  { href: '/video', label: 'Video' },
-  { href: '/muzica', label: 'Muzică' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/biografie/', label: 'Biografie' },
+  { href: '/foto/', label: 'Foto' },
+  { href: '/video/', label: 'Video' },
+  { href: '/muzica/', label: 'Muzică' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/contact/', label: 'Contact' },
 ];
 
 const socials = [
@@ -75,7 +75,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href={canonicalURL} />
+    {!robots?.includes('noindex') && <link rel="canonical" href={canonicalURL} />}
     <meta name="generator" content={Astro.generator} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -139,7 +139,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
             <svg class="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
           </button></div>
         <span class="hdr-sep" aria-hidden="true"></span>
-        <a href="/contact" class={`header-cta ${isActive('/contact') ? 'on' : ''}`}>Scrie-mi ↗︎</a>
+        <a href="/contact/" class={`header-cta ${isActive('/contact') ? 'on' : ''}`}>Scrie-mi ↗︎</a>
         <button id="mobile-menu-toggle" class="burger" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mobile-menu">
           <span><i></i><i></i></span>
         </button>
@@ -365,7 +365,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .hdr-sep { width: 1px; height: 22px; background: var(--line); }
       .header-cta { display: flex; align-items: center; font: 400 11px "Geist Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--fg); border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); padding: 4px 0; white-space: nowrap; transition: color .3s; }
       .header-cta:hover, .header-cta.on { color: var(--accent); }
-      .hdr-theme button { padding: 0; width: 40px; height: 40px; display: grid; place-items: center; background: transparent !important; border: 1px solid var(--line) !important; color: var(--fg); }
+      .hdr-theme button { padding: 0; width: 44px; height: 44px; display: grid; place-items: center; background: transparent !important; border: 1px solid var(--line) !important; color: var(--fg); }
       .hdr-theme button:hover { border-color: color-mix(in srgb, var(--fg) 45%, transparent) !important; }
       .hdr-theme button svg { width: 18px; height: 18px; }
       .theme-toggle { cursor: pointer; }
@@ -462,12 +462,12 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 
 
       /* Text mic auriu: varianta lizibilă pe tema luminoasă */
-      .eyebrow, .nav a small, .brand-name small, .card-meta small, .ft-label, .mnav small,
+      .eyebrow, .nav a small, .brand-name small, .card-meta small, .mnav small,
       .project small, .mp-now-text small, .mp-list small,
       .contact-projects small, .path-meta small, .hero-eyebrow, .mp-list button.on span { color: var(--accent-ink); }
 
       @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
       }
     </style>
 
@@ -501,7 +501,32 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       document.addEventListener('astro:page-load', initMobileMenu);
       initMobileMenu();
 
-
+      function initThemeAndTop() {
+        const root = document.documentElement;
+        document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((b) => {
+          b.setAttribute('aria-pressed', String(root.classList.contains('dark')));
+          b.onclick = () => {
+            const dark = !root.classList.contains('dark');
+            root.classList.toggle('dark', dark);
+            try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch {}
+            document.querySelectorAll('.theme-toggle').forEach((x) => x.setAttribute('aria-pressed', String(dark)));
+          };
+        });
+        const top = document.getElementById('scroll-top');
+        if (!top) return;
+        const update = () => {
+          const { scrollY, innerHeight } = window;
+          const show = window.innerWidth < 768
+            ? scrollY + innerHeight > document.documentElement.scrollHeight - 350
+            : scrollY > 300;
+          top.classList.toggle('on', show);
+        };
+        top.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.onscroll = update;
+        update();
+      }
+      document.addEventListener('astro:page-load', initThemeAndTop);
+      initThemeAndTop();
     </script>
   </body>
 </html>

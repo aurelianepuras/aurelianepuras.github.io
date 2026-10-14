@@ -331,14 +331,17 @@ export function initLightbox() {
     return;
   }
 
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
-  const lightboxDescription = document.getElementById('lightbox-description');
+  const lightboxEl = document.getElementById('lightbox');
+  const imageEl = document.getElementById('lightbox-image') as HTMLImageElement | null;
+  const descriptionEl = document.getElementById('lightbox-description');
   const lightboxClose = document.getElementById('lightbox-close');
 
-  if (!lightbox || !lightboxImage || !lightboxDescription || !lightboxClose) {
+  if (!lightboxEl || !imageEl || !descriptionEl || !lightboxClose) {
     return;
   }
+  const lightbox: HTMLElement = lightboxEl;
+  const lightboxImage: HTMLImageElement = imageEl;
+  const lightboxDescription: HTMLElement = descriptionEl;
 
   function openLightbox(image: string, title: string, description: string) {
     lightboxImage.src = image;
@@ -352,7 +355,7 @@ export function initLightbox() {
   function closeLightbox() {
     lightbox.classList.add('hidden');
     document.body.style.overflow = '';
-    lightboxImage.src = '';
+    lightboxImage.removeAttribute('src');
   }
 
   function handleGalleryClick(e: Event) {
