@@ -166,7 +166,10 @@ const relatedPosts = allPosts
     .post-body .prose a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); }
     .post-body .prose a:hover { color: var(--accent); }
     .post-body .prose img { border-radius: 0; }
-    .post-back { margin-top: clamp(40px, 5vw, 64px); }
+    .post-back { margin-top: clamp(24px, 3vw, 40px); }
+    /* sfârșitul articolului și „Articole similare”, mai aproape */
+    .page.post-body { padding-bottom: clamp(32px, 4vw, 56px); }
+    .post-body + .page-band > .page { padding-top: clamp(40px, 4vw, 64px); }
     @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
       /* telefon și tabletă verticală: eticheta și titlul peste partea de jos a pozei, restul dedesubt */
       .post-stage { --cover-h: calc(100vw * 10 / 16); background: linear-gradient(180deg, #0f1218 70%, var(--stage-fade)); }
