@@ -100,10 +100,15 @@ const relatedPosts = allPosts
   <header class="stage stage-dark post-stage" style={`--img: url('${large(coverImage) || thumb(coverImage) || coverImage}')`}>
     <div class="page">
       <div class="post-head">
-        <p class="eyebrow"><a href="/blog">Blog</a> · <time datetime={publishedDate}>{formattedDate}</time></p>
-        <h1 class="post-title">{post.data.title}</h1>
+        <div class="post-top">
+          <h1 class="post-title">{post.data.title}</h1>
+        </div>
         {post.data.description && <p class="post-lead">{post.data.description}</p>}
-        <p class="post-by mono">{post.data.author || 'Aurelian Epuraș'}</p>
+        <div class="post-meta">
+          <p class="eyebrow"><a href="/blog/">Blog</a> · <time datetime={publishedDate}>{formattedDate}</time></p>
+          <span class="post-meta-sep" aria-hidden="true">·</span>
+          <p class="post-by mono">{post.data.author || 'Aurelian Epuraș'}</p>
+        </div>
       </div>
     </div>
   </header>
@@ -139,14 +144,23 @@ const relatedPosts = allPosts
   </section>
 
   <style is:global>
-    .post-stage::before { filter: none; opacity: .42; }
-    .post-head { max-width: 900px; }
-    .post-head .eyebrow { margin-bottom: 22px; }
+    /* coperta la claritate deplină; doar partea de jos e întunecată, pentru text */
+    .post-stage::before { filter: none; animation: post-cover-in .8s var(--ease) both; }
+    @keyframes post-cover-in { from { opacity: 0; } to { opacity: 1; } }
+    .post-stage::after { background: linear-gradient(180deg, color-mix(in srgb, #0f1218 35%, transparent) 0%, transparent 22%, transparent 42%, color-mix(in srgb, #0f1218 72%, transparent) 70%, var(--stage-fade) 100%); }
+    .post-head { max-width: none; }
+    .post-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin-top: 22px; }
+    .post-meta .eyebrow { margin: 0; }
+    .post-meta-sep { color: var(--mute); }
+    @media (max-width: 520px) { .post-meta-sep { display: none; } .post-meta { flex-direction: column; } }
     .post-head .eyebrow a:hover { color: var(--fg); }
     .post-title { font: 400 clamp(36px, 5vw, 76px)/1.06 Cinzel, serif; letter-spacing: .01em; text-wrap: balance; animation: rise 1.1s var(--ease) both; }
-    .post-lead { margin-top: 24px; max-width: 46rem; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.7; color: var(--mute); }
-    .post-by { margin-top: 22px; color: var(--mute); }
-    .post-body { max-width: 860px; }
+    .post-lead { margin-top: 24px; max-width: none; font-size: clamp(16px, 1.3vw, 20px); line-height: 1.7; color: var(--mute); }
+    .post-by { margin: 0; color: var(--mute); }
+    .post-body { max-width: 1000px; }
+    /* textele din cap stau jos, lângă conținut; poza își păstrează înălțimea */
+    .stage.post-stage > .page { max-width: 1000px; padding-top: calc(clamp(150px, 19vw, 290px) + clamp(72px, 8vw, 120px) + clamp(85px, 10.1vw, 180px)); padding-bottom: 0; }
+    .stage.post-stage + .post-body { padding-top: 0; }
     .post-body .prose { --tw-prose-body: var(--fg); --tw-prose-headings: var(--fg); --tw-prose-links: var(--fg); --tw-prose-bold: var(--fg); --tw-prose-quotes: var(--fg); font-size: clamp(17px, 1.25vw, 19px); line-height: 1.8; }
     .post-body .prose :where(h2, h3) { font-family: Cinzel, serif; font-weight: 400; letter-spacing: .01em; }
     .post-body .prose a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--fg) 35%, transparent); }
@@ -154,11 +168,17 @@ const relatedPosts = allPosts
     .post-body .prose img { border-radius: 0; }
     .post-back { margin-top: clamp(40px, 5vw, 64px); }
     @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-      /* telefon și tabletă verticală: poza într-un bloc separat sus, textul dedesubt */
-      .post-stage { background: linear-gradient(180deg, #0f1218 70%, var(--stage-fade)); }
-      .post-stage::before { position: relative; display: block; inset: auto; aspect-ratio: 16 / 10; opacity: .85; }
-      .post-stage::after { inset: 0 0 auto; aspect-ratio: 16 / 10; background: linear-gradient(180deg, transparent 55%, #0f1218 100%); }
-      .stage.post-stage > .page { padding-top: clamp(8px, 2vw, 24px); padding-bottom: clamp(48px, 7vw, 80px); }
+      /* telefon și tabletă verticală: eticheta și titlul peste partea de jos a pozei, restul dedesubt */
+      .post-stage { --cover-h: calc(100vw * 10 / 16); background: linear-gradient(180deg, #0f1218 70%, var(--stage-fade)); }
+      .post-stage::before { inset: 0 0 auto; height: var(--cover-h); }
+      .post-stage::after { inset: 0 0 auto; height: var(--cover-h); background: linear-gradient(180deg, transparent 30%, color-mix(in srgb, #0f1218 70%, transparent) 75%, #0f1218 100%); }
+      .stage.post-stage > .page { max-width: none; padding-top: 0; padding-bottom: 0; }
+      .post-top { min-height: var(--cover-h); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 4px; }
+      .stage.post-stage + .post-body { max-width: none; padding-top: 0; }
+    }
+    @media (max-width: 760px) {
+      /* telefon: poza mai înaltă, ca titlul să acopere doar partea de jos */
+      .post-stage { --cover-h: max(calc(100vw * 1.1), 300px); }
     }
   </style>
 <!-- LIGHTBOX MODAL -->
