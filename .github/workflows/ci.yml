@@ -32,7 +32,6 @@ jobs:
 
       - name: Type check
         run: npm run type-check
-        continue-on-error: true
 
   # Job 2: Run Tests
   test:
