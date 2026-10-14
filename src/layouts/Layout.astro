@@ -192,10 +192,6 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
             <p class="eyebrow">Concerte · evenimente · colaborări</p>
             <p class="ft-quote">Hai să facem muzică <em>împreună.</em></p>
           </div>
-          <div class="ft-cta-r">
-            <a href="/contact" class="btn-solid">Scrie-mi <span aria-hidden="true">↗︎</span></a>
-            <a href="tel:+40736674176" class="btn-line">+40 736 674 176</a>
-          </div>
         </div>
 
         <div class="footer-inner">
@@ -254,9 +250,18 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .stage::before { content: ""; position: absolute; inset: 0; background: var(--img) center 35% / cover no-repeat; opacity: .5; filter: grayscale(.35); animation: stage-in 1.8s var(--ease) both; }
       .stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, #0f1218 55%, transparent) 0%, color-mix(in srgb, #0f1218 35%, transparent) 40%, color-mix(in srgb, #0f1218 85%, var(--stage-fade)) 82%, var(--stage-fade) 100%); }
       @keyframes stage-in { from { opacity: 0; transform: scale(1.05); } to { opacity: .5; transform: none; } }
-      .stage > .page { position: relative; z-index: 1; padding-top: clamp(150px, 19vw, 290px); padding-bottom: clamp(72px, 8vw, 120px); }
+      .stage > .page { position: relative; z-index: 1; padding-top: clamp(150px, 19vw, 290px); padding-bottom: calc(clamp(72px, 8vw, 120px) + clamp(56px, 7vw, 104px)); }
       .stage .page-head { margin-bottom: 0; }
       .stage .page-title { font-size: clamp(48px, 7.4vw, 124px); }
+      @media (min-width: 900px) {
+        /* textul scurt rămâne în dreapta; titlul lung trece pe două rânduri */
+        .stage .page-head { flex-wrap: nowrap; }
+        .stage .page-head > div { flex: 1 1 auto; min-width: 0; }
+        .stage .page-head > p { flex: 0 0 320px; }
+      }
+      /* variantă: textul scurt sub titlu, lat, aliniat cu el */
+      .stage .page-head.page-head-stack { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .stage .page-head.page-head-stack > p { flex: none; max-width: 640px; font-size: 15px; }
 
       html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: var(--hdr-h); }
       html, body { overflow-x: clip; }
@@ -290,7 +295,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       /* Pagini interioare: antet, secțiuni, titluri */
       .page { max-width: 1440px; width: 100%; margin: 0 auto; padding: clamp(64px, 8vw, 120px) var(--pad-x); }
       .page + .page { padding-top: 0; }
-      .stage + .page { padding-top: clamp(56px, 7vw, 104px); }
+      /* poza coboară sub titlu, iar conținutul urcă puțin peste partea ei de jos */
+      .stage + .page { padding-top: 0; position: relative; z-index: 1; margin-top: calc(-1 * clamp(72px, 9vw, 140px)); }
       .page-band { background: var(--bg-2); }
       .page-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: last baseline; gap: 24px; margin-bottom: clamp(40px, 4.4vw, 64px); }
       .page-head .eyebrow { margin-bottom: 22px; }
@@ -431,15 +437,14 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .ft-stage::before { content: ""; position: absolute; inset: 0; background: url('/uploads/images/scena-footer.webp') center 35% / cover no-repeat; opacity: .5; }
       .ft-stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--stage-fade) 0%, color-mix(in srgb, var(--stage-fade) 55%, transparent) 14%, transparent 22%), linear-gradient(90deg, #0f1218 0%, color-mix(in srgb, #0f1218 70%, transparent) 45%, color-mix(in srgb, #0f1218 30%, transparent) 100%), linear-gradient(180deg, transparent 45%, color-mix(in srgb, #0f1218 70%, transparent) 80%, #0f1218 100%); }
       .ft-stage > .footer-inner { position: relative; z-index: 1; width: 100%; }
-      .ft-cta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px 48px; padding-top: clamp(72px, 9vw, 128px); padding-bottom: clamp(190px, 23vw, 360px); }
+      .ft-cta { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px 48px; padding-top: 16px; padding-bottom: calc(clamp(240px, 28.5vw, 450px) + clamp(24px, 3.3vw, 48px)); }
       .ft-cta .eyebrow { margin-bottom: 22px; }
       .ft-quote { font: 400 clamp(36px, 5vw, 76px)/1.04 Cinzel, serif; letter-spacing: .01em; max-width: 14ch; text-wrap: balance; }
       .ft-quote em { font-style: normal; color: var(--accent); }
-      .ft-cta-r { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: calc(clamp(36px, 5vw, 76px) * .39); }
       /* numele pe toată lățimea coloanei de conținut; mărimea urmează lățimea (container query) */
       .ft-sign-wrap { container-type: inline-size; padding: clamp(32px, 4vw, 56px) 0 clamp(16px, 2vw, 28px); }
-      .ft-sign { font: 400 11.5cqi/.82 Cinzel, serif; letter-spacing: 0; white-space: nowrap; color: color-mix(in srgb, #EDE9E0 15%, transparent); text-align: center; margin: 0; user-select: none; }
-      .ft-sign em { font-style: normal; color: color-mix(in srgb, #D4AF37 31%, transparent); }
+      .ft-sign { font: 400 11.5cqi/.82 Cinzel, serif; letter-spacing: 0; white-space: nowrap; color: color-mix(in srgb, #EDE9E0 42%, transparent); text-align: center; margin: 0; user-select: none; }
+      .ft-sign em { font-style: normal; color: color-mix(in srgb, #D4AF37 70%, transparent); }
       .footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 32px; padding: 22px 0 28px; border-top: 1px solid var(--line); }
       .ft-copy, .ft-legal { font: 400 11px "Geist Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
       .ft-legal { display: flex; gap: 24px; }
