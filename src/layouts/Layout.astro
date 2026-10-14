@@ -433,7 +433,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       /* ===== footer (tema Scenă) ===== */
       .footer-wrap { position: relative; background: #0f1218; }
       .footer-inner { max-width: 1440px; margin: 0 auto; padding: 0 var(--pad-x); }
-      .ft-stage { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; min-height: clamp(760px, 112vh, 1080px); }
+      .ft-stage { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; min-height: clamp(760px, 112vh, 1080px); }
       .ft-stage::before { content: ""; position: absolute; inset: 0; background: url('/uploads/images/scena-footer.webp') center 35% / cover no-repeat; opacity: .5; }
       .ft-stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, var(--stage-fade) 0%, color-mix(in srgb, var(--stage-fade) 55%, transparent) 14%, transparent 22%), linear-gradient(90deg, #0f1218 0%, color-mix(in srgb, #0f1218 70%, transparent) 45%, color-mix(in srgb, #0f1218 30%, transparent) 100%), linear-gradient(180deg, transparent 45%, color-mix(in srgb, #0f1218 70%, transparent) 80%, #0f1218 100%); }
       .ft-stage > .footer-inner { position: relative; z-index: 1; width: 100%; }
