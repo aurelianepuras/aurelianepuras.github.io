@@ -64,7 +64,7 @@ const contactSchema = {
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(contactSchema)} />
 
-  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-contact.webp')">
+  <header class="stage stage-dark stage-contact" style="--img: url('/uploads/images/scena-contact.webp')">
     <div class="page">
       <div class="page-head">
         <div>
@@ -76,7 +76,7 @@ const contactSchema = {
     </div>
   </header>
 
-  <section class="page">
+  <section class="page page-below-stage">
     <div class="rows stack">
       {channels.map((c, i) => (
         <a href={c.href} class="row-card" style={`--i:${i}`} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener noreferrer' : undefined}>
@@ -110,6 +110,8 @@ const contactSchema = {
   </section>
 
   <style is:global>
+    /* Contact: textul din poza de sus stă mai jos (aceeași înălțime a pozei), iar cardurile încep sub poză */
+    .stage.stage-contact > .page { padding-top: calc(clamp(150px, 19vw, 290px) + clamp(108px, 13.2vw, 200px)); padding-bottom: calc(clamp(72px, 8vw, 120px) + clamp(56px, 7vw, 104px) - clamp(108px, 13.2vw, 200px)); }
     .contact-projects { display: flex; flex-direction: column; align-self: center; border-top: 1px solid var(--line); }
     .contact-projects a { display: flex; flex-direction: column; gap: 6px; padding: 18px 0; border-bottom: 1px solid var(--line); }
     .contact-projects small { font: 400 11px "Geist Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
