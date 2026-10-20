@@ -1,4 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
+import waveforms from '../data/waveforms.json';
+
+const WAVES = waveforms as Record<string, number[]>;
 
 interface Track {
   id: number;
@@ -43,9 +46,13 @@ export default function MusicPlayer({
 
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => {
-      setDuration(audio.duration);
-      setAudioError(null);
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        setDuration(audio.duration);
+        setAudioError(null);
+      }
     };
+    // metadatele pot fi deja încărcate înainte ca playerul să pornească
+    if (audio.readyState >= 1) updateDuration();
     const handleEnded = () => {
       if (currentTrackIndex < tracks.length - 1) {
         setCurrentTrackIndex(currentTrackIndex + 1);
@@ -57,11 +64,13 @@ export default function MusicPlayer({
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('durationchange', updateDuration);
     audio.addEventListener('ended', handleEnded);
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('durationchange', updateDuration);
       audio.removeEventListener('ended', handleEnded);
     };
   }, [currentTrackIndex, tracks.length]);
@@ -136,6 +145,16 @@ export default function MusicPlayer({
   };
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const peaks = currentTrack ? WAVES[currentTrack.audio_file] : undefined;
+  // forma undei: câte o bară pentru fiecare bucată din înregistrare
+  const waveBars = useMemo(() => peaks ? (
+    <svg viewBox={`0 0 ${peaks.length * 3} 100`} preserveAspectRatio="none" aria-hidden="true">
+      {peaks.map((p, i) => {
+        const h = Math.max(4, p * 100);
+        return <rect key={i} x={i * 3} y={(100 - h) / 2} width={2} height={h} rx={1} />;
+      })}
+    </svg>
+  ) : null, [peaks]);
 
   const playIcon = isPlaying ? (
     <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg>
@@ -186,13 +205,14 @@ export default function MusicPlayer({
           </div>
 
           <div
-            className="mp-bar"
+            className={peaks ? 'mp-bar mp-bar-wave' : 'mp-bar'}
             onClick={handleProgressClick}
             role="slider"
             aria-label="Progres piesă"
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={Math.round(progress)}
+            aria-valuetext={`${formatTime(currentTime)} din ${formatTime(duration)}`}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
@@ -204,7 +224,14 @@ export default function MusicPlayer({
               }
             }}
           >
-            <span style={{ transform: `scaleX(${progress / 100})` }} />
+            {peaks ? (
+              <>
+                <div className="mp-wave">{waveBars}</div>
+                <div className="mp-wave mp-wave-on" style={{ clipPath: `inset(0 ${100 - progress}% 0 0)` }}>{waveBars}</div>
+              </>
+            ) : (
+              <span style={{ transform: `scaleX(${progress / 100})` }} />
+            )}
           </div>
           <div className="mp-time">
             <span>{formatTime(currentTime)}</span>

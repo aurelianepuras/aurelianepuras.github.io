@@ -274,6 +274,11 @@ const paths = [
       .hero-text { margin-top: -72px; }
     }
 
+    /* doar tema luminoasă, pe așezarea de calculator: „Explorează” nu mai stă lipit de poză */
+    @media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+      :global(html:not(.dark)) .home-section.home-first { padding-top: 40px; }
+    }
+
     /* ===== drumuri ===== */
     .home-section { max-width: 1440px; width: 100%; margin: 0 auto; padding: clamp(44px, 4.5vw, 64px) var(--pad-x); }
     /* imediat sub poza mare: spațiul îl dă deja fundul pozei */

@@ -104,11 +104,10 @@ const musicSchema = {
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(musicSchema)} />
 
-  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-muzica.webp')">
+  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-muzica.webp'); --img-pos: center 74%">
     <div class="page">
       <div class="page-head">
         <div>
-          <p class="eyebrow">Muzică</p>
           <h1 class="page-title">Muzica <em>mea</em></h1>
         </div>
         <p>Ascultă ceea ce cuvintele nu pot rosti: fragmente de suflet transpuse în sunet pur, de la pian solo la compoziții simfonice.</p>
@@ -141,6 +140,10 @@ const musicSchema = {
     .mp-art.is-playing .mp-vinyl { translate: 28% 0; animation-play-state: running; }
     @keyframes mp-spin { to { transform: rotate(360deg); } }
     .mp-body { position: relative; z-index: 3; }
+    /* playerul nu urcă peste poza de sus (ambele teme) */
+    .stage + .page:has(.mp) { margin-top: 0; padding-top: clamp(72px, 8vw, 120px); }
+    .mp-notes.mp-notes { margin-top: calc(clamp(64px, 8vw, 120px) - clamp(10px, 1.1vw, 17px)); }
+    .stage:has(+ .page .mp) > .page { padding-top: calc(clamp(150px, 19vw, 290px) + clamp(88px, 10vw, 160px) + clamp(120px, 13.5vw, 225px)); padding-bottom: calc(clamp(80px, 9vw, 140px) - clamp(120px, 13.5vw, 225px) + clamp(64px, 7.5vw, 120px)); }
     .mp-body .eyebrow { margin-bottom: 18px; }
     .mp-title { font: 400 clamp(36px, 4.4vw, 68px)/1.04 Cinzel, serif; letter-spacing: .02em; }
     .mp-artist { margin-top: 12px; font-size: 15px; line-height: 1.6; color: var(--mute); max-width: 40ch; }
@@ -157,6 +160,14 @@ const musicSchema = {
     .mp-bar { position: relative; height: 14px; cursor: pointer; }
     .mp-bar::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 1px; background: var(--line); }
     .mp-bar span { position: absolute; left: 0; top: 6px; height: 2px; margin-top: -.5px; width: 100%; background: var(--accent); transform-origin: left; transition: transform .2s linear; }
+    /* forma undei sonore: bare gri, colorate auriu pe măsură ce cântă piesa */
+    .mp-bar.mp-bar-wave { height: 30px; margin-top: 4px; }
+    .mp-bar.mp-bar-wave::before { display: none; }
+    .mp-wave { position: absolute; inset: 0; }
+    .mp-wave svg { display: block; width: 100%; height: 100%; }
+    .mp-wave rect { fill: color-mix(in srgb, var(--fg) 22%, transparent); }
+    .mp-wave-on rect { fill: var(--accent); }
+    .mp-wave-on { transition: clip-path .2s linear; }
     .mp-time { display: flex; justify-content: space-between; font: 400 11px "Geist Mono", monospace; letter-spacing: .1em; color: var(--mute); margin-top: 4px; }
     .mp-list { list-style: none; margin: 32px 0 0; padding: 0; counter-reset: none; }
     .mp-list button { width: 100%; display: flex; align-items: center; gap: 16px; padding: 18px 0; border: 0; border-top: 1px solid var(--line); background: none; color: var(--fg); text-align: left; cursor: pointer; transition: color .3s; }

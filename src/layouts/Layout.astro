@@ -147,22 +147,18 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
     </header>
 
     <div id="mobile-menu" class="mmenu" aria-hidden="true">
-      <span class="ghost" aria-hidden="true">A</span>
       <nav class="mnav" aria-label="Meniu mobil">
         {navLinks.map((link, i) => (
-          <a href={link.href} class={isActive(link.href) ? 'on' : ''} style={`--dl:${0.08 + i * 0.05}s`}>
-            <span class="row"><span><small>{num(i)}</small><b>{link.label}</b><span class="dot">•</span></span></span>
-            <span class="rule"></span>
+          <a href={link.href} class={isActive(link.href) ? 'on' : ''} style={`--dl:${0.18 + i * 0.05}s`}>
+            <small>{num(i)}</small><b>{link.label}</b>
           </a>
         ))}
       </nav>
       <div class="mfoot">
-        <div class="mprojects">
+        <div class="mlinks">
           {projects.map((p) => (
             <a href={p.href} target="_blank" rel="noopener">{p.short} <span aria-hidden="true">↗︎</span></a>
           ))}
-        </div>
-        <div class="mctas">
           {socials.map((s) => (
             <a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
           ))}
@@ -416,29 +412,21 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       }
 
       /* ===== meniu mobil ===== */
-      .mmenu { position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; padding: calc(var(--hdr-h) + 18px) clamp(20px, 6vw, 56px) 24px; background: var(--bg); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; clip-path: circle(0 at calc(100% - 44px) 39px); visibility: hidden; transition: clip-path .9s cubic-bezier(.76,0,.24,1), visibility 0s linear .9s; }
-      .menu-open .mmenu { clip-path: circle(160% at calc(100% - 44px) 39px); visibility: visible; transition: clip-path .9s cubic-bezier(.76,0,.24,1), visibility 0s; }
-      .mmenu .ghost { position: absolute; right: -8vw; bottom: -6vw; font: 400 62vw/.8 Cinzel, serif; color: color-mix(in srgb, var(--accent) 7%, transparent); pointer-events: none; transform: translateY(20%) rotate(-8deg); transition: transform 1.4s var(--ease); }
-      .menu-open .mmenu .ghost { transform: none; }
-      .mnav { position: relative; display: flex; flex-direction: column; margin: auto 0; }
-      .mnav a { display: block; -webkit-tap-highlight-color: transparent; }
-      .mnav .row { display: block; overflow: hidden; padding: 8px 0 6px; }
-      .mnav .row > span { display: flex; align-items: baseline; gap: 16px; transform: translateY(115%); transition: transform 1s var(--ease); }
-      .mnav small { font: 400 11px "Geist Mono", monospace; letter-spacing: .1em; color: var(--accent); width: 22px; }
-      .mnav b { font: 400 clamp(30px, 8.5vw, 52px)/1 Cinzel, serif; letter-spacing: .02em; }
-      .mnav .dot { margin-left: auto; font-size: 24px; color: var(--accent); opacity: 0; transition: opacity .4s; }
-      .mnav .rule { display: block; height: 1px; background: var(--line); transform: scaleX(0); transform-origin: left; transition: transform 1.1s var(--ease); }
-      .menu-open .mnav .row > span { transform: none; transition-delay: var(--dl); }
-      .menu-open .mnav .rule { transform: scaleX(1); transition-delay: var(--dl); }
+      .mmenu { position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; justify-content: flex-start; padding: calc(var(--hdr-h) + 24px) clamp(24px, 6vw, 56px) max(14px, env(safe-area-inset-bottom)); background: var(--bg); overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; clip-path: circle(0 at calc(100% - 44px) 39px); visibility: hidden; transition: clip-path .6s cubic-bezier(.7,0,.3,1), visibility 0s linear .6s; }
+      .menu-open .mmenu { clip-path: circle(150% at calc(100% - 44px) 39px); visibility: visible; transition: clip-path .6s cubic-bezier(.7,0,.3,1), visibility 0s; }
+      /* ca la Fabrica de Pian: titluri mai mici, apar pe rând de jos în sus */
+      .mnav { display: flex; flex-direction: column; margin: auto 0; }
+      .mnav a { display: flex; align-items: baseline; gap: 14px; padding: 11px 0 9px; border-bottom: 1px solid var(--line); -webkit-tap-highlight-color: transparent; opacity: 0; transform: translateY(18px); transition: opacity .4s, transform .5s cubic-bezier(.2,.7,.2,1); }
+      .menu-open .mnav a { opacity: 1; transform: none; transition-delay: var(--dl); }
+      .mnav small { font: 400 9.5px "Geist Mono", monospace; letter-spacing: .1em; color: var(--accent); width: 24px; flex: none; }
+      .mnav b { font: 400 clamp(19px, 5vw, 24px)/1.2 Cinzel, serif; letter-spacing: .04em; }
       .mnav a.on b { color: var(--accent); }
-      .mnav a.on .dot { opacity: 1; }
-      .mfoot { position: relative; padding-top: 32px; display: flex; flex-direction: column; gap: 12px; opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform 1s var(--ease); }
+      .mfoot { padding-top: 36px; display: flex; flex-direction: column; gap: 8px; opacity: 0; transform: translateY(18px); transition: opacity .4s, transform .5s cubic-bezier(.2,.7,.2,1); }
       .menu-open .mfoot { opacity: 1; transform: none; transition-delay: .55s; }
-      .mprojects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-      .mprojects a { height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--fg); color: var(--bg); font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; text-transform: uppercase; }
-      .mctas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-      .mctas a { height: 48px; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
-      .mmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 12px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; color: var(--mute); }
+      .mlinks { display: flex; flex-wrap: wrap; gap: 0 18px; }
+      .mlinks a { display: inline-flex; align-items: center; min-height: 44px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); transition: color .25s; }
+      .mlinks a:hover { color: var(--accent); }
+      .mmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; color: var(--mute); }
       body.menu-open { overflow: hidden; }
       @media (min-width: 961px) { .mmenu { display: none; } }
 
@@ -483,8 +471,22 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .project small, .mp-now-text small, .mp-list small,
       .contact-projects small, .path-meta small, .hero-eyebrow, .mp-list button.on span { color: var(--accent-ink); }
 
+      /* ===== tema închisă: aceeași trecere lungă și lină din poză în pagină, pe toate paginile ===== */
+      .dark .stage:not(.post-stage):not(.stage-vivid)::after { background: linear-gradient(180deg, color-mix(in srgb, #0f1218 50%, transparent) 0%, color-mix(in srgb, #0f1218 30%, transparent) 30%, color-mix(in srgb, var(--stage-fade) 55%, transparent) 62%, color-mix(in srgb, var(--stage-fade) 88%, transparent) 84%, var(--stage-fade) 100%); }
+      .dark .stage.stage-vivid::after { background:
+        linear-gradient(180deg, transparent 0%, transparent 30%, color-mix(in srgb, var(--stage-fade) 55%, transparent) 62%, color-mix(in srgb, var(--stage-fade) 88%, transparent) 84%, var(--stage-fade) 100%),
+        linear-gradient(90deg, color-mix(in srgb, #0f1218 85%, transparent) 0%, color-mix(in srgb, #0f1218 55%, transparent) 35%, transparent 65%),
+        linear-gradient(180deg, color-mix(in srgb, #0f1218 45%, transparent) 0%, transparent 22%); }
+
+      /* fără colțul tăiat pe poze și videoclipuri (ambele teme) */
+      .notch::after { display: none; }
+      /* ===== doar tema luminoasă: spațieri (fără gradiente) ===== */
+      /* citatul din subsol nu mai stă lipit de marginea de sus */
+      html:not(.dark) .ft-cta { padding-top: 80px; padding-bottom: calc(clamp(240px, 28.5vw, 450px) + clamp(24px, 3.3vw, 48px) - 64px); }
+      @media (max-width: 760px) { html:not(.dark) .ft-cta { padding-top: 64px; padding-bottom: calc(150vw - 150px); } }
+
       @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
       }
     </style>
 
