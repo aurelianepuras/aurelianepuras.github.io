@@ -247,10 +247,20 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 
       /* Antet de pagină ca afiș: fotografie de scenă întunecată în spate */
       .stage { position: relative; overflow: hidden; background: #0f1218; }
-      .stage::before { content: ""; position: absolute; inset: 0; background: var(--img) center 35% / cover no-repeat; opacity: .5; filter: grayscale(.35); animation: stage-in 1.8s var(--ease) both; }
+      .stage::before { content: ""; position: absolute; inset: 0; background: var(--img) var(--img-pos, center 35%) / cover no-repeat; opacity: .5; filter: grayscale(.35); animation: stage-in 1.8s var(--ease) both; }
       .stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, #0f1218 55%, transparent) 0%, color-mix(in srgb, #0f1218 35%, transparent) 40%, color-mix(in srgb, #0f1218 85%, var(--stage-fade)) 82%, var(--stage-fade) 100%); }
       @keyframes stage-in { from { opacity: 0; transform: scale(1.05); } to { opacity: .5; transform: none; } }
+      /* variantă: poza la culorile ei, întunecată doar în stânga (sub titlu) și jos */
+      .stage.stage-vivid::before { filter: none; opacity: .9; animation: stage-vivid-in 1.2s var(--ease) both; }
+      @media (max-width: 760px) { .stage.stage-vivid::before { background-image: var(--img-sm, var(--img)); } }
+      @keyframes stage-vivid-in { from { opacity: 0; transform: scale(1.03); } to { opacity: .9; transform: none; } }
+      /* primul strat din listă stă deasupra: marginea de jos are exact culoarea paginii */
+      .stage.stage-vivid::after { background:
+        linear-gradient(180deg, transparent 0%, transparent 74%, color-mix(in srgb, var(--stage-fade) 45%, transparent) 86%, color-mix(in srgb, var(--stage-fade) 85%, transparent) 95%, var(--stage-fade) 100%),
+        linear-gradient(90deg, color-mix(in srgb, #0f1218 85%, transparent) 0%, color-mix(in srgb, #0f1218 55%, transparent) 35%, transparent 65%),
+        linear-gradient(180deg, color-mix(in srgb, #0f1218 45%, transparent) 0%, transparent 22%); }
       .stage > .page { position: relative; z-index: 1; padding-top: clamp(150px, 19vw, 290px); padding-bottom: calc(clamp(72px, 8vw, 120px) + clamp(56px, 7vw, 104px)); }
+      .stage.stage-vivid > .page { padding-top: clamp(266px, 35.5vw, 546px); padding-bottom: clamp(50px, 5.5vw, 90px); }
       .stage .page-head { margin-bottom: 0; }
       .stage .page-title { font-size: clamp(48px, 7.4vw, 124px); }
       @media (min-width: 900px) {
@@ -297,6 +307,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .page + .page { padding-top: 0; }
       /* poza coboară sub titlu, iar conținutul urcă puțin peste partea ei de jos */
       .stage + .page { padding-top: 0; position: relative; z-index: 1; margin-top: calc(-1 * clamp(72px, 9vw, 140px)); }
+      /* pagini unde conținutul nu trebuie să intre peste poză (ex. portretul de la Biografie) */
+      .stage + .page.page-below-stage { margin-top: 0; padding-top: clamp(48px, 6vw, 96px); }
       .page-band { background: var(--bg-2); }
       .page-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: last baseline; gap: 24px; margin-bottom: clamp(40px, 4.4vw, 64px); }
       .page-head .eyebrow { margin-bottom: 22px; }

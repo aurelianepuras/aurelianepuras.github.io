@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro';
 const title = "Biografie – drumul unui pianist și compozitor | Aurelian Epuraș";
 const description = "Biografia pianistului și compozitorului Aurelian Epuraș: studiile, concertele, albumele și momentele care i-au format drumul în muzică.";
 const image = "/uploads/images/Aurelian-Epuras.jpg";
-const imageAlt = "Aurelian Epuraș | Aurelian Epuras | Pianist Compozitor";
+const imageAlt = "Aurelian Epuraș, pianist și compozitor, portret";
 
 const milestones = [
   { year: '1981', text: 'Petroșani, Hunedoara' },
@@ -17,6 +17,7 @@ const milestones = [
   { year: '2017', text: 'Academia de Muzică, Cluj-Napoca' },
   { year: '2019', text: 'Lansarea proiectului Fabrica de Pian', href: 'https://fabricadepian.github.io/' },
   { year: '2023', text: 'Lansarea albumului 13' },
+  { year: '2026', text: 'Profesor de pian, Yamaha Music School București' },
 ];
 ---
 
@@ -26,7 +27,8 @@ const milestones = [
   image={image}
   imageAlt={imageAlt}
 >
-  <link slot="head" rel="preload" href="/uploads/images/Aurelian-Epuras.jpg" as="image" />
+  <link slot="head" rel="preload" as="image" href="/uploads/images/scena-biografie-fabrica.webp" media="(min-width: 761px)" fetchpriority="high" />
+  <link slot="head" rel="preload" as="image" href="/uploads/images/scena-biografie-fabrica-1200.webp" media="(max-width: 760px)" fetchpriority="high" />
   <script type="application/ld+json" slot="head" is:inline>
   {
     "@context": "https://schema.org",
@@ -47,7 +49,8 @@ const milestones = [
         "name": "Aurelian Epuraș",
         "url": "https://aurelianepuras.github.io/",
         "image": "https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras.jpg",
-        "jobTitle": ["Pianist", "Compozitor", "Profesor de pian"]
+        "jobTitle": ["Pianist", "Compozitor", "Profesor de pian"],
+        "worksFor": { "@type": "EducationalOrganization", "name": "Yamaha Music School București" }
       },
       {
         "@type": "BreadcrumbList",
@@ -75,24 +78,23 @@ const milestones = [
   }
 </script>
 
-  <header class="stage stage-dark" style="--img: url('/uploads/images/scena-biografie.webp')">
+  <header class="stage stage-dark stage-vivid" style="--img: url('/uploads/images/scena-biografie-fabrica.webp'); --img-sm: url('/uploads/images/scena-biografie-fabrica-1200.webp'); --img-pos: 85% 55%">
     <div class="page">
       <div class="page-head">
         <div>
           <p class="eyebrow">Despre mine</p>
           <h1 class="page-title">Biografie<em>.</em></h1>
         </div>
-        <p>37 de ani petrecuți între clape, partituri și momente de liniște deplină.</p>
       </div>
     </div>
   </header>
 
-  <section class="page">
+  <section class="page page-below-stage">
     <div class="bio-grid">
       <div class="media notch bio-img">
         <picture>
           <source srcset="/uploads/images/Aurelian-Epuras.webp" type="image/webp" />
-          <img src="/uploads/images/Aurelian-Epuras.jpg" alt={imageAlt} width="600" height="800" loading="eager" fetchpriority="high" sizes="(max-width: 860px) 100vw, 45vw" />
+          <img src="/uploads/images/Aurelian-Epuras.jpg" alt={imageAlt} width="600" height="800" loading="eager" sizes="(max-width: 860px) 100vw, 45vw" />
         </picture>
       </div>
       <div class="bio-text">
@@ -116,7 +118,7 @@ const milestones = [
         </div>
       </div>
       <div class="bio-more-text">
-        <p class="lead">Din 2016 <a class="inline-link" href="https://lectiidepiancuaurelian.ro/" target="_blank" rel="noopener">predau pian</a> în România, iar activitatea educațională a continuat și în zona de proiecte culturale care chiar au lăsat urme. <a class="inline-link" href="https://fabricadepian.github.io/" target="_blank" rel="noopener">Fabrica de Pian</a> e un exemplu clar, cu două săli complet modernizate în Petroșani, unde elevii secției de muzică au acum spații care inspiră și funcționează cu adevărat.</p>
+        <p class="lead">Din 2016 <a class="inline-link" href="https://lectiidepiancuaurelian.ro/" target="_blank" rel="noopener">predau pian</a> în România, iar activitatea educațională a continuat și în zona de proiecte culturale care chiar au lăsat urme. <a class="inline-link" href="https://fabricadepian.github.io/" target="_blank" rel="noopener">Fabrica de Pian</a> e un exemplu clar, cu două săli complet modernizate în Petroșani, unde elevii secției de muzică au acum spații care inspiră și funcționează cu adevărat. Din 2026 sunt profesor de pian la Yamaha Music School București.</p>
         <p class="lead">Compozitor atunci când nu caut telecomanda și interpret atunci când nu mă încurc în cabluri, mi-am lansat albumul intitulat simplu 13, pentru că unele lucruri importante nu au nevoie de titluri pretențioase. Piesele de pe album fac parte din repertoriul concertelor pe care le susțin și reflectă o direcție clară, implicarea în educație, cultură și tot ce ține de comunitate, vie, autentică și prezentă.</p>
         <p class="lead">Pe site găsești muzica mea, fie sub formă de album, fie ca piese individuale disponibile pentru achiziție, alături de ultimele compoziții, programul evenimentelor, înregistrări video, fotografii și detalii despre colaborările recente. Iar dacă îți dorești muzică live într-un spațiu care contează, poți chiar să comanzi un concert. Sper ca experiența de aici să-ți ofere exact ce cauți. Este o carte de vizită digitală, construită în stilul meu, pentru cei care vor să cunoască mai bine drumul și lumea mea muzicală.</p>
       </div>

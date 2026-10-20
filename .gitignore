@@ -167,3 +167,6 @@ public/uploads/images/trenul-vietii-si-oprirea-de-gratie-quinteto-astor-piazzoll
 public/uploads/thumbs/
 !public/uploads/images/scena.jpg
 public/uploads/large/
+
+# Claude Code (setări locale)
+.claude/
