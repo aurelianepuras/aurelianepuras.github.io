@@ -140,6 +140,12 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
           </button></div>
         <span class="hdr-sep" aria-hidden="true"></span>
         <a href="/contact/" class={`header-cta ${isActive('/contact') ? 'on' : ''}`}>Scrie-mi ↗︎</a>
+        <button type="button" class="theme-toggle mtheme" aria-label="Schimbă tema" aria-pressed="false">
+          <span class="sw"><span class="sw-knob"></span>
+            <svg class="sw-sun" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            <svg class="sw-moon" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+          </span>
+        </button>
         <button id="mobile-menu-toggle" class="burger" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="mobile-menu">
           <span><i></i><i></i></span>
         </button>
@@ -159,16 +165,10 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
           {projects.map((p) => (
             <a href={p.href} target="_blank" rel="noopener">{p.short} <span aria-hidden="true">↗︎</span></a>
           ))}
+          <span class="mbreak" aria-hidden="true"></span>
           {socials.map((s) => (
             <a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
           ))}
-        </div>
-        <div class="mmeta">
-          <span>PIANIST · COMPOZITOR · PROFESOR</span>
-          <div class="hdr-theme"><button type="button" class="theme-toggle" aria-label="Schimbă tema" aria-pressed="false">
-            <svg class="i-moon" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-            <svg class="i-sun" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-          </button></div>
         </div>
       </div>
     </div>
@@ -390,13 +390,17 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .scroll-top.on { opacity: 1; transform: none; pointer-events: auto; }
       .scroll-top:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 
-      .burger { display: none; width: 48px; height: 48px; margin-right: -10px; border: 0; background: none; cursor: pointer; place-items: center; -webkit-tap-highlight-color: transparent; }
-      .burger span { position: relative; display: block; width: 28px; height: 10px; }
+      .burger { display: none; position: relative; width: 48px; height: 48px; margin-right: -10px; border: 0; background: none; cursor: pointer; place-items: center; -webkit-tap-highlight-color: transparent; }
+      /* meniul deschis: X-ul mic, într-un cerc subțire, înalt cât întrerupătorul de temă (30px) */
+      .burger::before { content: ""; position: absolute; inset: 9px; border: 1px solid var(--line); border-radius: 50%; opacity: 0; transform: scale(.6); transition: opacity .3s, transform .45s var(--ease); }
+      .menu-open .burger::before { opacity: 1; transform: none; }
+      .burger span { position: relative; display: block; width: 28px; height: 10px; transition: width .5s cubic-bezier(.76,0,.24,1); }
       .burger i { position: absolute; right: 0; height: 1.5px; background: var(--fg); transition: transform .6s cubic-bezier(.76,0,.24,1), width .5s cubic-bezier(.76,0,.24,1); }
       .burger i:first-child { top: 0; width: 28px; }
       .burger i:last-child { top: 8.5px; width: 17px; }
-      .menu-open .burger i:first-child { transform: translateY(4.25px) rotate(45deg); }
-      .menu-open .burger i:last-child { width: 28px; transform: translateY(-4.25px) rotate(-45deg); }
+      .menu-open .burger span { width: 14px; }
+      .menu-open .burger i:first-child { width: 14px; transform: translateY(4.25px) rotate(45deg); }
+      .menu-open .burger i:last-child { width: 14px; transform: translateY(-4.25px) rotate(-45deg); }
 
       @media (max-width: 1240px) {
         .nav { gap: 0; }
@@ -421,12 +425,27 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .mnav small { font: 400 9.5px "Geist Mono", monospace; letter-spacing: .1em; color: var(--accent); width: 24px; flex: none; }
       .mnav b { font: 400 clamp(19px, 5vw, 24px)/1.2 Cinzel, serif; letter-spacing: .04em; }
       .mnav a.on b { color: var(--accent); }
-      .mfoot { padding-top: 36px; display: flex; flex-direction: column; gap: 8px; opacity: 0; transform: translateY(18px); transition: opacity .4s, transform .5s cubic-bezier(.2,.7,.2,1); }
+      .mfoot { padding-top: 28px; display: flex; flex-direction: column; gap: 4px; opacity: 0; transform: translateY(18px); transition: opacity .4s, transform .5s cubic-bezier(.2,.7,.2,1); }
       .menu-open .mfoot { opacity: 1; transform: none; transition-delay: .55s; }
+      /* butonul de temă din meniul mobil: întrerupător soare / lună lângă X, doar cât meniul e deschis */
+      .mtheme { display: none; align-items: center; min-height: 44px; padding: 0 4px; background: transparent; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+      .sw { position: relative; display: block; width: 56px; height: 30px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg-2); }
+      .sw-knob { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); transition: transform .45s var(--ease); }
+      .dark .sw-knob { transform: translateX(26px); }
+      .sw svg { position: absolute; top: 7px; width: 14px; height: 14px; color: var(--mute); transition: color .3s; }
+      .sw .sw-sun { left: 7px; }
+      .sw .sw-moon { right: 7px; }
+      .sw .sw-sun, .dark .sw .sw-moon { color: #161A24; }
+      .dark .sw .sw-sun { color: var(--mute); }
+      @media (max-width: 960px) { .menu-open .mtheme { display: inline-flex; animation: mtheme-in .4s .3s both; } }
+      @keyframes mtheme-in { from { opacity: 0; } to { opacity: 1; } }
+      /* telefoane înguste: bara mai strânsă, ca X-ul să încapă lângă întrerupător */
+      @media (max-width: 480px) { .menu-open .site-header { gap: 10px; } .menu-open .hdr-r { gap: 4px; } .mtheme { padding: 0; } }
       .mlinks { display: flex; flex-wrap: wrap; gap: 0 18px; }
-      .mlinks a { display: inline-flex; align-items: center; min-height: 44px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); transition: color .25s; }
+      .mlinks a { display: inline-flex; align-items: center; padding: 5px 0; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); transition: color .25s; }
       .mlinks a:hover { color: var(--accent); }
-      .mmeta { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 400 10.5px "Geist Mono", monospace; letter-spacing: .14em; color: var(--mute); }
+      /* rețelele sociale (YouTube, Facebook, Instagram) pe rândul lor */
+      .mbreak { flex-basis: 100%; height: 0; }
       body.menu-open { overflow: hidden; }
       @media (min-width: 961px) { .mmenu { display: none; } }
 
