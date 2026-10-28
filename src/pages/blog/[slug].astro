@@ -178,11 +178,21 @@ const relatedPosts = allPosts
       .stage.post-stage > .page { max-width: none; padding-top: 0; padding-bottom: 0; }
       .post-top { min-height: var(--cover-h); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 4px; }
       .stage.post-stage + .post-body { max-width: none; padding-top: 0; }
+      /* tema închisă: același degrade ca pe desktop; poza continuă sub titlu, ca titlul să stea pe degrade, nu pe fundal */
+      .dark .post-stage { background: var(--stage-fade); }
+      .dark .post-stage::before, .dark .post-stage::after { height: calc(var(--cover-h) * 1.2); }
+      .dark .post-stage::after { background: linear-gradient(180deg, color-mix(in srgb, #0f1218 35%, transparent) 0%, transparent 22%, transparent 42%, color-mix(in srgb, #0f1218 72%, transparent) 70%, var(--stage-fade) 100%); }
     }
     @media (max-width: 760px) {
       /* telefon: poza mai înaltă, ca titlul să acopere doar partea de jos */
       .post-stage { --cover-h: max(calc(100vw * 1.1), 300px); }
     }
+    @media (min-width: 761px) and (max-width: 1024px) and (orientation: portrait) {
+      /* tabletă verticală, DOAR tema închisă: poza mai înaltă, ca titlul să nu depășească poza */
+      .dark .post-stage { --cover-h: calc(100vw * 10 / 16 + 110px); }
+    }
+    /* tema luminoasă: rândul cu data nu mai stă lipit de partea albă */
+    html:not(.dark) .stage.post-stage > .page { padding-bottom: clamp(28px, 3.5vw, 48px); }
   </style>
 <!-- LIGHTBOX MODAL -->
 <div id="lightbox" class="lightbox">
