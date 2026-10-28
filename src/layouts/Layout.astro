@@ -446,7 +446,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       .mlinks a:hover { color: var(--accent); }
       /* rețelele sociale (YouTube, Facebook, Instagram) pe rândul lor */
       .mbreak { flex-basis: 100%; height: 0; }
-      body.menu-open { overflow: hidden; }
+      /* blocăm derularea pe html, nu pe body: cu overflow pe body, antetul sticky ar rămâne sus în pagină când meniul se deschide după derulare */
+      html.menu-open { overflow: hidden; }
       @media (min-width: 961px) { .mmenu { display: none; } }
 
       /* ===== footer (tema Scenă) ===== */
