@@ -26,7 +26,7 @@ const publishedDate = new Date(post.data.date).toISOString();
 
 const articleImage = post.data.cover_image
   ? `https://aurelianepuras.github.io${post.data.cover_image}`
-  : `https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras-og.jpg`;
+  : `https://aurelianepuras.github.io/uploads/images/Aurelian-Epuras.jpg`;
 
 const seoTitle = (post.data.meta_title || post.data.title).trim();
 const seoDescription = post.data.meta_description || post.data.description;
